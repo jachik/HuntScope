@@ -8,11 +8,12 @@ import SwiftUI
 import UIKit
 
 
-// Linke Button-Area: kann von Dialogen mitbenutzt werden
+// Linke Button-Area: zeigt nur Status-Symbole (keine Interaktion)
 struct LeftButtonArea<DialogButtons: View>: View {
     @EnvironmentObject private var config: ConfigStore
-    let dialogButtons: DialogButtons
-    let showDialogButtons: Bool
+    @StateObject private var battery = BatteryMonitor()
+    let dialogButtons: DialogButtons // ignoriert (keine Dialog-Buttons mehr links)
+    let showDialogButtons: Bool      // ignoriert
 
     init(showDialogButtons: Bool, @ViewBuilder dialogButtons: () -> DialogButtons) {
         self.showDialogButtons = showDialogButtons
@@ -20,18 +21,24 @@ struct LeftButtonArea<DialogButtons: View>: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
-            // Beenden-Button (immer sichtbar, immer aktiv)
-            SidebarButton(systemName: "power") {
-                debugLog("Beenden gedrückt", "UI")
-                // Versetzt die App in den Hintergrund (Apple-konformer als exit(0))
-                UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
+        let primary = (config.theme == .red) ? Color.red : Color.white
+        return VStack(spacing: 16) {
+            // Batterie-Status (Indikator, nicht klickbar)
+            ZStack {
+                Circle().stroke(primary, lineWidth: 2)
+                Image(systemName: battery.symbolName)
+                    .font(.title2)
+                    .foregroundColor(primary)
+                if battery.isPluggedIn {
+                    Image(systemName: "bolt.fill")
+                        .font(.caption2)
+                        .foregroundColor(primary)
+                        .offset(x: 12, y: -12)
+                }
             }
-
-            // Dialog-Buttons (falls ein Dialog aktiv ist)
-            if showDialogButtons {
-                dialogButtons
-            }
+            .frame(width: 44, height: 44)
+            .contentShape(Rectangle())
+            .allowsHitTesting(false)
 
             Spacer()
         }

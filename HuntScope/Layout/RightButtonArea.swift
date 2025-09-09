@@ -44,28 +44,16 @@ struct RightButtonArea: View {
 
             // MARK: Bottom section (from bottom up)
 
+            // Oben in der Bottom-Sektion: Konfiguration
             SidebarButton(systemName: "gearshape") {
                 ui.isDialogActive.toggle()
             }
 
-            let primary = (config.theme == .red) ? Color.red : Color.white
-            ZStack {
-                Circle()
-                    .stroke(primary, lineWidth: 2)
-                Image(systemName: battery.symbolName)
-                    .font(.title2)
-                    .foregroundColor(primary)
-                // Stromversorgung visuell kennzeichnen (egal ob laden oder voll)
-                if battery.isPluggedIn {
-                    Image(systemName: "bolt.fill")
-                        .font(.caption2)
-                        .foregroundColor(primary)
-                        .offset(x: 12, y: -12)
-                }
+            // Unten: Beenden (an Position der bisherigen Batterie)
+            SidebarButton(systemName: "power") {
+                debugLog("Beenden gedrückt", "UI")
+                UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
             }
-            .frame(width: 44, height: 44)
-            .contentShape(Rectangle())
-            .allowsHitTesting(false)
         }
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())
