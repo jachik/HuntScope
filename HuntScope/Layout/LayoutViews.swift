@@ -31,6 +31,8 @@ struct StreamView: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
+                    // Apply grayscale only in s/w (white) theme
+                    .saturation(config.theme == .white ? 0 : 1)
                     // Subtle watermark when playing, more visible when no stream
                     .opacity((player.isConnected && player.isPlaying) ? 0.08 : 0.15)
                     .animation(.easeInOut(duration: 0.25), value: player.isPlaying)

@@ -11,6 +11,7 @@ import UIKit
 // Linke Button-Area: zeigt nur Status-Symbole (keine Interaktion)
 struct LeftButtonArea<DialogButtons: View>: View {
     @EnvironmentObject private var config: ConfigStore
+    @EnvironmentObject private var ui: UIStateModel
     @StateObject private var battery = BatteryMonitor()
     let dialogButtons: DialogButtons // ignoriert (keine Dialog-Buttons mehr links)
     let showDialogButtons: Bool      // ignoriert
@@ -21,23 +22,21 @@ struct LeftButtonArea<DialogButtons: View>: View {
     }
 
     var body: some View {
-        let primary = (config.theme == .red) ? Color.red : Color.white
         return VStack(spacing: 16) {
-            // Batterie-Status (Indikator, nicht klickbar)
-            ZStack {
-                Circle().stroke(primary, lineWidth: 2)
-                Image(systemName: battery.symbolName)
-                    .font(.title2)
-                    .foregroundColor(primary)
-                if battery.isPluggedIn {
-                    Image(systemName: "bolt.fill")
-                        .font(.caption2)
-                        .foregroundColor(primary)
-                        .offset(x: 12, y: -12)
+            // Batterie-Status (optisch wie SidebarButton, aber nicht klickbar)
+            SidebarButton(pulsing: false, action: {}) {
+                ZStack {
+                    Image(systemName: battery.symbolName)
+                    if battery.isPluggedIn {
+                        Image(systemName: "bolt.fill")
+                            .font(.caption2)
+                            .offset(x: 12, y: -12)
+                    }
                 }
             }
-            .frame(width: 44, height: 44)
-            .contentShape(Rectangle())
+            // Dimm-Verhalten wie rechts: nur bei aktivem Dialog deaktiviert
+            .disabled(ui.isDialogActive)
+            // Keine Interaktion zulassen
             .allowsHitTesting(false)
 
             Spacer()

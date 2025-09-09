@@ -13,13 +13,14 @@ Die App bringt folgende Funktionen mit:
 TODOs:
 - [X] Konfigurationsdialog etwas bequemer
 - [] Lokalisierung
-- [] Links Balken entfernen im Konigurationsdialog
+- [x] Links Balken entfernen im Konigurationsdialog
 - [X] Logo erstellen
 - [X] Splashscreen
 - [] Hintergrund (=Logo?)
 - Konfiguration URL
 - Scan-Algorithmus
 (- last-sleep kann auch 30 minuten betragn, wenn die app läuft und mal kurz in die Systemmeldungen reingeguckt wird )
+
 
 TODO - vor Launch:
 - Konfiguration RTSP (2 Std))
@@ -29,6 +30,7 @@ TODO - vor Launch:
 - Abo (vermutlich 2-3 Std.)
 - Lokalisierung (letzter Schritt ca. 2 Std.)
 - Impressum?
+- Hintergrundbild auch weiß
 
 
 # Beschreibung Scanner

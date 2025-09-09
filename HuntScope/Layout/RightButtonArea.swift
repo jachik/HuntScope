@@ -54,6 +54,7 @@ struct RightButtonArea: View {
                 debugLog("Beenden gedrückt", "UI")
                 UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
             }
+            .disabled(ui.isDialogActive)
         }
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())
