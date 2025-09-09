@@ -20,6 +20,7 @@ final class ConfigStore: ObservableObject {
     @Published var streamURL: String
     @Published var customStreamURL: String
     @Published var theme: AppTheme = .red
+    @Published var lastBackgroundAt: Date?
 
 
     private var saveDebounce: AnyCancellable?
@@ -28,6 +29,7 @@ final class ConfigStore: ObservableObject {
         self.streamURL = manager.streamURL
         self.customStreamURL = manager.customStreamURL
         self.theme = manager.theme
+        self.lastBackgroundAt = manager.lastBackgroundAt
 
         // Debounced Autosave (verhindert exzessives Schreiben bei Tippen)
         saveDebounce = Publishers.CombineLatest($streamURL, $customStreamURL)
@@ -54,5 +56,6 @@ final class ConfigStore: ObservableObject {
         streamURL = ConfigManager.shared.streamURL
         customStreamURL = ConfigManager.shared.customStreamURL
         theme = ConfigManager.shared.theme
+        lastBackgroundAt = ConfigManager.shared.lastBackgroundAt
     }
 }

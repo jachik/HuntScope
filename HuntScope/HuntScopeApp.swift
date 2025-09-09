@@ -20,6 +20,7 @@ struct HuntScopeApp: App {
     @StateObject private var uiState = UIStateModel()
     @StateObject private var player      = PlayerController()
     @State private var showSplash: Bool = true
+    @Environment(\.scenePhase) private var scenePhase
     
     var body: some Scene {
         WindowGroup {
@@ -38,8 +39,29 @@ struct HuntScopeApp: App {
                             showSplash = false
                         }
                     }
+                    .environmentObject(uiState)
+                    .environmentObject(configStore)
+                    .environmentObject(player)
                     .transition(.opacity)
                     .zIndex(1)
+                }
+            }
+            // Lifecycle: Splash bei Reaktivierung nach >= 30 min
+            .onChange(of: scenePhase) { phase in
+                switch phase {
+                case .background:
+                    let now = Date()
+                    configStore.lastBackgroundAt = now
+                    ConfigManager.shared.lastBackgroundAt = now
+                case .active:
+                    if let last = configStore.lastBackgroundAt {
+                        let elapsed = Date().timeIntervalSince(last)
+                        if elapsed >= 30 * 60 {
+                            showSplash = true
+                        }
+                    }
+                default:
+                    break
                 }
             }
         }

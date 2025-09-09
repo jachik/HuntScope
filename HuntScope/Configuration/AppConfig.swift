@@ -11,13 +11,15 @@ struct AppConfig: Codable {
     var streamURL: String
     var customStreamURL: String
     var theme: AppTheme
+    var lastBackgroundAt: Date? = nil
 
 
     // Standard-Werte (falls Datei noch nicht existiert)
     static let `default` = AppConfig(
         streamURL: "rtsp://192.168.11.220/1/h264major",
         customStreamURL: "",
-        theme: .red
+        theme: .red,
+        lastBackgroundAt: nil
     )
 }
 
@@ -58,6 +60,14 @@ final class ConfigManager {
         get { config.theme }
         set {
             config.theme = newValue
+            save()
+        }
+    }
+
+    var lastBackgroundAt: Date? {
+        get { config.lastBackgroundAt }
+        set {
+            config.lastBackgroundAt = newValue
             save()
         }
     }

@@ -12,12 +12,14 @@
 import SwiftUI
 import AVFoundation
 import AVKit
+import UIKit
 
 /// Spielt ein kurzes MP4 aus dem Bundle ab und meldet sich, wenn fertig.
 /// Läuft stumm, ohne Controls.
 struct SplashView: View {
     var onFinished: () -> Void
 
+    @EnvironmentObject private var ui: UIStateModel
     @State private var player: AVPlayer? = nil
     @State private var didFinish = false
     @State private var fading = false
@@ -48,6 +50,11 @@ struct SplashView: View {
                 p.isMuted = true
                 p.actionAtItemEnd = .pause // letztes Frame stehen lassen
                 p.currentItem?.preferredForwardBufferDuration = 0
+                // Capture last frame once for use as background overlay later
+                if let snapshot = Self.captureLastFrame(from: url) {
+                    // Store centrally so StreamView can overlay it
+                    ui.lastSplashFrame = snapshot
+                }
                 // Ende beobachten
                 NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
                                                        object: p.currentItem, queue: .main) { _ in
@@ -67,6 +74,25 @@ struct SplashView: View {
         }
     }
 }
+
+private extension SplashView {
+    static func captureLastFrame(from url: URL) -> UIImage? {
+        let asset = AVAsset(url: url)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        generator.requestedTimeToleranceBefore = .zero
+        generator.requestedTimeToleranceAfter = .zero
+        var time = asset.duration
+        let subtractSec = 0.05
+        let scale = time.timescale == 0 ? CMTimeScale(NSEC_PER_SEC) : time.timescale
+        let delta = CMTimeMakeWithSeconds(subtractSec, preferredTimescale: scale)
+        if time > delta { time = CMTimeSubtract(time, delta) }
+        guard let cg = try? generator.copyCGImage(at: time, actualTime: nil) else { return nil }
+        return UIImage(cgImage: cg)
+    }
+}
+
+// (no UIKit environment traversal needed)
 
 /// Kleiner Wrapper um AVPlayerLayer ohne Controls.
 private struct VideoPlayerView: UIViewRepresentable {

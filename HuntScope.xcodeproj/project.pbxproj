@@ -482,6 +482,7 @@
 				HEADER_SEARCH_PATHS = "/Users/jacek.schikora/xcode/HuntScope/MobileVLCKit.framework/Headers/**";
 				INFOPLIST_FILE = HuntScope/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HuntScope;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
@@ -525,6 +526,7 @@
 				HEADER_SEARCH_PATHS = "/Users/jacek.schikora/xcode/HuntScope/MobileVLCKit.framework/Headers/**";
 				INFOPLIST_FILE = HuntScope/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HuntScope;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
