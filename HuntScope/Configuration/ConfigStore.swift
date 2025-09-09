@@ -37,6 +37,16 @@ final class ConfigStore: ObservableObject {
                 if m.streamURL != url { m.streamURL = url }
                 if m.customStreamURL != custom { m.customStreamURL = custom }
             }
+
+        // Persistiere Theme-Wechsel sofort
+        _ = $theme
+            .removeDuplicates()
+            .sink { newTheme in
+                let m = ConfigManager.shared
+                if m.theme != newTheme {
+                    m.theme = newTheme
+                }
+            }
     }
 
     func reloadFromDisk() {

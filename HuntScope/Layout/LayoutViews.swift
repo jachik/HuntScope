@@ -15,11 +15,12 @@ final class UIStateModel: ObservableObject {
 
 // Placeholder fuer den RTSP/VLC-Stream
 struct StreamView: View {
+    @EnvironmentObject private var config: ConfigStore
     var body: some View {
         ZStack {
             Color.black
             Text("StreamView (VLC kommt hier rein)")
-                .foregroundColor(.red)
+                .foregroundColor((config.theme == .red) ? .red : .white)
                 .font(.footnote)
         }
         .ignoresSafeArea()

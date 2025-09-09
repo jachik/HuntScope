@@ -22,7 +22,8 @@ struct SidebarButton<Content: View>: View {
     // Primärfarbe folgt Theme und Enabled-State
     private var primaryColor: Color {
         let base: Color = (config.theme == .red) ? .red : .white
-        return isEnabled ? base : .gray
+        // Disabled: leicht abgedimmte Theme-Farbe statt Grau
+        return isEnabled ? base : base.opacity(0.45)
     }
 
     // 1) Button-typischer Initializer (wie SwiftUI Button(action:label:))

@@ -7,3 +7,8 @@ Die App bringt folgende Funktionen mit:
 - Custom-URL, falls Verbindung scheitert
 - Darstellung auf iPad & iPhone
 - Werbung für kostenlose Nutzung (taucht alle x Minuten auf)
+
+
+
+TODOs:
+- 

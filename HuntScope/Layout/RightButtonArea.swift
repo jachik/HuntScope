@@ -12,12 +12,24 @@ struct RightButtonArea: View {
     @EnvironmentObject private var ui: UIStateModel
     @EnvironmentObject private var player: PlayerController
     @EnvironmentObject private var config: ConfigStore   // nur für Farben/Theme im SidebarButton
+    @StateObject private var battery = BatteryMonitor()
 
     private let spacing: CGFloat = 16
 
     var body: some View {
         VStack(spacing: spacing) {
-            // Aufnahme an/aus (pulsiert, wenn Aufnahme läuft)
+            // MARK: Top section (from top down)
+
+            SidebarButton(systemName: "paintbrush") {
+                config.theme = (config.theme == .red) ? .white : .red
+            }
+            .disabled(ui.isDialogActive)
+
+            SidebarButton(systemName: "camera") {
+                player.takePhoto()
+            }
+            .disabled(!player.isConnected || ui.isDialogActive)
+
             SidebarButton(systemName: player.isRecording ? "stop.circle" : "record.circle",
                           pulsing: player.isRecording) {
                 if player.isRecording {
@@ -27,34 +39,34 @@ struct RightButtonArea: View {
                 }
             }
             .disabled(!player.isConnected || ui.isDialogActive)
-            
 
-            // Snapshot
-            SidebarButton(systemName: "camera") {
-                player.takePhoto()
-            }
-            .disabled(!player.isConnected || ui.isDialogActive)
-            
+            Spacer()
 
-            // Play/Pause Stream
-            SidebarButton(systemName: player.isPlaying ? "pause.circle" : "play.circle") {
-                if player.isPlaying {
-                    player.stop()
-                } else {
-                    player.play(urlString: config.streamURL) // nutzt deine gespeicherte URL
-                }
-            }
-            .disabled(ui.isDialogActive)
-            
+            // MARK: Bottom section (from bottom up)
 
-            // Einstellungen (öffnet Konfigurationsdialog)
             SidebarButton(systemName: "gearshape") {
                 ui.isDialogActive = true
             }
-            // Einstellungen dürfen auch ohne Verbindung aufgehen
             .disabled(ui.isDialogActive) // verhindert mehrfach öffnen
 
-            Spacer()
+            let primary = (config.theme == .red) ? Color.red : Color.white
+            ZStack {
+                Circle()
+                    .stroke(primary, lineWidth: 2)
+                Image(systemName: battery.symbolName)
+                    .font(.title2)
+                    .foregroundColor(primary)
+                // Ladezustand visuell kennzeichnen
+                if battery.state == .charging {
+                    Image(systemName: "bolt.fill")
+                        .font(.caption2)
+                        .foregroundColor(primary)
+                        .offset(x: 12, y: -12)
+                }
+            }
+            .frame(width: 44, height: 44)
+            .contentShape(Rectangle())
+            .allowsHitTesting(false)
         }
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())

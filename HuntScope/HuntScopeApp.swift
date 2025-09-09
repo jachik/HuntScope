@@ -13,6 +13,8 @@ struct HuntScopeApp: App {
     init() {
         // sorgt dafür, dass auch UIKit-Backgrounds schwarz sind
         UIWindow.appearance().backgroundColor = .black
+        // Batterie-Überwachung global aktivieren, damit Level/State verfügbar sind
+        UIDevice.current.isBatteryMonitoringEnabled = true
     }
     @StateObject private var configStore = ConfigStore()
     @StateObject private var uiState = UIStateModel()

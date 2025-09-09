@@ -11,17 +11,18 @@ struct ContentView: View {
     @EnvironmentObject var ui: UIStateModel
     @EnvironmentObject var config: ConfigStore
     var body: some View {
-        MainLayout(
+        let primary = (config.theme == .red) ? Color.red : Color.white
+        return MainLayout(
             // Linke Dialog-Buttons (nur sichtbar, wenn Dialog aktiv)
             dialogButtons: {
-                HStack(spacing: 12) {
+                HStack(spacing: 12) {/*
                     Button("Abbrechen") { ui.isDialogActive = false }
                         .buttonStyle(.bordered)
-                        .tint(.red)
+                        .tint(primary)
 
                     Button("Speichern") { ui.isDialogActive = false }
                         .buttonStyle(.borderedProminent)
-                        .tint(.red)
+                        .tint(primary)*/
                 }
                 .padding(.top, 20)
                 .padding(.leading, 8)
@@ -31,10 +32,12 @@ struct ContentView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Konfiguration")
                         .font(.headline)
-                        .foregroundStyle(.red)
+                        .foregroundStyle(primary)
 
+                    // Weiß->Rot Mapping im Red-Theme
+                    let themedWhite = (config.theme == .red) ? Color.red : Color.white
                     Text("Hier kommt spaeter der eigentliche Dialoginhalt hin.")
-                        .foregroundStyle(.white.opacity(0.9))
+                        .foregroundStyle(themedWhite.opacity(0.9))
 
                     Button {
                         ui.isDialogActive = false
@@ -42,32 +45,17 @@ struct ContentView: View {
                         Text("Schliessen").bold()
                     }
                     .buttonStyle(.bordered)
-                    .tint(.red)
+                    .tint(primary)
                     .padding(.top, 8)
                 }
-                .foregroundColor(.white)
+                // Weiß->Rot Mapping im Red-Theme
+                .foregroundColor(primary)
             }
         )
         .background(Color.black)
         .ignoresSafeArea()
-        // Zum Testen: Dialog toggeln per Tap mit zwei Fingern
-        .simultaneousGesture(
-            TapGesture(count: 2).onEnded { _ in ui.isDialogActive.toggle() }
-        )
     }
-    /*
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                //.foregroundStyle(.fill)
-            Text("Hello, world!")
-        }
-        .padding()
-        .ignoresSafeArea()
 
-        
-    }*/
 }
 
 #Preview {

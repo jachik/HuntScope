@@ -10,6 +10,7 @@ import SwiftUI
 // Hauptlayout: Linke + Mitte + Rechte Spalte, mit Safe-Area-Breite
 struct MainLayout<DialogButtons: View, DialogContent: View>: View {
     @EnvironmentObject private var ui: UIStateModel
+    @EnvironmentObject private var config: ConfigStore
     @StateObject private var player = PlayerController()
 
 
@@ -29,7 +30,7 @@ struct MainLayout<DialogButtons: View, DialogContent: View>: View {
         GeometryReader { geo in
             // Safe-Area ermitteln (links/rechts in Landscape wichtig)
             let safeLeft  = geo.safeAreaInsets.leading
-            let safeRight = geo.safeAreaInsets.trailing+5
+            let safeRight = geo.safeAreaInsets.trailing+8
             let safeTop    = geo.safeAreaInsets.top
             let safeBottom = geo.safeAreaInsets.bottom
             
@@ -46,6 +47,9 @@ struct MainLayout<DialogButtons: View, DialogContent: View>: View {
                         dialogButtons: dialogButtons
                     )
                     .frame(width: sideBaseWidth + safeLeft)
+                    // Safe-Bereich oben/unten + 5pt
+                    .padding(.top, safeTop + 10)
+                    .padding(.bottom, safeBottom + 10)
                     .frame(maxHeight: .infinity)
                     .background(Color.black.opacity(0.001))
 
@@ -58,16 +62,12 @@ struct MainLayout<DialogButtons: View, DialogContent: View>: View {
                     ZStack {
                         Color.clear
                         RightButtonArea()
-                            /*.frame(width: sideBaseWidth)          // 56 pt fix
-                            .padding(.trailing, safeRight)        // Safe-Area INNEN, nicht Breite addieren
-                            .padding(.top, safeTop)               // optional: falls oben/unten SafeInsets im Landscape
-                            .padding(.bottom, safeBottom)         // optional
-                            .frame(maxHeight: .infinity)
-                            .contentShape(Rectangle())            // volle Spaltenfläche tappbar*/
-                        
                     }
                     .frame(width: sideBaseWidth)   // fix 56
                     .padding(.trailing, safeRight) // SafeArea nach innen schieben
+                    // Safe-Bereich oben/unten + 5pt
+                    .padding(.top, safeTop + 5)
+                    .padding(.bottom, safeBottom + 5)
                     .frame(maxHeight: .infinity)
                     .contentShape(Rectangle())
                 }
@@ -81,7 +81,7 @@ struct MainLayout<DialogButtons: View, DialogContent: View>: View {
                         .background(Color.black.opacity(0.8))
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
-                                .stroke(.red.opacity(0.8), lineWidth: 1)
+                                .stroke(((config.theme == .red) ? Color.red : Color.white).opacity(0.8), lineWidth: 1)
                         )
                         .cornerRadius(16)
                         .shadow(radius: 8)
