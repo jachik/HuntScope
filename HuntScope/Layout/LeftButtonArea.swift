@@ -5,6 +5,7 @@
 //  Created by Jacek Schikora on 09.09.25.
 //
 import SwiftUI
+import UIKit
 
 
 // Linke Button-Area: kann von Dialogen mitbenutzt werden
@@ -20,11 +21,19 @@ struct LeftButtonArea<DialogButtons: View>: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            // Platzhalter fuer linke Standard-Buttons (wenn kein Dialog)
- 
-                // Wenn Dialog aktiv ist, zeigt die linke Spalte die Dialog-Buttons
+            // Beenden-Button (immer sichtbar, immer aktiv)
+            SidebarButton(systemName: "power") {
+                debugLog("Beenden gedrückt", "UI")
+                // Versetzt die App in den Hintergrund (Apple-konformer als exit(0))
+                UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
+            }
+
+            // Dialog-Buttons (falls ein Dialog aktiv ist)
+            if showDialogButtons {
                 dialogButtons
-            
+            }
+
+            Spacer()
         }
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())

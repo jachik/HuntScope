@@ -11,4 +11,9 @@ Die App bringt folgende Funktionen mit:
 
 
 TODOs:
-- 
+- Konfigurationsdialog etwas bequemer
+- Lokalisierung
+- Links Balken entfernen im LeftButtonArea
+- Logo erstellen
+- Splashscreen
+- Hintergrund (=Logo?)

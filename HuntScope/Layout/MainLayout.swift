@@ -8,10 +8,11 @@ import SwiftUI
 
 
 // Hauptlayout: Linke + Mitte + Rechte Spalte, mit Safe-Area-Breite
-struct MainLayout<DialogButtons: View, DialogContent: View>: View {
-    @EnvironmentObject private var ui: UIStateModel
-    @EnvironmentObject private var config: ConfigStore
-    @StateObject private var player = PlayerController()
+    struct MainLayout<DialogButtons: View, DialogContent: View>: View {
+        @EnvironmentObject private var ui: UIStateModel
+        @EnvironmentObject private var config: ConfigStore
+        @StateObject private var player = PlayerController()
+        
 
 
     // Dialog-spezifische Inhalte
@@ -29,15 +30,14 @@ struct MainLayout<DialogButtons: View, DialogContent: View>: View {
     var body: some View {
         GeometryReader { geo in
             // Safe-Area ermitteln (links/rechts in Landscape wichtig)
-            let safeLeft  = geo.safeAreaInsets.leading
-            let safeRight = geo.safeAreaInsets.trailing+8
-            let safeTop    = geo.safeAreaInsets.top
-            let safeBottom = geo.safeAreaInsets.bottom
+            let safeLeft  = geo.safeAreaInsets.leading + 10
+            let safeRight = geo.safeAreaInsets.trailing + 10
+            let safeTop    = geo.safeAreaInsets.top + 10
+            let safeBottom = geo.safeAreaInsets.bottom + 10
             
             ZStack {
                 // 1) Stream in der Mitte (hinter allem)
                 StreamView()
-
                 // 2) Drei-Spalten-Layout
                 HStack(spacing: 0) {
 
@@ -48,8 +48,8 @@ struct MainLayout<DialogButtons: View, DialogContent: View>: View {
                     )
                     .frame(width: sideBaseWidth + safeLeft)
                     // Safe-Bereich oben/unten + 5pt
-                    .padding(.top, safeTop + 10)
-                    .padding(.bottom, safeBottom + 10)
+                    .padding(.top, safeTop + 5)
+                    .padding(.bottom, safeBottom + 5)
                     .frame(maxHeight: .infinity)
                     .background(Color.black.opacity(0.001))
 
@@ -63,8 +63,7 @@ struct MainLayout<DialogButtons: View, DialogContent: View>: View {
                         Color.clear
                         RightButtonArea()
                     }
-                    .frame(width: sideBaseWidth)   // fix 56
-                    .padding(.trailing, safeRight) // SafeArea nach innen schieben
+                    .frame(width: sideBaseWidth + safeRight)   // fix inkl. SafeArea rechts
                     // Safe-Bereich oben/unten + 5pt
                     .padding(.top, safeTop + 5)
                     .padding(.bottom, safeBottom + 5)
@@ -74,18 +73,45 @@ struct MainLayout<DialogButtons: View, DialogContent: View>: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 // 3) Dialog-Layer (liegt ueber allem)
+                let horizontalMargin: CGFloat = 20
+                let reservedLeft  = sideBaseWidth + safeLeft  + horizontalMargin
+                let reservedRight = sideBaseWidth + safeRight + horizontalMargin
+                let centerWidth = max(0, geo.size.width - reservedLeft - reservedRight)
+                let centerHeight = max(0, geo.size.height - (safeTop + safeBottom + 20)) // 10pt oben/unten zusätzlich
                 DialogOverlay(isVisible: ui.isDialogActive) {
-                    dialogContent()
-                        .frame(maxWidth: 520)
-                        .padding(24)
-                        .background(Color.black.opacity(0.8))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(((config.theme == .red) ? Color.red : Color.white).opacity(0.8), lineWidth: 1)
-                        )
-                        .cornerRadius(16)
-                        .shadow(radius: 8)
+                    HStack(spacing: 0) {
+                        Color.clear
+                            .frame(width: reservedLeft)
+                            .allowsHitTesting(false)
+
+                        // Center-Bereich: eigener Layer mit Abdunkelung + Dialogbox
+                        ZStack {
+                            // Dim nur über der Mitte, Buttons bleiben klar
+                            Color.black.opacity(0.5)
+                                .allowsHitTesting(false)
+
+                            // Dialogbox exakt in der Mitte, begrenzt auf Stream-Fläche
+                            dialogContent()
+                                .padding(24)
+                                .background(Color.black.opacity(0.8))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(((config.theme == .red) ? Color.red : Color.white).opacity(0.8), lineWidth: 1)
+                                )
+                                .cornerRadius(16)
+                                .shadow(radius: 8)
+                                .frame(maxWidth: centerWidth)
+                                .frame(maxHeight: centerHeight)
+                        }
+                        .frame(width: centerWidth, height: centerHeight)
+
+                        Color.clear
+                            .frame(width: reservedRight)
+                            .allowsHitTesting(false)
+                    }
                 }
+
+                // (Ringer-Indikator in LeftButtonArea verschoben)
             }
             .background(Color.black)
             .ignoresSafeArea()

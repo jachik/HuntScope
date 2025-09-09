@@ -43,8 +43,8 @@ struct DialogOverlay<Content: View>: View {
         Group {
             if isVisible {
                 ZStack {
-                    // Abdunkeln des Streams, falls gewuenscht
-                    Color.black.opacity(0.5).ignoresSafeArea()
+                    // Keine globale Abdunkelung mehr hier; diese wird gezielt im MainLayout
+                    // nur über dem Center-Bereich gelegt, damit Seiten-Buttons klar sichtbar bleiben.
                     content
                 }
                 .transition(.opacity)

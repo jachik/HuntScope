@@ -66,4 +66,9 @@ final class BatteryMonitor: ObservableObject {
         // Keep it simple: use plain level-based icons (no bolt overlay)
         return base
     }
+
+    // True if device is connected to power (charging or already full)
+    var isPluggedIn: Bool {
+        state == .charging || state == .full
+    }
 }

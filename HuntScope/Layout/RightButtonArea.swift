@@ -45,9 +45,8 @@ struct RightButtonArea: View {
             // MARK: Bottom section (from bottom up)
 
             SidebarButton(systemName: "gearshape") {
-                ui.isDialogActive = true
+                ui.isDialogActive.toggle()
             }
-            .disabled(ui.isDialogActive) // verhindert mehrfach öffnen
 
             let primary = (config.theme == .red) ? Color.red : Color.white
             ZStack {
@@ -56,8 +55,8 @@ struct RightButtonArea: View {
                 Image(systemName: battery.symbolName)
                     .font(.title2)
                     .foregroundColor(primary)
-                // Ladezustand visuell kennzeichnen
-                if battery.state == .charging {
+                // Stromversorgung visuell kennzeichnen (egal ob laden oder voll)
+                if battery.isPluggedIn {
                     Image(systemName: "bolt.fill")
                         .font(.caption2)
                         .foregroundColor(primary)
