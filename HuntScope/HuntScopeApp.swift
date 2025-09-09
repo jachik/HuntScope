@@ -19,16 +19,29 @@ struct HuntScopeApp: App {
     @StateObject private var configStore = ConfigStore()
     @StateObject private var uiState = UIStateModel()
     @StateObject private var player      = PlayerController()
+    @State private var showSplash: Bool = true
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(configStore)
-                .environmentObject(uiState)
-                .environmentObject(player)
-                .preferredColorScheme(.dark)
-                .background(Color.black)
-                .statusBarHidden(true)
+            ZStack {
+                ContentView()
+                    .environmentObject(configStore)
+                    .environmentObject(uiState)
+                    .environmentObject(player)
+                    .preferredColorScheme(.dark)
+                    .background(Color.black)
+                    .statusBarHidden(true)
+
+                if showSplash {
+                    SplashView {
+                        withAnimation(.easeOut(duration: 2)) {
+                            showSplash = false
+                        }
+                    }
+                    .transition(.opacity)
+                    .zIndex(1)
+                }
+            }
         }
     }
 }
