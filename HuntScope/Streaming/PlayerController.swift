@@ -126,7 +126,9 @@ extension PlayerController: VLCMediaPlayerDelegate {
         let state = vlcPlayer.state
         switch state {
         case .opening, .buffering:
-            isConnected = true
+            // Noch kein echter Verbindungsaufbau bestätigt
+            isConnected = false
+            isPlaying = false
         case .playing:
             isConnected = true
             isPlaying = true

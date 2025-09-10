@@ -44,8 +44,6 @@ struct HuntScopeApp: App {
 
                 if showSplash {
                     SplashView {
-                        // Nach dem Splash kurz Overlays unterdruecken, um Flackern zu vermeiden
-                        uiState.suppressOverlaysUntil = Date().addingTimeInterval(3)
                         withAnimation(.easeOut(duration: 2)) {
                             showSplash = false
                         }
