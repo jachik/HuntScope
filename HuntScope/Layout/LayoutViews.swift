@@ -21,6 +21,7 @@ struct StreamView: View {
     @EnvironmentObject private var config: ConfigStore
     @EnvironmentObject private var ui: UIStateModel
     @EnvironmentObject private var player: PlayerController
+    @State private var blinkNoSignal: Bool = false
     var body: some View {
         ZStack {
             Color.black
@@ -38,6 +39,31 @@ struct StreamView: View {
                     .animation(.easeInOut(duration: 0.25), value: player.isPlaying)
                     .animation(.easeInOut(duration: 0.25), value: player.isConnected)
                     .allowsHitTesting(false)
+            }
+
+            // No-connection indicator: large flashing icon when no signal/connection
+            let noSignal = (!player.isConnected) || (!player.hasStreamSignal)
+            if noSignal {
+                GeometryReader { geo in
+                    let side = min(geo.size.width, geo.size.height) * 0.6
+                    let primary: Color = (config.theme == .red) ? .red : .white
+                    Image(systemName: "video.slash")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: side, height: side)
+                        .foregroundStyle(primary)
+                        .opacity(blinkNoSignal ? 1.0 : 0.0)
+                        .onAppear {
+                            blinkNoSignal = false
+                            withAnimation(Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
+                                blinkNoSignal = true
+                            }
+                        }
+                        .onDisappear { blinkNoSignal = false }
+                        // Center within the available stream area
+                        .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+                }
+                .allowsHitTesting(false)
             }
         }
         .ignoresSafeArea()

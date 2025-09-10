@@ -22,18 +22,21 @@ TODOs:
 
 
 TODO - vor Launch:
-
-- Konfigurationsdialog Kreise
-- Konfigurationsdialog durchsichtig
+10.09.
+- Hintergrundbild-Overlay mit Symbol für keine VErbindung als (als flush)
 - Konfiguration RTSP (2 Std))
 - Scanner RTSP (Vermutlich 1 Tag)
+11.09.
 - RTSP-Streams sammeln (Apps laden und zerflücken)
+12.09.
 - RTSP-Viewer (vermutlich 1 Tag)
 - Abo (vermutlich 2-3 Std.)
 - Lokalisierung (letzter Schritt ca. 2 Std.)
 - Homepage: Datenschutz + Impressum 
 - [x] WErbung (vermutlich 2-3 Std.)
 - [x] Hintergrundbild auch weiß
+- [x] Konfigurationsdialog Kreise
+- [] Konfigurationsdialog durchsichtig
 
 
 # Beschreibung Scanner

@@ -72,7 +72,7 @@ struct ConfigDialogView: View {
             .frame(maxWidth: .infinity, alignment: .center)
             .foregroundColor(primary)
             .padding(24)
-            .background(Color.black.opacity(0.8))
+            .background(Color.black.opacity(0.2))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(primary.opacity(0.8), lineWidth: 1)

@@ -15,6 +15,13 @@ final class PlayerController: ObservableObject {
     @Published private(set) var isPlaying: Bool = false
     @Published private(set) var isRecording: Bool = false
     @Published private(set) var lastSnapshotURL: URL?
+    // Gibt an, ob aktuell Videodaten anliegen (Signal vorhanden)
+    @Published private(set) var hasStreamSignal: Bool = false
+
+    // Interne Hilfe: letzte Frame-Zeit + Watchdog-Timer
+    private var lastFrameAt: Date?
+    private var signalTimer: Timer?
+    private let signalTimeout: TimeInterval = 3.0 // Sekunden ohne Frames => kein Signal
 
     // MARK: - Init
     init() {}
@@ -25,6 +32,10 @@ final class PlayerController: ObservableObject {
     func play(urlString: String) {
         isConnected = true
         isPlaying = true
+        // Beim Start warten wir auf das erste Frame
+        hasStreamSignal = false
+        lastFrameAt = nil
+        startSignalWatchdog()
         // TODO: echte VLC-Initialisierung später
     }
 
@@ -32,6 +43,8 @@ final class PlayerController: ObservableObject {
     func stop() {
         isPlaying = false
         isConnected = false
+        hasStreamSignal = false
+        stopSignalWatchdog()
         // TODO: später VLC stoppen/entkoppeln
     }
 
@@ -54,6 +67,38 @@ final class PlayerController: ObservableObject {
 
     /// Hook für Video-Frames – aktuell leer.
     func onVideoFrame(/* _ pixelBuffer: CVPixelBuffer */) {
+        // Wird vom echten Player bei jedem neuen Videoframe aufgerufen
+        lastFrameAt = Date()
+        if hasStreamSignal == false {
+            hasStreamSignal = true
+            debugLog("stream signal: available", "Player")
+        }
         // TODO: später Vision/Erkennung aufrufen
+    }
+
+    // MARK: - Signal-Überwachung
+    private func startSignalWatchdog() {
+        signalTimer?.invalidate()
+        signalTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            let now = Date()
+            if let last = self.lastFrameAt {
+                if now.timeIntervalSince(last) > self.signalTimeout {
+                    if self.hasStreamSignal {
+                        self.hasStreamSignal = false
+                        debugLog("stream signal: lost (timeout)", "Player")
+                    }
+                }
+            } else {
+                // Noch kein Frame angekommen: weiterhin false
+            }
+        }
+        if let t = signalTimer { RunLoop.main.add(t, forMode: .common) }
+    }
+
+    private func stopSignalWatchdog() {
+        signalTimer?.invalidate()
+        signalTimer = nil
+        lastFrameAt = nil
     }
 }
