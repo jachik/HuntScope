@@ -18,13 +18,14 @@ TODOs:
 - [X] Konfigurationsdialog etwas bequemer
 - [] Uhrzeit, Temeperatur und Windgeschwindigkeit
 - [] Mondphase und Zeiten
+- [] Test aktuelle Version von VLC mit deaktivieren Boradcast-Einstellungen
 
 TODO - vor Launch:
 10.09.
 - [x] Probleme mit Splash bei kurzer Abwesenheit
 - [x] Hintergrundbild-Overlay mit Symbol für keine VErbindung als (als flush)
 - [X] Konfigurationsdialog RTSP (2 Std))
-- [] Scanner RTSP (Vermutlich 1 Tag)
+- [] RTSP-Scanner (Vermutlich 1 Tag)
 11.09.
 - [] RTSP-Streams sammeln (Apps laden und zerflücken)
 12.09.
@@ -35,6 +36,7 @@ TODO - vor Launch:
 - [] Homepage: Datenschutz + Impressum 
 14.09.
 - [] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
+15.09. 
 - Launch
 Erledigt:
 - [x] WErbung (vermutlich 2-3 Std.)

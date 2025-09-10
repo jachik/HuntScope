@@ -22,6 +22,9 @@ struct RTSPConfigurationDialog: View {
     @State private var showWiFiAlert: Bool = false
     @State private var candidates: [String] = []
     @State private var cancelScan: Bool = false
+    @State private var acTitleScanning: String? = nil
+    @State private var acTitleSuccess: String? = nil
+    @State private var acTitleNotFound: String? = nil
 
     var body: some View {
         DialogContainer(title: "Stream-Konfiguration", backgroundOpacity: 0.7, onClose: {
@@ -114,16 +117,7 @@ struct RTSPConfigurationDialog: View {
                                 )
                                 Spacer(minLength: 10)
                                 Button {
-                                    if !wifi.snapshot.isWiFiConnected { showWiFiAlert = true; return }
-                                    let url = config.customStreamURL.trimmingCharacters(in: .whitespacesAndNewlines)
-                                    debugLog("Test custom URL: \(url)", "RTSPConfig")
-                                    if !url.isEmpty {
-                                        player.play(urlString: url)
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                            player.stop()
-                                            testResult = "Test ausgelöst"
-                                        }
-                                    }
+                                    testCustomURL()
                                 } label: {
                                     Text("Verbindungstest").bold()
                                         .foregroundStyle(primary)
@@ -156,12 +150,16 @@ struct RTSPConfigurationDialog: View {
                         .ignoresSafeArea()
                         .transition(.opacity)
 
-                    AutoConnectDialog(state: acState, onCancel: {
+                    AutoConnectDialog(state: acState,
+                                      onCancel: {
                         cancelScan = true
                         showAutoConnect = false
                     }, onClose: {
                         showAutoConnect = false
-                    })
+                    },
+                                      scanningTitle: acTitleScanning,
+                                      successTitle: acTitleSuccess,
+                                      notFoundTitle: acTitleNotFound)
                     .environmentObject(config)
                     .transition(.opacity)
                 }
@@ -188,7 +186,7 @@ struct RTSPConfigurationDialog: View {
 extension RTSPConfigurationDialog {
     private func startAutoConnect() {
         // Baue Kandidatenliste (Vollscan) und logge sie komplett
-        let list = RTSPScanner.buildCandidates(short: false, config: config, wifi: wifi)
+        let list = RTSPScanner.buildCandidates(config: config, wifi: wifi)
         candidates = list
         debugLog("AutoConnect candidates=\(list.count)", "RTSP")
         for (idx, url) in list.enumerated() { debugLog("#\(idx+1): \(url)", "RTSP") }
@@ -196,14 +194,41 @@ extension RTSPConfigurationDialog {
         acState = .scanning
         cancelScan = false
         showAutoConnect = true
+        acTitleScanning = nil
+        acTitleSuccess = nil
+        acTitleNotFound = nil
 
         Task { @MainActor in
-            let found = await RTSPScanner.scan(short: false, config: config, wifi: wifi, cancel: { self.cancelScan }, progress: nil)
+            let found = await RTSPScanner.scan(config: config, wifi: wifi, cancel: { self.cancelScan }, progress: nil)
             if let u = found {
                 config.streamURL = u
                 debugLog("Erreichbar: \(config.streamURL)", "RTSP")
                 acState = .success
             } else {
+                acState = .notFound
+            }
+        }
+    }
+
+    private func testCustomURL() {
+        if !wifi.snapshot.isWiFiConnected { showWiFiAlert = true; return }
+        let url = config.customStreamURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !url.isEmpty else { return }
+
+        // Zeige Verbindungsdialog
+        acTitleScanning = "Verbindung wird aufgebaut"
+        acTitleSuccess = "Verbindung erfolgreich"
+        acTitleNotFound = "Keine Verbindung"
+        acState = .scanning
+        showAutoConnect = true
+
+        Task { @MainActor in
+            let res = await RTSPProbe.probe(url: url)
+            switch res {
+            case .success:
+                config.streamURL = url
+                acState = .success
+            case .failure:
                 acState = .notFound
             }
         }

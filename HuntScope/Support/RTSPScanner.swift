@@ -6,7 +6,7 @@
 //  Reihenfolge:
 //  1) customURL (falls vorhanden)
 //  2) LastKnownGood (in gespeicherter Reihenfolge)
-//  3) (optional, wenn short == false) Presets – gefiltert auf das aktuelle WLAN-/24-Netz
+//  3) Presets – gefiltert auf das aktuelle WLAN-/24-Netz
 //  Am Ende dedupliziert (frühe Einträge haben Priorität).
 //
 
@@ -16,24 +16,21 @@ struct RTSPScanner {
 
     // Baut Kandidatenliste auf Basis von App-State
     @MainActor
-    static func buildCandidates(short: Bool,
-                                config: ConfigStore,
+    static func buildCandidates(config: ConfigStore,
                                 wifi: WiFiInfoProvider) -> [String] {
         let custom = config.customStreamURL.trimmingCharacters(in: .whitespacesAndNewlines)
         let lkg = LastKnownGoodStore.shared.entries.map { $0.url }
         let presets = StreamPresetManager.shared.presets
         let snapshot = wifi.snapshot
 
-        return buildCandidates(short: short,
-                               customURL: custom.isEmpty ? nil : custom,
+        return buildCandidates(customURL: custom.isEmpty ? nil : custom,
                                lastKnownGood: lkg,
                                presets: presets,
                                wifiSnapshot: snapshot)
     }
 
     // Kernfunktion – gut testbar, ohne Abhängigkeit von Singletons
-    static func buildCandidates(short: Bool,
-                                customURL: String?,
+    static func buildCandidates(customURL: String?,
                                 lastKnownGood: [String],
                                 presets: [String],
                                 wifiSnapshot: WiFiSnapshot?) -> [String] {
@@ -42,7 +39,7 @@ struct RTSPScanner {
         // Debug: Eingangsdaten
         #if DEBUG
         let dbgCustom = (customURL?.isEmpty == false)
-        debugLog("scanner: short=\(short), custom=\(dbgCustom), lkg=\(lastKnownGood.count), presets=\(presets.count)", "RTSP")
+        debugLog("scanner: custom=\(dbgCustom), lkg=\(lastKnownGood.count), presets=\(presets.count)", "RTSP")
         debugLog("scanner: wifi ip=\(wifiSnapshot?.ipAddress ?? "nil")", "RTSP")
         #endif
 
@@ -54,40 +51,33 @@ struct RTSPScanner {
             if let n = normalized(url: u) { result.append(n) }
         }
 
-        // 3) Presets (nur wenn Vollscan)
-        if !short {
-            let ip = wifiSnapshot?.ipAddress
-            let net = networkPrefix(from: ip)
-            var matched = 0
-            var skipped = 0
-            if let currentNet = net {
-                for pattern in presets {
-                    let candidate = pattern.trimmingCharacters(in: .whitespacesAndNewlines)
-                    guard !candidate.isEmpty else { continue }
-                    if let hostIP = ipv4Host(from: candidate), let hostNet = networkPrefix(from: hostIP) {
-                        if hostNet == currentNet {
-                            result.append(candidate); matched += 1
-                        } else {
-                            skipped += 1
-                        }
-                    } else {
-                        // ohne IPv4 host aktuell überspringen
-                        skipped += 1
-                    }
-                }
-            } else {
-                // Kein WLAN-IP bekannt: konservativ alle Presets aufnehmen
-                for pattern in presets {
-                    let candidate = pattern.trimmingCharacters(in: .whitespacesAndNewlines)
-                    guard !candidate.isEmpty else { continue }
-                    result.append(candidate)
-                    matched += 1
+        // 3) Presets (immer, da nur vollständiger Scan unterstützt wird)
+        let ip = wifiSnapshot?.ipAddress
+        let net = networkPrefix(from: ip)
+        var matched = 0
+        var skipped = 0
+        if let currentNet = net {
+            for pattern in presets {
+                let candidate = pattern.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !candidate.isEmpty else { continue }
+                if let hostIP = ipv4Host(from: candidate), let hostNet = networkPrefix(from: hostIP) {
+                    if hostNet == currentNet { result.append(candidate); matched += 1 } else { skipped += 1 }
+                } else {
+                    skipped += 1
                 }
             }
-            #if DEBUG
-            debugLog("scanner: presets matched=\(matched), skipped=\(skipped)", "RTSP")
-            #endif
+        } else {
+            // Kein WLAN-IP bekannt: konservativ alle Presets aufnehmen
+            for pattern in presets {
+                let candidate = pattern.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !candidate.isEmpty else { continue }
+                result.append(candidate)
+                matched += 1
+            }
         }
+        #if DEBUG
+        debugLog("scanner: presets matched=\(matched), skipped=\(skipped)", "RTSP")
+        #endif
 
         // 4) Deduplizieren – frühe Einträge behalten Priorität
         var seen = Set<String>()
@@ -152,12 +142,11 @@ struct RTSPScanner {
     // Scannt Kandidatenliste, gruppiert nach Host/IP. Pro Host werden Ressourcen sequentiell getestet,
     // verschiedene Hosts laufen parallel. Abbruch erst bei erstem 200 OK.
     @MainActor
-    static func scan(short: Bool,
-                     config: ConfigStore,
+    static func scan(config: ConfigStore,
                      wifi: WiFiInfoProvider,
                      cancel: @escaping () -> Bool = { false },
                      progress: ((Int, Int) -> Void)? = nil) async -> String? {
-        let candidates = buildCandidates(short: short, config: config, wifi: wifi)
+        let candidates = buildCandidates(config: config, wifi: wifi)
         let total = candidates.count
         if total == 0 { return nil }
 

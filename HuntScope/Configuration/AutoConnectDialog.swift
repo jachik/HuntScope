@@ -19,6 +19,9 @@ struct AutoConnectDialog: View {
     var state: AutoConnectState
     var onCancel: () -> Void
     var onClose: () -> Void
+    var scanningTitle: String?
+    var successTitle: String?
+    var notFoundTitle: String?
 
     private var primary: Color { (config.theme == .red) ? .red : .white }
 
@@ -70,10 +73,9 @@ struct AutoConnectDialog: View {
 
     private var titleText: String {
         switch state {
-        case .scanning: return "Kameras werden gesucht"
-        case .success: return "Erfolgreich"
-        case .notFound: return "Kamera nicht gefunden"
+        case .scanning: return scanningTitle ?? "Kameras werden gesucht"
+        case .success: return successTitle ?? "Erfolgreich"
+        case .notFound: return notFoundTitle ?? "Kamera nicht gefunden"
         }
     }
 }
-
