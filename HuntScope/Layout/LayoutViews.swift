@@ -42,16 +42,11 @@ struct StreamView: View {
             ViewerView()
                 .colorMultiply(config.theme == .red ? .red : .white)
 
-            // Active streaming when player is playing and frames are coming in
-            let isStreaming = player.isPlaying && player.hasStreamSignal
-            let overlaysSuppressed: Bool = {
-                if ui.isAdActive { return true }
-                if let until = ui.suppressOverlaysUntil, Date() < until { return true }
-                return false
-            }()
+            // Signal-Definition: ausschliesslich basierend auf dem letzten Frame-Timestamp
+            let hasSignal = player.hasStreamSignal
 
-            // Overlay the last splash frame only when not yet playing/connecting
-            if !(player.isPlaying || player.isConnected), !overlaysSuppressed, let image = ui.lastSplashFrame {
+            // Overlay the last splash frame only when no frames/signal are present
+            if !hasSignal, let image = ui.lastSplashFrame {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
@@ -60,8 +55,8 @@ struct StreamView: View {
                     .allowsHitTesting(false)
             }
 
-            // No-connection indicator: show only when not even connecting/playing
-            if !(player.isPlaying || player.isConnected), !overlaysSuppressed {
+            // No-connection indicator: show only when there is truly no signal
+            if !hasSignal {
                 GeometryReader { geo in
                     let side = min(geo.size.width, geo.size.height) * 0.6
                     let primary: Color = (config.theme == .red) ? .red : .white

@@ -74,6 +74,14 @@ struct FirstLaunchPromptView: View {
                 }
             }
 
+            // Beim Anzeigen des Erststart-Dialogs direkt eine TCP-Verbindung ins lokale Netz
+            // initiieren (nicht blockierend), damit iOS den "Lokales Netzwerk"-Dialog zeigt.
+            .onAppear {
+                // Trigger both direct local TCP attempts and Bonjour browsing.
+                LocalNetworkPermission.shared.primeNow(wifi: wifi.snapshot)
+                LocalNetworkPermission.shared.primeBonjourIfNeeded()
+            }
+
             // Modal Overlay für Auto-Connect
             if showAutoConnect {
                 Color.black.opacity(0.5)
@@ -136,4 +144,3 @@ private extension FirstLaunchPromptView {
         }
     }
 }
-

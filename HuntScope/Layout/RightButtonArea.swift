@@ -28,7 +28,7 @@ struct RightButtonArea: View {
             SidebarButton(systemName: "camera") {
                 player.takePhoto()
             }
-            .disabled(!player.isConnected || ui.isDialogActive)
+            .disabled(!player.hasStreamSignal || ui.isDialogActive)
 
             SidebarButton(systemName: player.isRecording ? "stop.circle" : "record.circle",
                           pulsing: player.isRecording) {
@@ -38,7 +38,7 @@ struct RightButtonArea: View {
                     player.startRecording()
                 }
             }
-            .disabled(!player.isConnected || ui.isDialogActive)
+            .disabled(!player.hasStreamSignal || ui.isDialogActive)
 
             Spacer()
 

@@ -199,6 +199,8 @@ extension RTSPConfigurationDialog {
         acTitleNotFound = nil
 
         Task { @MainActor in
+            // Optional: fire-and-forget prime (won't block)
+            LocalNetworkPermission.shared.primeNow(wifi: wifi.snapshot)
             let found = await RTSPScanner.scan(config: config, wifi: wifi, cancel: { self.cancelScan }, progress: nil)
             if let u = found {
                 config.streamURL = u
@@ -223,6 +225,7 @@ extension RTSPConfigurationDialog {
         showAutoConnect = true
 
         Task { @MainActor in
+            LocalNetworkPermission.shared.primeNow(wifi: wifi.snapshot)
             let res = await RTSPProbe.probe(url: url)
             switch res {
             case .success:

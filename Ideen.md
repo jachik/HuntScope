@@ -80,5 +80,4 @@ Dieser neue Konfigurationsdialog hat einen Button "Auto-Connect" und alternativ 
   ]
 }
 	
-
-Bei VLC gibt es ja zahlreiche Sachen, die man noch deaktiveren sollter - sowas wie Boradcast und mDNS usw. hast du vorschläge, was man alles ausschalten könnte?
+Der Ordner Recordings ist da, aber es wurde nichts aufgezeichnet
