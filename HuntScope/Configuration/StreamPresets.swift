@@ -9,17 +9,11 @@
 
 import Foundation
 
-// Einzelnes Preset – vom Entwickler gepflegt, ggf. per Update erweiterbar
-struct StreamPreset: Codable, Equatable {
-    let vendor: String
-    let defaultURLs: [String]
-    let ssidPattern: String?
-}
-
 // Bündel von Presets (mit Version für künftige Migrationen)
 struct StreamPresetList: Codable, Equatable {
     var version: Int
-    var presets: [StreamPreset]
+    // Einfaches Schema: Liste von URL-Patterns (Strings)
+    var presets: [String]
 
     static let empty = StreamPresetList(version: 1, presets: [])
 }
@@ -36,20 +30,20 @@ final class StreamPresetManager {
     }
 
     // MARK: - API
-    var presets: [StreamPreset] { list.presets }
+    var presets: [String] { list.presets }
 
     func replaceAll(with newList: StreamPresetList) {
         list = newList
         save()
     }
 
-    func upsert(_ preset: StreamPreset) {
-        if let idx = list.presets.firstIndex(where: { $0.vendor.lowercased() == preset.vendor.lowercased() }) {
-            list.presets[idx] = preset
-        } else {
-            list.presets.append(preset)
+    func upsert(_ url: String) {
+        let norm = url.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !norm.isEmpty else { return }
+        if !list.presets.contains(where: { $0.caseInsensitiveCompare(norm) == .orderedSame }) {
+            list.presets.append(norm)
+            save()
         }
-        save()
     }
 
     // MARK: - Persistenz
@@ -102,4 +96,3 @@ final class StreamPresetManager {
         return d
     }()
 }
-

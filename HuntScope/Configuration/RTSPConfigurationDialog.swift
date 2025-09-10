@@ -11,6 +11,7 @@ struct RTSPConfigurationDialog: View {
     @EnvironmentObject private var config: ConfigStore
     @EnvironmentObject private var ui: UIStateModel
     @EnvironmentObject private var player: PlayerController
+    @EnvironmentObject private var wifi: WiFiInfoProvider
 
     private var primary: Color { (config.theme == .red) ? .red : .white }
 
@@ -18,6 +19,8 @@ struct RTSPConfigurationDialog: View {
     @State private var showManual: Bool = false
     @State private var showAutoConnect: Bool = false
     @State private var acState: AutoConnectState = .scanning
+    @State private var showWiFiAlert: Bool = false
+    @State private var candidates: [String] = []
 
     var body: some View {
         DialogContainer(title: "Stream-Konfiguration", backgroundOpacity: 0.7, onClose: {
@@ -31,6 +34,7 @@ struct RTSPConfigurationDialog: View {
                 HStack {
                     Spacer()
                     Button {
+                        if !wifi.snapshot.isWiFiConnected { showWiFiAlert = true; return }
                         debugLog("Auto-Connect pressed", "RTSPConfig")
                         startAutoConnect()
                     } label: {
@@ -109,6 +113,7 @@ struct RTSPConfigurationDialog: View {
                                 )
                                 Spacer(minLength: 10)
                                 Button {
+                                    if !wifi.snapshot.isWiFiConnected { showWiFiAlert = true; return }
                                     let url = config.customStreamURL.trimmingCharacters(in: .whitespacesAndNewlines)
                                     debugLog("Test custom URL: \(url)", "RTSPConfig")
                                     if !url.isEmpty {
@@ -158,6 +163,20 @@ struct RTSPConfigurationDialog: View {
                     .environmentObject(config)
                     .transition(.opacity)
                 }
+
+                // Modal Overlay für WLAN-Hinweis
+                if showWiFiAlert {
+                    Color.black.opacity(0.5)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+
+                    MessageDialog(title: "WLAN benötigt",
+                                   message: "Bitte WLAN aktivieren und mit Kamera verbinden.",
+                                   buttonTitle: "OK",
+                                   onClose: { showWiFiAlert = false })
+                    .environmentObject(config)
+                    .transition(.opacity)
+                }
             }
         }
     }
@@ -166,6 +185,14 @@ struct RTSPConfigurationDialog: View {
 // MARK: - Auto-Connect (Stub)
 extension RTSPConfigurationDialog {
     private func startAutoConnect() {
+        // Baue Kandidatenliste (Vollscan)
+        let list = RTSPScanner.buildCandidates(short: false, config: config, wifi: wifi)
+        candidates = list
+        debugLog("AutoConnect candidates=\(list.count)", "RTSP")
+        for (idx, url) in list.prefix(10).enumerated() {
+            debugLog("#\(idx+1): \(url)", "RTSP")
+        }
+
         acState = .scanning
         showAutoConnect = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {

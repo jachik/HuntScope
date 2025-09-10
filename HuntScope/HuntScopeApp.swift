@@ -22,9 +22,11 @@ struct HuntScopeApp: App {
     @StateObject private var uiState = UIStateModel()
     @StateObject private var player      = PlayerController()
     @StateObject private var interstitialVM = InterstitialViewModel()
+    @StateObject private var wifi = WiFiInfoProvider()
     @State private var showSplash: Bool = true
     @Environment(\.scenePhase) private var scenePhase
     @State private var adScheduler: InterstitialAdScheduler? = nil
+    @State private var wasBackgrounded: Bool = false
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
@@ -35,6 +37,7 @@ struct HuntScopeApp: App {
                     .environmentObject(configStore)
                     .environmentObject(uiState)
                     .environmentObject(player)
+                    .environmentObject(wifi)
                     .preferredColorScheme(.dark)
                     .background(Color.black)
                     .statusBarHidden(true)
@@ -62,6 +65,8 @@ struct HuntScopeApp: App {
                     // Initial preload (safety)
                     Task { await interstitialVM.loadAd() }
                 }
+                // Start WiFi monitoring
+                wifi.start()
             }
             // Lifecycle: Splash bei Reaktivierung nach >= 30 min
             .onChange(of: scenePhase) { phase in
@@ -71,14 +76,20 @@ struct HuntScopeApp: App {
                     configStore.lastBackgroundAt = now
                     ConfigManager.shared.lastBackgroundAt = now
                     adScheduler?.handleScenePhase(.background)
+                    wifi.stop()
+                    wasBackgrounded = true
                 case .active:
-                    if let last = configStore.lastBackgroundAt {
-                        let elapsed = Date().timeIntervalSince(last)
-                        if elapsed >= 30 * 60 {
-                            showSplash = true
+                    if wasBackgrounded {
+                        if let last = configStore.lastBackgroundAt {
+                            let elapsed = Date().timeIntervalSince(last)
+                            if elapsed >= 30 * 60 {
+                                showSplash = true
+                            }
                         }
+                        wasBackgrounded = false
                     }
                     adScheduler?.handleScenePhase(.active)
+                    wifi.start()
                 default:
                     break
                 }

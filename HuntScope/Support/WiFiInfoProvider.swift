@@ -2,26 +2,21 @@
 //  WiFiInfoProvider.swift
 //  HuntScope
 //
-//  Liefert Snapshots und Live-Updates zu WLAN-Status, SSID und IP der WLAN-Schnittstelle.
+//  Liefert Snapshots und Live-Updates zu WLAN-Status und IP der WLAN-Schnittstelle.
 //
 
 import Foundation
 import Network
 import SwiftUI
 
-#if canImport(SystemConfiguration)
-import SystemConfiguration.CaptiveNetwork
-#endif
-
 struct WiFiSnapshot: Equatable {
     let isWiFiConnected: Bool
-    let ssid: String?
     let ipAddress: String?
 }
 
 @MainActor
 final class WiFiInfoProvider: ObservableObject {
-    @Published private(set) var snapshot: WiFiSnapshot = .init(isWiFiConnected: false, ssid: nil, ipAddress: nil)
+    @Published private(set) var snapshot: WiFiSnapshot = .init(isWiFiConnected: false, ipAddress: nil)
 
     private let monitor = NWPathMonitor(requiredInterfaceType: .wifi)
     private let queue = DispatchQueue(label: "wifi.monitor.queue")
@@ -35,18 +30,16 @@ final class WiFiInfoProvider: ObservableObject {
             Task { @MainActor in
                 guard let self else { return }
                 let connected = (path.status == .satisfied)
-                let ssid = Self.currentSSID()
                 let ip = Self.wifiIPv4Address()
-                self.snapshot = .init(isWiFiConnected: connected, ssid: ssid, ipAddress: ip)
+                self.snapshot = .init(isWiFiConnected: connected, ipAddress: ip)
             }
         }
         monitor.start(queue: queue)
 
         // Initialer Snapshot
         Task { @MainActor in
-            let ssid = Self.currentSSID()
             let ip = Self.wifiIPv4Address()
-            self.snapshot = .init(isWiFiConnected: false, ssid: ssid, ipAddress: ip)
+            self.snapshot = .init(isWiFiConnected: false, ipAddress: ip)
         }
     }
 
@@ -56,21 +49,6 @@ final class WiFiInfoProvider: ObservableObject {
     }
 
     // MARK: - Static helpers
-    static func currentSSID() -> String? {
-        #if canImport(SystemConfiguration)
-        if let interfaces = CNCopySupportedInterfaces() as? [String] {
-            for ifname in interfaces {
-                if let info = CNCopyCurrentNetworkInfo(ifname as CFString) as? [String: AnyObject],
-                   let ssid = info[kCNNetworkInfoKeySSID as String] as? String,
-                   !ssid.isEmpty {
-                    return ssid
-                }
-            }
-        }
-        #endif
-        return nil
-    }
-
     static func wifiIPv4Address() -> String? {
         var address: String?
         var ifaddr: UnsafeMutablePointer<ifaddrs>?
@@ -95,4 +73,3 @@ final class WiFiInfoProvider: ObservableObject {
         return address
     }
 }
-
