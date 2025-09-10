@@ -23,8 +23,10 @@
 
 // [START load_ad]
 import GoogleMobileAds
+import Combine
 
-class InterstitialViewModel: NSObject, FullScreenContentDelegate {
+@MainActor
+class InterstitialViewModel: NSObject, ObservableObject, FullScreenContentDelegate {
   private var interstitialAd: InterstitialAd?
 
   func loadAd() async {
