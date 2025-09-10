@@ -11,6 +11,7 @@ import UIKit
 enum DialogKind {
     case mainConfig
     case rtspConfig
+    case testConfig
 }
 
 // Zentraler Zustand: steuert, ob ein Dialog aktiv ist

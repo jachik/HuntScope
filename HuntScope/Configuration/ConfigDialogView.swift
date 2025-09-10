@@ -53,8 +53,8 @@ struct ConfigDialogView: View {
                     }
                     .buttonStyle(.plain)
 
-                    // Abo-Konfiguration
-                    Button(action: onOpenSubscription) {
+                    // Abo-Konfiguration -> öffnet TestConfig-Dialog
+                    Button(action: { ui.activeDialog = .testConfig }) {
                         HStack(spacing: 16) {
                             ZStack {
                                 Circle().stroke(primary, lineWidth: 2)
