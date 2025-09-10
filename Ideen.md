@@ -17,6 +17,7 @@ TODOs:
 - [x] Hintergrund (=Logo?)
 - [X] Konfigurationsdialog etwas bequemer
 - [] Uhrzeit, Temeperatur und Windgeschwindigkeit
+- [] Mondphase und Zeiten
 
 TODO - vor Launch:
 10.09.
