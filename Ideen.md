@@ -11,14 +11,12 @@ Die App bringt folgende Funktionen mit:
 
 
 TODOs:
-- [] Lokalisierung
-- [] Konfiguration URL
-- [] Scan-Algorithmus
 - [x] Links Balken entfernen im Konigurationsdialog
 - [X] Logo erstellen
 - [X] Splashscreen
 - [x] Hintergrund (=Logo?)
 - [X] Konfigurationsdialog etwas bequemer
+- [] Uhrzeit, Temeperatur und Windgeschwindigkeit
 
 TODO - vor Launch:
 10.09.

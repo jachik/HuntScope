@@ -16,20 +16,23 @@ struct RTSPConfigurationDialog: View {
 
     @State private var testResult: String? = nil
     @State private var showManual: Bool = false
+    @State private var showAutoConnect: Bool = false
+    @State private var acState: AutoConnectState = .scanning
 
     var body: some View {
         DialogContainer(title: "Stream-Konfiguration", backgroundOpacity: 0.7, onClose: {
             ui.isDialogActive = false
             ui.activeDialog = nil
         }) {
-            VStack(alignment: .leading, spacing: 16) {
+            ZStack {
+                VStack(alignment: .leading, spacing: 16) {
                 Spacer(minLength: 20)
                 // Auto-Connect (zentriert)
                 HStack {
                     Spacer()
                     Button {
                         debugLog("Auto-Connect pressed", "RTSPConfig")
-                        // TODO: Auto-Connect Implementierung
+                        startAutoConnect()
                     } label: {
                         HStack() {
                             Image(systemName: "bolt.badge.automatic")
@@ -139,6 +142,37 @@ struct RTSPConfigurationDialog: View {
                     }
                 }
 
+                }
+
+                // Modal Overlay für Auto-Connect
+                if showAutoConnect {
+                    Color.black.opacity(0.5)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+
+                    AutoConnectDialog(state: acState, onCancel: {
+                        showAutoConnect = false
+                    }, onClose: {
+                        showAutoConnect = false
+                    })
+                    .environmentObject(config)
+                    .transition(.opacity)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Auto-Connect (Stub)
+extension RTSPConfigurationDialog {
+    private func startAutoConnect() {
+        acState = .scanning
+        showAutoConnect = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            if Bool.random() {
+                acState = .success
+            } else {
+                acState = .notFound
             }
         }
     }
