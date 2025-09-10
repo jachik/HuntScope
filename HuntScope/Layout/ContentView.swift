@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var ui: UIStateModel
     @EnvironmentObject var config: ConfigStore
+    @EnvironmentObject var player: PlayerController
     var body: some View {
         MainLayout(
             // Linke Dialog-Buttons (derzeit ungenutzt)
@@ -30,6 +31,22 @@ struct ContentView: View {
         )
         .background(Color.black)
         .ignoresSafeArea()
+        .onAppear {
+            // Auto-Start beim Start der UI
+            if !ui.isDialogActive, !config.streamURL.isEmpty {
+                player.play(urlString: config.streamURL)
+            }
+        }
+        .onChange(of: ui.isDialogActive) { active in
+            // Stoppen beim Öffnen der Konfiguration, Starten nach Schließen
+            if active {
+                player.stop()
+            } else if !config.streamURL.isEmpty {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    player.play(urlString: config.streamURL)
+                }
+            }
+        }
     }
 
 }

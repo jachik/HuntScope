@@ -8,8 +8,6 @@ Die App bringt folgende Funktionen mit:
 - Darstellung auf iPad & iPhone
 - Werbung für kostenlose Nutzung (taucht alle x Minuten auf)
 
-
-
 TODOs:
 - [x] Links Balken entfernen im Konigurationsdialog
 - [X] Logo erstellen
@@ -25,11 +23,12 @@ TODO - vor Launch:
 - [x] Probleme mit Splash bei kurzer Abwesenheit
 - [x] Hintergrundbild-Overlay mit Symbol für keine VErbindung als (als flush)
 - [X] Konfigurationsdialog RTSP (2 Std))
-- [] RTSP-Scanner (Vermutlich 1 Tag)
+- [x] RTSP-Scanner (Vermutlich 1 Tag)
 11.09.
-- [] RTSP-Streams sammeln (Apps laden und zerflücken)
-12.09.
 - [] RTSP-Viewer (vermutlich 1 Tag)
+- [] custom-URL prüfen
+12.09.
+- [] RTSP-Streams sammeln (Apps laden und zerflücken)
 13.09.
 - [] Abo (vermutlich 2-3 Std.)
 - [] Lokalisierung (letzter Schritt ca. 2 Std.)
@@ -79,3 +78,9 @@ Dieser neue Konfigurationsdialog hat einen Button "Auto-Connect" und alternativ 
   ]
 }
 	
+
+
+- Play kurz nachdem die UI sauber instanziiert wurde
+- Stoppen, wenn die Konfiguraion aufgerufen wird und wieder starten beim Beenden
+- Gestartet wird immer mit der gespeicherte URL
+- Kein TCP erzwingen 

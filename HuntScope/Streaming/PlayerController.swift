@@ -5,11 +5,12 @@
 
 import Foundation
 import SwiftUI
+import MobileVLCKit
 
 /// Platzhalter: Kein VLC, keine I/O.
 /// Nur Zustände und leere Methoden, damit die UI bereits funktioniert.
 @MainActor
-final class PlayerController: ObservableObject {
+final class PlayerController: NSObject, ObservableObject {
     // MARK: - Zustände für die UI
     @Published private(set) var isConnected: Bool = false
     @Published private(set) var isPlaying: Bool = false
@@ -21,31 +22,45 @@ final class PlayerController: ObservableObject {
     // Interne Hilfe: letzte Frame-Zeit + Watchdog-Timer
     private var lastFrameAt: Date?
     private var signalTimer: Timer?
-    private let signalTimeout: TimeInterval = 3.0 // Sekunden ohne Frames => kein Signal
+    private let signalTimeout: TimeInterval = 5.0 // Sekunden ohne Frames => kein Signal
+
+    // VLC
+    private let vlcPlayer = VLCMediaPlayer()
+    private weak var surfaceView: UIView?
+    private var reconnectScheduled = false
+    private var reconnectDelay: TimeInterval = 2.0
 
     // MARK: - Init
-    init() {}
+    //init() {}
 
     // MARK: - Public API (Platzhalter)
 
-    /// Startet "logisch" – nur UI-Status toggeln, noch kein echter Stream.
     func play(urlString: String) {
-        isConnected = true
-        isPlaying = true
-        // Beim Start warten wir auf das erste Frame
+        guard let url = URL(string: urlString) else { return }
+        reconnectScheduled = false
         hasStreamSignal = false
+        isConnected = false
+        isPlaying = false
         lastFrameAt = nil
+
+        let media = VLCMedia(url: url)
+        // Kein TCP erzwingen; Optionen optional minimal halten
+        // media.addOptions(["network-caching=300"]) // ggf. später
+        vlcPlayer.media = media
+        vlcPlayer.delegate = self
+        if let surface = surfaceView { vlcPlayer.drawable = surface }
+        vlcPlayer.play()
         startSignalWatchdog()
-        // TODO: echte VLC-Initialisierung später
     }
 
-    /// Stoppt "logisch".
     func stop() {
+        vlcPlayer.stop()
         isPlaying = false
         isConnected = false
         hasStreamSignal = false
+        reconnectScheduled = false
+        reconnectDelay = 2.0
         stopSignalWatchdog()
-        // TODO: später VLC stoppen/entkoppeln
     }
 
     /// "Foto" – Platzhalter, setzt nur den Snapshot-Zustand zurück.
@@ -65,15 +80,9 @@ final class PlayerController: ObservableObject {
         // TODO: später echte Aufnahme stoppen
     }
 
-    /// Hook für Video-Frames – aktuell leer.
-    func onVideoFrame(/* _ pixelBuffer: CVPixelBuffer */) {
-        // Wird vom echten Player bei jedem neuen Videoframe aufgerufen
-        lastFrameAt = Date()
-        if hasStreamSignal == false {
-            hasStreamSignal = true
-            debugLog("stream signal: available", "Player")
-        }
-        // TODO: später Vision/Erkennung aufrufen
+    func attach(view: UIView) {
+        surfaceView = view
+        vlcPlayer.drawable = view
     }
 
     // MARK: - Signal-Überwachung
@@ -87,6 +96,7 @@ final class PlayerController: ObservableObject {
                     if self.hasStreamSignal {
                         self.hasStreamSignal = false
                         debugLog("stream signal: lost (timeout)", "Player")
+                        self.scheduleReconnect()
                     }
                 }
             } else {
@@ -100,5 +110,50 @@ final class PlayerController: ObservableObject {
         signalTimer?.invalidate()
         signalTimer = nil
         lastFrameAt = nil
+    }
+}
+
+extension PlayerController: VLCMediaPlayerDelegate {
+    @objc func mediaPlayerStateChanged(_ aNotification: Notification) {
+        let state = vlcPlayer.state
+        switch state {
+        case .opening, .buffering:
+            isConnected = true
+        case .playing:
+            isConnected = true
+            isPlaying = true
+            hasStreamSignal = true
+            lastFrameAt = Date()
+        case .stopped, .ended, .error:
+            isPlaying = false
+            isConnected = false
+            hasStreamSignal = false
+            scheduleReconnect()
+        default:
+            break
+        }
+    }
+
+    @objc func mediaPlayerTimeChanged(_ aNotification: Notification) {
+        lastFrameAt = Date()
+        if hasStreamSignal == false { hasStreamSignal = true }
+    }
+
+    private func scheduleReconnect() {
+        guard !reconnectScheduled else { return }
+        reconnectScheduled = true
+        let delay = max(1.5, reconnectDelay)
+        debugLog("reconnect in \(Int(delay*1000)) ms", "Player")
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            guard let self = self else { return }
+            self.reconnectScheduled = false
+            // Falls wir inzwischen manuell gestoppt wurden, nicht erneut starten
+            // Versuche mit der zuletzt gesetzten URL weiterzuspielen
+            if let u = self.vlcPlayer.media?.url.absoluteString, !u.isEmpty {
+                self.play(urlString: u)
+                // Backoff leicht erhöhen, aber deckeln
+                self.reconnectDelay = min(self.reconnectDelay + 1.0, 5.0)
+            }
+        }
     }
 }

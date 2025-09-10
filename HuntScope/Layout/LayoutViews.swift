@@ -33,25 +33,25 @@ struct StreamView: View {
     var body: some View {
         ZStack {
             Color.black
-            // Placeholder for future stream layer lives underneath
+            // VLC Video Surface underneath overlays
+            ViewerView()
 
-            // Overlay the last splash frame, perfectly aligned and non-interactive
-            if let image = ui.lastSplashFrame {
+            // Active streaming when player is playing and frames are coming in
+            let isStreaming = player.isPlaying && player.hasStreamSignal
+
+            // Overlay the last splash frame only when not streaming
+            if !isStreaming, let image = ui.lastSplashFrame {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
-                    // Apply grayscale only in s/w (white) theme
                     .saturation(config.theme == .white ? 0 : 1)
-                    // Subtle watermark when playing, more visible when no stream
-                    .opacity((player.isConnected && player.isPlaying) ? 0.08 : ((config.theme) == .red ? 0.15 : 0.25))
-                    .animation(.easeInOut(duration: 0.25), value: player.isPlaying)
-                    .animation(.easeInOut(duration: 0.25), value: player.isConnected)
+                    .opacity((config.theme == .red) ? 0.15 : 0.25)
                     .allowsHitTesting(false)
             }
 
             // No-connection indicator: large flashing icon when no signal/connection
-            let noSignal = (!player.isConnected) || (!player.hasStreamSignal)
-            if noSignal {
+            // Show no-signal icon only when not streaming
+            if !isStreaming {
                 GeometryReader { geo in
                     let side = min(geo.size.width, geo.size.height) * 0.6
                     let primary: Color = (config.theme == .red) ? .red : .white
