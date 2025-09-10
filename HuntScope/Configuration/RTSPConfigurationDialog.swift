@@ -23,6 +23,7 @@ struct RTSPConfigurationDialog: View {
             ui.activeDialog = nil
         }) {
             VStack(alignment: .leading, spacing: 16) {
+                Spacer(minLength: 20)
                 // Auto-Connect (zentriert)
                 HStack {
                     Spacer()
@@ -30,19 +31,28 @@ struct RTSPConfigurationDialog: View {
                         debugLog("Auto-Connect pressed", "RTSPConfig")
                         // TODO: Auto-Connect Implementierung
                     } label: {
-                        Text("Auto-Connect").bold()
-                            .foregroundStyle(primary)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .background(Color.black)
-                            .clipShape(Capsule())
-                            .overlay(
-                                Capsule().stroke(primary, lineWidth: 1.5)
-                            )
+                        HStack() {
+                            Image(systemName: "bolt.badge.automatic")
+                                .font(.title2)
+                                .foregroundStyle(primary)
+                            Text("Auto-Connect").bold()
+ 
+                        }
+                        .font(.title.weight(.semibold))
+                        .foregroundStyle(primary)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(Color.black)
+                        .clipShape(Capsule())
+                        .overlay(
+                            Capsule().stroke(primary, lineWidth: 1.5)
+                        )
                     }
                     .buttonStyle(.plain)
                     Spacer()
                 }
+                Spacer(minLength: 20)
+
 
                 // Toggle-Bereich: Manuelle Konfiguration
                 VStack(spacing: 10) {
@@ -57,7 +67,8 @@ struct RTSPConfigurationDialog: View {
                                     Text("Manuelle Konfiguration")
                                     Image(systemName: showManual ? "chevron.up" : "chevron.down")
                                 }
-                                .font(.footnote.weight(.semibold))
+                                .font(.body.weight(.semibold))
+                                //.font(.system(size: 20, weight: .light, design: .default))
                                 .foregroundStyle(primary)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 4)
@@ -74,8 +85,9 @@ struct RTSPConfigurationDialog: View {
 
                     if showManual {
                         VStack(alignment: .leading, spacing: 8) {
+                            Spacer(minLength: 7)
                             Text("Kamera-URL (in der Form rtsp://IP/Ressource)")
-                                .font(.footnote.weight(.semibold))
+                                .font(.body.weight(.semibold))
                                 .foregroundStyle(primary.opacity(0.9))
 
                             HStack(spacing: 12) {
@@ -83,6 +95,7 @@ struct RTSPConfigurationDialog: View {
                                     get: { config.customStreamURL },
                                     set: { config.customStreamURL = $0 }
                                 ))
+                                .font(.body.weight(.semibold))
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled(true)
                                 .foregroundStyle(primary)
@@ -91,7 +104,7 @@ struct RTSPConfigurationDialog: View {
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(primary.opacity(0.6), lineWidth: 1)
                                 )
-
+                                Spacer(minLength: 10)
                                 Button {
                                     let url = config.customStreamURL.trimmingCharacters(in: .whitespacesAndNewlines)
                                     debugLog("Test custom URL: \(url)", "RTSPConfig")
@@ -103,7 +116,7 @@ struct RTSPConfigurationDialog: View {
                                         }
                                     }
                                 } label: {
-                                    Text("Test").bold()
+                                    Text("Verbindungstest").bold()
                                         .foregroundStyle(primary)
                                         .padding(.horizontal, 14)
                                         .padding(.vertical, 8)

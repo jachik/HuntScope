@@ -67,8 +67,8 @@ struct DialogContainer<Content: View>: View {
                     }
                     .buttonStyle(.plain)
                     .frame(width: 44, height: 44)
-                    .padding(.top, 8)
-                    .padding(.trailing, 8)
+                    .padding(.top, 18)
+                    .padding(.trailing, 18)
                 }
             }
             .scrollDismissesKeyboardCompat()

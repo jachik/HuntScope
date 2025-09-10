@@ -20,7 +20,6 @@ TODOs:
 - [x] Hintergrund (=Logo?)
 - [X] Konfigurationsdialog etwas bequemer
 
-
 TODO - vor Launch:
 10.09.
 - [x] Hintergrundbild-Overlay mit Symbol für keine VErbindung als (als flush)
