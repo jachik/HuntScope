@@ -7,6 +7,8 @@
 
 import SwiftUI
 import UIKit
+import GoogleMobileAds
+
 
 @main
 struct HuntScopeApp: App {
@@ -19,10 +21,14 @@ struct HuntScopeApp: App {
     @StateObject private var configStore = ConfigStore()
     @StateObject private var uiState = UIStateModel()
     @StateObject private var player      = PlayerController()
+    @StateObject private var interstitialVM = InterstitialViewModel()
     @State private var showSplash: Bool = true
     @Environment(\.scenePhase) private var scenePhase
+    @State private var adScheduler: InterstitialAdScheduler? = nil
     
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
+
         WindowGroup {
             ZStack {
                 ContentView()
@@ -35,6 +41,8 @@ struct HuntScopeApp: App {
 
                 if showSplash {
                     SplashView {
+
+
                         withAnimation(.easeOut(duration: 2)) {
                             showSplash = false
                         }
@@ -46,6 +54,15 @@ struct HuntScopeApp: App {
                     .zIndex(1)
                 }
             }
+            .onAppear {
+                if adScheduler == nil {
+                    let scheduler = InterstitialAdScheduler(interstitial: interstitialVM, ui: uiState, player: player)
+                    scheduler.start()
+                    adScheduler = scheduler
+                    // Initial preload (safety)
+                    Task { await interstitialVM.loadAd() }
+                }
+            }
             // Lifecycle: Splash bei Reaktivierung nach >= 30 min
             .onChange(of: scenePhase) { phase in
                 switch phase {
@@ -53,6 +70,7 @@ struct HuntScopeApp: App {
                     let now = Date()
                     configStore.lastBackgroundAt = now
                     ConfigManager.shared.lastBackgroundAt = now
+                    adScheduler?.handleScenePhase(.background)
                 case .active:
                     if let last = configStore.lastBackgroundAt {
                         let elapsed = Date().timeIntervalSince(last)
@@ -60,6 +78,7 @@ struct HuntScopeApp: App {
                             showSplash = true
                         }
                     }
+                    adScheduler?.handleScenePhase(.active)
                 default:
                     break
                 }

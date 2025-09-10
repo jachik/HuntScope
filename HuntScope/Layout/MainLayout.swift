@@ -90,18 +90,38 @@ import SwiftUI
                             Color.black.opacity(0.5)
                                 .allowsHitTesting(false)
 
-                            // Dialogbox exakt in der Mitte, begrenzt auf Stream-Fläche
-                            dialogContent()
-                                .padding(24)
-                                .background(Color.black.opacity(0.8))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(((config.theme == .red) ? Color.red : Color.white).opacity(0.8), lineWidth: 1)
-                                )
-                                .cornerRadius(16)
-                                .shadow(radius: 8)
-                                .frame(maxWidth: centerWidth)
-                                .frame(maxHeight: centerHeight)
+                            // Dialogbox und Close-Button in gemeinsamem Container (TopTrailing),
+                            // damit der Innenabstand zuverlässig greift
+                            ZStack(alignment: .topTrailing) {
+                                // Dialogbox exakt in der Mitte, begrenzt auf Stream-Fläche
+                                dialogContent()
+                                    .padding(24)
+                                    .background(Color.black.opacity(0.8))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(((config.theme == .red) ? Color.red : Color.white).opacity(0.8), lineWidth: 1)
+                                    )
+                                    .cornerRadius(16)
+                                    .shadow(radius: 8)
+
+                                // Close-Button oben rechts mit 5pt Innenabstand
+                                let primary = (config.theme == .red) ? Color.red : Color.white
+                                Button {
+                                    ui.isDialogActive = false
+                                } label: {
+                                    ZStack {
+                                        Circle().stroke(primary, lineWidth: 2)
+                                        Image(systemName: "xmark")
+                                            .font(.title2)
+                                            .foregroundStyle(primary)
+                                    }
+                                }
+                                .buttonStyle(.plain)
+                                .frame(width: 44, height: 44)
+                                .padding(.top, 5)
+                                .padding(.trailing, 5)
+                            }
+                            .frame(maxWidth: centerWidth, maxHeight: centerHeight)
                         }
                         .frame(width: centerWidth, height: centerHeight)
 

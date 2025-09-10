@@ -16,21 +16,24 @@ TODOs:
 - [x] Links Balken entfernen im Konigurationsdialog
 - [X] Logo erstellen
 - [X] Splashscreen
-- [] Hintergrund (=Logo?)
+- [x] Hintergrund (=Logo?)
 - Konfiguration URL
 - Scan-Algorithmus
-(- last-sleep kann auch 30 minuten betragn, wenn die app läuft und mal kurz in die Systemmeldungen reingeguckt wird )
 
 
 TODO - vor Launch:
+
+- Konfigurationsdialog Kreise
+- Konfigurationsdialog durchsichtig
 - Konfiguration RTSP (2 Std))
 - Scanner RTSP (Vermutlich 1 Tag)
+- RTSP-Streams sammeln (Apps laden und zerflücken)
 - RTSP-Viewer (vermutlich 1 Tag)
-- WErbung (vermutlich 2-3 Std.)
 - Abo (vermutlich 2-3 Std.)
 - Lokalisierung (letzter Schritt ca. 2 Std.)
-- Impressum?
-- Hintergrundbild auch weiß
+- Homepage: Datenschutz + Impressum 
+- [x] WErbung (vermutlich 2-3 Std.)
+- [x] Hintergrundbild auch weiß
 
 
 # Beschreibung Scanner
@@ -41,3 +44,8 @@ TODO - vor Launch:
 - Beim Full-connect werden alle passenden URLs durchprobiert (passend im Sinne zum Netzwerkwerk bassend)
 - Als weiteres optionales Kriterium wird bei manchen Presets noch die SSID (bzw. ein Teil davon) gespeichert. Dies kann auch als zusätzlicher Fiter verwendet werden
 Ist das so aus deiner Sicht sinnvoll? Wir hätte damit zwei Listen - eine lastknowngood-Liste und eine Preset-Liste. Zusätzlich gibt es noch die Möglichkeit eine Custom-URL einzugeben - diese wird der Preset-Liste einfach am Anfang hinzugefügt
+
+
+
+ich hätte gerne einen neuen Konfiguratinsdialog "RTSPStreamConfig" (seperat in einer neuen Datei), der aufgerufen wird, wenn man auf "Kamerakonfiguration" in der Hauptkonfiguration klickt. Der HauptKonfiguration geht zu und der neue Dialog geht auf - im gleichen Style und Größe wie der aktuelle Konfiguraionsdialog. Auch die Farbwahl bleibt berücksichtigt (d.h. rot oder weiß=. 
+Dieser neue Konfigurationsdialog hat einen Button "Auto-Connect" und alternativ dazu ein Feld mit "Benutzerdefinierte URL" und einen Button Test dahinter. Geschlossen wird der Dialog wieder über den bereits vorhandenen Button, mit dem man auch in die Konfiguraion kommt. 

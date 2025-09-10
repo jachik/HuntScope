@@ -48,6 +48,7 @@ struct RightButtonArea: View {
             SidebarButton(systemName: "gearshape") {
                 ui.isDialogActive.toggle()
             }
+            .disabled(ui.isDialogActive)
 
             // Unten: Beenden (an Position der bisherigen Batterie)
             SidebarButton(systemName: "power") {

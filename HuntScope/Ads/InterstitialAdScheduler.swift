@@ -1,0 +1,111 @@
+//
+//  InterstitialAdScheduler.swift
+//  HuntScope
+//
+//  Schedules interstitial ads at random intervals (7–17 min),
+//  preloads/caches ads between shows, and respects app state.
+//
+
+import Foundation
+import SwiftUI
+
+@MainActor
+final class InterstitialAdScheduler {
+    private let interstitial: InterstitialViewModel
+    private let ui: UIStateModel
+    private let player: PlayerController
+
+    private var timer: Timer?
+    private(set) var nextFireAt: Date?
+    private var lastShownAt: Date?
+
+    // Tunables
+    private let minGapAfterStart: TimeInterval = 60        // no ad immediately after start/splash
+    private let retryWhenBlocked: TimeInterval = 60        // retry if dialog/recording blocks
+    private let preloadRetry: TimeInterval = 30            // retry soon if not loaded yet
+    private let minGapBetweenShows: TimeInterval = 120     // safety gap
+
+    init(interstitial: InterstitialViewModel, ui: UIStateModel, player: PlayerController) {
+        self.interstitial = interstitial
+        self.ui = ui
+        self.player = player
+    }
+
+    func start() {
+        // Preload immediately
+        Task { await interstitial.loadAd() }
+        // Schedule first window a bit after start
+        scheduleNext(from: Date().addingTimeInterval(minGapAfterStart))
+    }
+
+    func stop() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    func handleScenePhase(_ phase: ScenePhase) {
+        switch phase {
+        case .active:
+            // If the planned fire was missed while backgrounded, give a short grace then try
+            if let fire = nextFireAt, fire < Date() {
+                reschedule(in: 45)
+            }
+        case .background:
+            // Pause timers while in background; they don't fire reliably there
+            stop()
+        default:
+            break
+        }
+    }
+
+    // MARK: - Internals
+
+    private func scheduleNext(from date: Date) {
+        let delayMinutes = Int.random(in: 7...17) // 7–17 minutes
+        let delay = TimeInterval(delayMinutes * 60)
+        let fireAt = date.addingTimeInterval(delay)
+        nextFireAt = fireAt
+        let interval = max(0, fireAt.timeIntervalSinceNow)
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] _ in
+            Task { @MainActor in
+                self?.attemptShow()
+            }
+        }
+        if let t = timer { RunLoop.main.add(t, forMode: .common) }
+        debugLog("scheduled in \(Int(interval))s (next \(delayMinutes) min)", "Ads")
+    }
+
+    private func reschedule(in seconds: TimeInterval) {
+        nextFireAt = Date().addingTimeInterval(seconds)
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: seconds, repeats: false) { [weak self] _ in
+            Task { @MainActor in
+                self?.attemptShow()
+            }
+        }
+        if let t = timer { RunLoop.main.add(t, forMode: .common) }
+        debugLog("rescheduled in \(Int(seconds))s", "Ads")
+    }
+
+    private func attemptShow() {
+        guard shouldShowNow() else {
+            reschedule(in: retryWhenBlocked)
+            return
+        }
+        // Try to present; if not ready, load and retry soon
+        interstitial.showAd()
+        lastShownAt = Date()
+        // Preload next ad
+        Task { await interstitial.loadAd() }
+        // Plan the next regular window
+        scheduleNext(from: Date())
+    }
+
+    private func shouldShowNow() -> Bool {
+        if ui.isDialogActive { return false }
+        if player.isRecording { return false }
+        if let last = lastShownAt, Date().timeIntervalSince(last) < minGapBetweenShows { return false }
+        return true
+    }
+}

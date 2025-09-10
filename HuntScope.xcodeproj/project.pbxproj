@@ -19,6 +19,11 @@
 		318A67D82E6F400E00157774 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67D72E6F400E00157774 /* QuartzCore.framework */; };
 		318A67DB2E6F405F00157774 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67D92E6F403400157774 /* libz.tbd */; };
 		318A67DC2E6F406500157774 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67DA2E6F403D00157774 /* libbz2.tbd */; };
+		318A68292E70879700157774 /* GoogleMobileAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68272E70879700157774 /* GoogleMobileAds.xcframework */; };
+		318A682A2E70879700157774 /* GoogleMobileAds.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68272E70879700157774 /* GoogleMobileAds.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		318A682B2E70879700157774 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68282E70879700157774 /* UserMessagingPlatform.xcframework */; };
+		318A682C2E70879700157774 /* UserMessagingPlatform.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68282E70879700157774 /* UserMessagingPlatform.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		318A682F2E7089D000157774 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A682E2E7089D000157774 /* JavaScriptCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +43,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		318A682D2E70879700157774 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				318A682C2E70879700157774 /* UserMessagingPlatform.xcframework in Embed Frameworks */,
+				318A682A2E70879700157774 /* GoogleMobileAds.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		318A678A2E6F2D2200157774 /* HuntScope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HuntScope.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		318A67972E6F2D2400157774 /* HuntScopeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HuntScopeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +75,9 @@
 		318A67D92E6F403400157774 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		318A67DA2E6F403D00157774 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		318A67E82E6FB04C00157774 /* Ideen.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Ideen.md; sourceTree = "<group>"; };
+		318A68272E70879700157774 /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:EQHXZ8M8AV:Google LLC"; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = "Frameworks/GoogleMobileAdsSdkiOS-12.11.0/GoogleMobileAds.xcframework"; sourceTree = "<group>"; };
+		318A68282E70879700157774 /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:EQHXZ8M8AV:Google LLC"; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = "Frameworks/GoogleMobileAdsSdkiOS-12.11.0/UserMessagingPlatform.xcframework"; sourceTree = "<group>"; };
+		318A682E2E7089D000157774 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -95,11 +118,14 @@
 			files = (
 				318A67D82E6F400E00157774 /* QuartzCore.framework in Frameworks */,
 				318A67DB2E6F405F00157774 /* libz.tbd in Frameworks */,
+				318A682F2E7089D000157774 /* JavaScriptCore.framework in Frameworks */,
 				318A67CC2E6F3FBA00157774 /* AVFoundation.framework in Frameworks */,
 				318A67DC2E6F406500157774 /* libbz2.tbd in Frameworks */,
+				318A68292E70879700157774 /* GoogleMobileAds.xcframework in Frameworks */,
 				318A67D22E6F3FE800157774 /* VideoToolbox.framework in Frameworks */,
 				318A67D42E6F3FF500157774 /* CFNetwork.framework in Frameworks */,
 				318A67C12E6F3D5300157774 /* libc++.tbd in Frameworks */,
+				318A682B2E70879700157774 /* UserMessagingPlatform.xcframework in Frameworks */,
 				318A67C72E6F3E7900157774 /* MobileVLCKit.framework in Frameworks */,
 				318A67CA2E6F3F9F00157774 /* AudioToolbox.framework in Frameworks */,
 				318A67CE2E6F3FD000157774 /* CoreMedia.framework in Frameworks */,
@@ -150,6 +176,9 @@
 		318A67B42E6F388C00157774 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				318A682E2E7089D000157774 /* JavaScriptCore.framework */,
+				318A68272E70879700157774 /* GoogleMobileAds.xcframework */,
+				318A68282E70879700157774 /* UserMessagingPlatform.xcframework */,
 				318A67DA2E6F403D00157774 /* libbz2.tbd */,
 				318A67D92E6F403400157774 /* libz.tbd */,
 				318A67D72E6F400E00157774 /* QuartzCore.framework */,
@@ -176,6 +205,7 @@
 				318A67862E6F2D2200157774 /* Sources */,
 				318A67872E6F2D2200157774 /* Frameworks */,
 				318A67882E6F2D2200157774 /* Resources */,
+				318A682D2E70879700157774 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -493,6 +523,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					/usr/lib/swift,
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
@@ -537,6 +568,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					/usr/lib/swift,
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
