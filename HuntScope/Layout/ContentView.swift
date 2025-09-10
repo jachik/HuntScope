@@ -20,11 +20,11 @@ struct ContentView: View {
             dialogContent: {
                 switch ui.activeDialog {
                 case .rtspConfig:
-                    RTSPStreamConfigView()
+                    RTSPConfigurationDialog()
                 case .testConfig:
                     TestConfigView()
                 default:
-                    ConfigDialogView()
+                    MainConfigurationDialog()
                 }
             }
         )

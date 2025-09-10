@@ -18,17 +18,11 @@ struct RTSPStreamConfigView: View {
     @State private var showManual: Bool = false
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            // Panel + Inhalt
+        DialogContainer(title: "Stream-Konfiguration", backgroundOpacity: 0.7, onClose: {
+            ui.isDialogActive = false
+            ui.activeDialog = nil
+        }) {
             VStack(alignment: .leading, spacing: 16) {
-                // Header
-                HStack {
-                    Text("Stream-Konfiguration")
-                        .font(.title.weight(.bold))
-                        .foregroundStyle(primary)
-                    Spacer()
-                }
-
                 // Auto-Connect (zentriert)
                 HStack {
                     Spacer()
@@ -120,34 +114,7 @@ struct RTSPStreamConfigView: View {
                     }
                 }
 
-                Spacer(minLength: 0)
             }
-            .foregroundColor(primary)
-            .padding(24)
-            .background(Color.black.opacity(0.7))
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(primary.opacity(0.8), lineWidth: 1)
-            )
-            .cornerRadius(16)
-            .shadow(radius: 8)
-
-            // Close-Button identisch zum Hauptdialog
-            Button {
-                ui.isDialogActive = false
-                ui.activeDialog = nil
-            } label: {
-                ZStack {
-                    Circle().stroke(primary, lineWidth: 2)
-                    Image(systemName: "xmark")
-                        .font(.title2)
-                        .foregroundStyle(primary)
-                }
-            }
-            .buttonStyle(.plain)
-            .frame(width: 44, height: 44)
-            .padding(.top, 5)
-            .padding(.trailing, 5)
         }
     }
 }
