@@ -10,6 +10,7 @@ import SwiftUI
 
 struct DialogContainer<Content: View>: View {
     @EnvironmentObject private var config: ConfigStore
+    @StateObject private var keyboard = KeyboardObserver()
 
     let title: String
     let backgroundOpacity: Double
@@ -30,45 +31,51 @@ struct DialogContainer<Content: View>: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            VStack(alignment: .center, spacing: 20) {
-                Text(title)
-                    .font(.title.weight(.bold))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(primary)
+            // Panel-Hintergrund (hinter dem Scroll-Inhalt)
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black.opacity(backgroundOpacity))
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(primary.opacity(0.8), lineWidth: 1)
 
-                content
+            // Scrollbarer Inhalt, inklusive schließendem Button (scrollt mit)
+            ScrollView(.vertical, showsIndicators: true) {
+                ZStack(alignment: .topTrailing) {
+                    VStack(alignment: .center, spacing: 20) {
+                        Text(title)
+                            .font(.title.weight(.bold))
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(primary)
 
-                // füllt den verbleibenden Raum, damit der Container
-                // in der vom MainLayout vorgegebenen Höhe erscheint
-                Spacer(minLength: 0)
-            }
-            // fülle die vom MainLayout vorgegebene Center-Fläche vollständig
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .foregroundColor(primary)
-            .padding(24)
-            .background(Color.black.opacity(backgroundOpacity))
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(primary.opacity(0.8), lineWidth: 1)
-            )
-            .cornerRadius(16)
-            .shadow(radius: 8)
+                        content
 
-            Button(action: onClose) {
-                ZStack {
-                    Circle().stroke(primary, lineWidth: 2)
-                    Image(systemName: "xmark")
-                        .font(.title2)
-                        .foregroundStyle(primary)
+                        // füllt den verbleibenden Raum, damit der Container
+                        // in der vom MainLayout vorgegebenen Höhe erscheint
+                        Spacer(minLength: 0)
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 0, alignment: .top)
+                    .foregroundColor(primary)
+                    .padding(24)
+
+                    // Close-Button innerhalb des Scroll-Contents (scrollt mit)
+                    Button(action: onClose) {
+                        ZStack {
+                            Circle().stroke(primary, lineWidth: 2)
+                            Image(systemName: "xmark")
+                                .font(.title2)
+                                .foregroundStyle(primary)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .frame(width: 44, height: 44)
+                    .padding(.top, 8)
+                    .padding(.trailing, 8)
                 }
-                .frame(width: 44, height: 44)
-                .padding(.top, 15)
-                .padding(.trailing, 15)
             }
-            .buttonStyle(.plain)
-            .frame(width: 44, height: 44)
-            .padding(.top, 5)
-            .padding(.trailing, 5)
+            .scrollDismissesKeyboardCompat()
+            // Extra margin to ensure focused fields are fully visible
+            .padding(.bottom, keyboard.height + 16)
         }
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(radius: 8)
     }
 }
