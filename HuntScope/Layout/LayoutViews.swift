@@ -8,12 +8,19 @@
 import SwiftUI
 import UIKit
 
+enum DialogKind {
+    case mainConfig
+    case rtspConfig
+}
+
 // Zentraler Zustand: steuert, ob ein Dialog aktiv ist
 @MainActor
 final class UIStateModel: ObservableObject {
     @Published var isDialogActive: Bool = false
     // Persisted snapshot of the splash's last frame
     @Published var lastSplashFrame: UIImage? = nil
+    // Aktiver Dialog-Typ (nil = keiner)
+    @Published var activeDialog: DialogKind? = nil
 }
 
 // Placeholder fuer den RTSP/VLC-Stream

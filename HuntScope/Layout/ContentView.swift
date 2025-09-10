@@ -18,7 +18,11 @@ struct ContentView: View {
             },
             // Dialog-Inhalt (zentral ueber Stream)
             dialogContent: {
-                ConfigDialogView()
+                if ui.activeDialog == .rtspConfig {
+                    RTSPStreamConfigView()
+                } else {
+                    ConfigDialogView()
+                }
             }
         )
         .background(Color.black)

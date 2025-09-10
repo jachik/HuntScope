@@ -46,7 +46,8 @@ struct RightButtonArea: View {
 
             // Oben in der Bottom-Sektion: Konfiguration
             SidebarButton(systemName: "gearshape") {
-                ui.isDialogActive.toggle()
+                ui.activeDialog = .mainConfig
+                ui.isDialogActive = true
             }
             .disabled(ui.isDialogActive)
 

@@ -35,7 +35,7 @@ struct ConfigDialogView: View {
                 // Liste mit Optionen (zentrierte Spalte, linksbündige Items)
                 VStack(alignment: .leading, spacing: 16) {
                     // Kamerakonfiguration
-                    Button(action: onOpenCamera) {
+                    Button(action: { ui.activeDialog = .rtspConfig }) {
                         HStack(spacing: 16) {
                             ZStack {
                                 Circle().stroke(primary, lineWidth: 2)
@@ -91,6 +91,7 @@ struct ConfigDialogView: View {
             // Close-Button (wie Sidebar-Button, 44x44, 5pt Innenabstand)
             Button {
                 ui.isDialogActive = false
+                ui.activeDialog = nil
             } label: {
                 ZStack {
                     Circle().stroke(primary, lineWidth: 2)
