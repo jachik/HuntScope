@@ -12,9 +12,9 @@ struct ContentView: View {
     @EnvironmentObject var config: ConfigStore
     var body: some View {
         MainLayout(
-            // Linke Dialog-Buttons (nur sichtbar, wenn Dialog aktiv)
+            // Linke Dialog-Buttons (derzeit ungenutzt)
             dialogButtons: {
-                ConfigDialogButtons()
+                EmptyView()
             },
             // Dialog-Inhalt (zentral ueber Stream)
             dialogContent: {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ConfigDialogView: View {
+struct MainConfigurationDialog: View {
     @EnvironmentObject private var config: ConfigStore
     @EnvironmentObject private var ui: UIStateModel
 

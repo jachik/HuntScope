@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RTSPStreamConfigView: View {
+struct RTSPConfigurationDialog: View {
     @EnvironmentObject private var config: ConfigStore
     @EnvironmentObject private var ui: UIStateModel
     @EnvironmentObject private var player: PlayerController
@@ -30,12 +30,17 @@ struct RTSPStreamConfigView: View {
                         debugLog("Auto-Connect pressed", "RTSPConfig")
                         // TODO: Auto-Connect Implementierung
                     } label: {
-                        Text("Auto-Connect").bold().foregroundStyle(primary)
+                        Text("Auto-Connect").bold()
+                            .foregroundStyle(primary)
                             .padding(.horizontal, 16)
                             .padding(.vertical, 8)
+                            .background(Color.black)
+                            .clipShape(Capsule())
+                            .overlay(
+                                Capsule().stroke(primary, lineWidth: 1.5)
+                            )
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.black)
+                    .buttonStyle(.plain)
                     Spacer()
                 }
 
@@ -98,10 +103,17 @@ struct RTSPStreamConfigView: View {
                                         }
                                     }
                                 } label: {
-                                    Text("Test").bold().foregroundStyle(primary)
+                                    Text("Test").bold()
+                                        .foregroundStyle(primary)
+                                        .padding(.horizontal, 14)
+                                        .padding(.vertical, 8)
+                                        .background(Color.black)
+                                        .clipShape(Capsule())
+                                        .overlay(
+                                            Capsule().stroke(primary, lineWidth: 1.5)
+                                        )
                                 }
-                                .buttonStyle(.borderedProminent)
-                                .tint(.black)
+                                .buttonStyle(.plain)
                             }
 
                             if let testResult {
