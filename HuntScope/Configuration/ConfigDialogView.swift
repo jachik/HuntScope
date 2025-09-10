@@ -37,9 +37,13 @@ struct ConfigDialogView: View {
                     // Kamerakonfiguration
                     Button(action: onOpenCamera) {
                         HStack(spacing: 16) {
-                            Image(systemName: "camera")
-                                .font(.system(size: 50))
-                                .foregroundStyle(primary)
+                            ZStack {
+                                Circle().stroke(primary, lineWidth: 2)
+                                Image(systemName: "camera")
+                                    .font(.system(size: 35))
+                                    .foregroundStyle(primary)
+                            }
+                            .frame(width: 66, height: 66)
                             Text("Kamerakonfiguration")
                                 .font(.title2)
                                 .foregroundStyle(primary)
@@ -52,9 +56,13 @@ struct ConfigDialogView: View {
                     // Abo-Konfiguration
                     Button(action: onOpenSubscription) {
                         HStack(spacing: 16) {
-                            Image(systemName: "lock.open.fill")
-                                .font(.system(size: 60))
-                                .foregroundStyle(primary)
+                            ZStack {
+                                Circle().stroke(primary, lineWidth: 2)
+                                Image(systemName: "lock.open.fill")
+                                    .font(.system(size: 35))
+                                    .foregroundStyle(primary)
+                            }
+                            .frame(width: 66, height: 66)
                             Text("HuntScope Premium freischalten")
                                 .font(.title2)
                                 .foregroundStyle(primary)
