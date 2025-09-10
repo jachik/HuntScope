@@ -21,6 +21,7 @@ struct RTSPConfigurationDialog: View {
     @State private var acState: AutoConnectState = .scanning
     @State private var showWiFiAlert: Bool = false
     @State private var candidates: [String] = []
+    @State private var cancelScan: Bool = false
 
     var body: some View {
         DialogContainer(title: "Stream-Konfiguration", backgroundOpacity: 0.7, onClose: {
@@ -156,6 +157,7 @@ struct RTSPConfigurationDialog: View {
                         .transition(.opacity)
 
                     AutoConnectDialog(state: acState, onCancel: {
+                        cancelScan = true
                         showAutoConnect = false
                     }, onClose: {
                         showAutoConnect = false
@@ -185,18 +187,21 @@ struct RTSPConfigurationDialog: View {
 // MARK: - Auto-Connect (Stub)
 extension RTSPConfigurationDialog {
     private func startAutoConnect() {
-        // Baue Kandidatenliste (Vollscan)
+        // Baue Kandidatenliste (Vollscan) und logge sie komplett
         let list = RTSPScanner.buildCandidates(short: false, config: config, wifi: wifi)
         candidates = list
         debugLog("AutoConnect candidates=\(list.count)", "RTSP")
-        for (idx, url) in list.prefix(10).enumerated() {
-            debugLog("#\(idx+1): \(url)", "RTSP")
-        }
+        for (idx, url) in list.enumerated() { debugLog("#\(idx+1): \(url)", "RTSP") }
 
         acState = .scanning
+        cancelScan = false
         showAutoConnect = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            if Bool.random() {
+
+        Task { @MainActor in
+            let found = await RTSPScanner.scan(short: false, config: config, wifi: wifi, cancel: { self.cancelScan }, progress: nil)
+            if let u = found {
+                config.streamURL = u
+                debugLog("Erreichbar: \(config.streamURL)", "RTSP")
                 acState = .success
             } else {
                 acState = .notFound

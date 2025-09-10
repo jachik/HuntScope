@@ -6,7 +6,7 @@
 //  Reihenfolge:
 //  1) customURL (falls vorhanden)
 //  2) LastKnownGood (in gespeicherter Reihenfolge)
-//  3) (optional, wenn short == false) Presets – mit Netzwerk-bezogenen Platzhaltern
+//  3) (optional, wenn short == false) Presets – gefiltert auf das aktuelle WLAN-/24-Netz
 //  Am Ende dedupliziert (frühe Einträge haben Priorität).
 //
 
@@ -39,6 +39,13 @@ struct RTSPScanner {
                                 wifiSnapshot: WiFiSnapshot?) -> [String] {
         var result: [String] = []
 
+        // Debug: Eingangsdaten
+        #if DEBUG
+        let dbgCustom = (customURL?.isEmpty == false)
+        debugLog("scanner: short=\(short), custom=\(dbgCustom), lkg=\(lastKnownGood.count), presets=\(presets.count)", "RTSP")
+        debugLog("scanner: wifi ip=\(wifiSnapshot?.ipAddress ?? "nil")", "RTSP")
+        #endif
+
         // 1) custom URL zuerst
         if let u = normalized(url: customURL) { result.append(u) }
 
@@ -51,11 +58,35 @@ struct RTSPScanner {
         if !short {
             let ip = wifiSnapshot?.ipAddress
             let net = networkPrefix(from: ip)
-            for pattern in presets {
-                if let expanded = expand(pattern: pattern, ipAddress: ip, networkPrefix: net) {
-                    result.append(expanded)
+            var matched = 0
+            var skipped = 0
+            if let currentNet = net {
+                for pattern in presets {
+                    let candidate = pattern.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !candidate.isEmpty else { continue }
+                    if let hostIP = ipv4Host(from: candidate), let hostNet = networkPrefix(from: hostIP) {
+                        if hostNet == currentNet {
+                            result.append(candidate); matched += 1
+                        } else {
+                            skipped += 1
+                        }
+                    } else {
+                        // ohne IPv4 host aktuell überspringen
+                        skipped += 1
+                    }
+                }
+            } else {
+                // Kein WLAN-IP bekannt: konservativ alle Presets aufnehmen
+                for pattern in presets {
+                    let candidate = pattern.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !candidate.isEmpty else { continue }
+                    result.append(candidate)
+                    matched += 1
                 }
             }
+            #if DEBUG
+            debugLog("scanner: presets matched=\(matched), skipped=\(skipped)", "RTSP")
+            #endif
         }
 
         // 4) Deduplizieren – frühe Einträge behalten Priorität
@@ -68,6 +99,9 @@ struct RTSPScanner {
                 deduped.append(u)
             }
         }
+        #if DEBUG
+        debugLog("scanner: deduped=\(deduped.count)", "RTSP")
+        #endif
         return deduped
     }
 
@@ -86,13 +120,82 @@ struct RTSPScanner {
         return parts.prefix(3).joined(separator: ".")
     }
 
-    // Ersetzt einfache Platzhalter in Preset-Patterns.
-    // Unterstützt {ip} => konkrete IP, {network} => die ersten drei Oktette (z.B. 192.168.1)
-    private static func expand(pattern: String, ipAddress: String?, networkPrefix: String?) -> String? {
-        var out = pattern
-        if let ip = ipAddress, out.contains("{ip}") { out = out.replacingOccurrences(of: "{ip}", with: ip) }
-        if let net = networkPrefix, out.contains("{network}") { out = out.replacingOccurrences(of: "{network}", with: net) }
-        // Falls gar keine Platzhalter, einfach zurückgeben
-        return out.trimmingCharacters(in: .whitespacesAndNewlines)
+    // Extrahiert eine IPv4-Adresse aus der URL (Host-Teil) – erwartet rtsp://<ip>[:port]/...
+    private static func ipv4Host(from urlString: String) -> String? {
+        if let comps = URLComponents(string: urlString), let host = comps.host {
+            if isIPv4(host) { return host }
+        }
+        // Fallback: Regex-Suche nach IPv4-Muster
+        let pattern = #"\b((?:\d{1,3}\.){3}\d{1,3})\b"#
+        if let re = try? NSRegularExpression(pattern: pattern, options: []) {
+            let range = NSRange(location: 0, length: (urlString as NSString).length)
+            if let m = re.firstMatch(in: urlString, options: [], range: range) {
+                if let r = Range(m.range(at: 1), in: urlString) {
+                    let ip = String(urlString[r])
+                    return isIPv4(ip) ? ip : nil
+                }
+            }
+        }
+        return nil
+    }
+
+    private static func isIPv4(_ s: String) -> Bool {
+        let parts = s.split(separator: ".")
+        if parts.count != 4 { return false }
+        for p in parts {
+            guard let v = Int(p), v >= 0 && v <= 255 else { return false }
+        }
+        return true
+    }
+
+    // MARK: - Scanning
+    // Scannt Kandidatenliste, gruppiert nach Host/IP. Pro Host werden Ressourcen sequentiell getestet,
+    // verschiedene Hosts laufen parallel. Abbruch erst bei erstem 200 OK.
+    @MainActor
+    static func scan(short: Bool,
+                     config: ConfigStore,
+                     wifi: WiFiInfoProvider,
+                     cancel: @escaping () -> Bool = { false },
+                     progress: ((Int, Int) -> Void)? = nil) async -> String? {
+        let candidates = buildCandidates(short: short, config: config, wifi: wifi)
+        let total = candidates.count
+        if total == 0 { return nil }
+
+        progress?(0, total)
+
+        // Gruppieren nach Host
+        var groups: [String: [String]] = [:]
+        for url in candidates {
+            if let host = URLComponents(string: url)?.host { groups[host, default: []].append(url) }
+        }
+        var completed = 0
+
+        return await withTaskGroup(of: String?.self) { group in
+            for (_, urls) in groups {
+                group.addTask {
+                    for u in urls {
+                        if cancel() { return nil }
+                        let res = await RTSPProbe.probe(url: u)
+                        await MainActor.run {
+                            completed += 1
+                            progress?(completed, total)
+                        }
+                        switch res {
+                        case .success:
+                            return u
+                        case .failure:
+                            continue
+                        }
+                    }
+                    return nil
+                }
+            }
+
+            var found: String? = nil
+            for await r in group {
+                if let u = r { found = u; group.cancelAll(); break }
+            }
+            return found
+        }
     }
 }

@@ -48,22 +48,88 @@ final class StreamPresetManager {
 
     // MARK: - Persistenz
     private func loadOrSeed() {
+        // 1) Versuche, App-Support-Datei zu laden (neues Schema)
         if let url = Self.fileURL, FileManager.default.fileExists(atPath: url.path) {
-            if let data = try? Data(contentsOf: url), let decoded = try? Self.decoder.decode(StreamPresetList.self, from: data) {
-                list = decoded
-                return
+            if let data = try? Data(contentsOf: url) {
+                if let decoded = try? Self.decoder.decode(StreamPresetList.self, from: data) {
+                    var current = decoded
+                    // Prüfe, ob das Bundle eine neuere Version enthält
+                    if let bundled = Bundle.main.url(forResource: "StreamPresets", withExtension: "json"),
+                       let bdata = try? Data(contentsOf: bundled) {
+                        if let seed = try? Self.decoder.decode(StreamPresetList.self, from: bdata) {
+                            if seed.version > current.version {
+                                list = seed
+                                save()
+                                debugLog("Presets reseeded from newer Bundle (v\(seed.version) > v\(current.version)) — count=\(list.presets.count)", "StreamPresets")
+                                return
+                            }
+                        } else if let legacySeed = try? Self.decoder.decode(LegacyPresetList.self, from: bdata) {
+                            let seedList = StreamPresetList(version: legacySeed.version, presets: legacySeed.flattened())
+                            if seedList.version > current.version {
+                                list = seedList
+                                save()
+                                debugLog("Presets reseeded from newer Bundle (legacy) (v\(seedList.version) > v\(current.version)) — count=\(list.presets.count)", "StreamPresets")
+                                return
+                            }
+                        }
+                    }
+                    list = current
+                    debugLog("Presets loaded from Application Support (\(list.presets.count)), v\(current.version)", "StreamPresets")
+                    return
+                } else if let legacy = try? Self.decoder.decode(LegacyPresetList.self, from: data) {
+                    // Migration: Legacy -> neues Schema (flatten) und ggf. gegen Bundle-Version prüfen
+                    var current = StreamPresetList(version: legacy.version, presets: legacy.flattened())
+                    if let bundled = Bundle.main.url(forResource: "StreamPresets", withExtension: "json"),
+                       let bdata = try? Data(contentsOf: bundled) {
+                        if let seed = try? Self.decoder.decode(StreamPresetList.self, from: bdata) {
+                            if seed.version > current.version {
+                                list = seed
+                                save()
+                                debugLog("Presets reseeded from newer Bundle (v\(seed.version) > v\(current.version)) — count=\(list.presets.count)", "StreamPresets")
+                                return
+                            }
+                        } else if let legacySeed = try? Self.decoder.decode(LegacyPresetList.self, from: bdata) {
+                            let seedList = StreamPresetList(version: legacySeed.version, presets: legacySeed.flattened())
+                            if seedList.version > current.version {
+                                list = seedList
+                                save()
+                                debugLog("Presets reseeded from newer Bundle (legacy) (v\(seedList.version) > v\(current.version)) — count=\(list.presets.count)", "StreamPresets")
+                                return
+                            }
+                        }
+                    }
+                    list = current
+                    save()
+                    debugLog("Presets migrated from legacy format (\(list.presets.count)), v\(current.version)", "StreamPresets")
+                    return
+                }
             }
         }
 
-        // Falls nicht vorhanden: versuche aus Bundle zu kopieren, sonst leere Defaults speichern
+        // 2) Seed aus Bundle (neues Schema, danach Legacy-Schema versuchen)
         if let bundled = Bundle.main.url(forResource: "StreamPresets", withExtension: "json"),
-           let data = try? Data(contentsOf: bundled),
-           let decoded = try? Self.decoder.decode(StreamPresetList.self, from: data) {
-            list = decoded
+           let data = try? Data(contentsOf: bundled) {
+            if let decoded = try? Self.decoder.decode(StreamPresetList.self, from: data) {
+                list = decoded
+                save()
+                debugLog("Presets seeded from Bundle (\(list.presets.count))", "StreamPresets")
+                return
+            } else if let legacy = try? Self.decoder.decode(LegacyPresetList.self, from: data) {
+                list = StreamPresetList(version: legacy.version, presets: legacy.flattened())
+                save()
+                debugLog("Presets seeded from Bundle (legacy migrated, \(list.presets.count))", "StreamPresets")
+                return
+            } else {
+                debugLog("Failed to decode Bundle StreamPresets.json", "StreamPresets")
+            }
         } else {
-            list = .empty
+            debugLog("Bundle StreamPresets.json not found", "StreamPresets")
         }
+
+        // 3) Fallback: leer speichern
+        list = .empty
         save()
+        debugLog("Presets empty — no seed available", "StreamPresets")
     }
 
     private func save() {
@@ -95,4 +161,15 @@ final class StreamPresetManager {
         d.dateDecodingStrategy = .iso8601
         return d
     }()
+}
+
+// MARK: - Legacy decoding support (vor Vereinfachung)
+private struct LegacyPreset: Codable { let defaultURLs: [String] }
+private struct LegacyPresetList: Codable {
+    var version: Int
+    var presets: [LegacyPreset]
+
+    func flattened() -> [String] {
+        presets.flatMap { $0.defaultURLs }.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
+    }
 }
