@@ -6,6 +6,8 @@
 	<false/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-6563188845008038~5073835765</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Benötigt</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
