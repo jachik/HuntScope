@@ -28,7 +28,9 @@ final class PlayerController: NSObject, ObservableObject {
     private let vlcPlayer = VLCMediaPlayer()
     private weak var surfaceView: UIView?
     private var reconnectScheduled = false
+    private var reconnectWorkItem: DispatchWorkItem?
     private var reconnectDelay: TimeInterval = 2.0
+    private var intentionallyStopped = false
 
     // MARK: - Init
     //init() {}
@@ -37,7 +39,10 @@ final class PlayerController: NSObject, ObservableObject {
 
     func play(urlString: String) {
         guard let url = URL(string: urlString) else { return }
+        // Cancel any pending reconnects and clear stop flag
+        reconnectWorkItem?.cancel(); reconnectWorkItem = nil
         reconnectScheduled = false
+        intentionallyStopped = false
         hasStreamSignal = false
         isConnected = false
         isPlaying = false
@@ -58,8 +63,11 @@ final class PlayerController: NSObject, ObservableObject {
         isPlaying = false
         isConnected = false
         hasStreamSignal = false
+        // Prevent any queued reconnect from firing
+        reconnectWorkItem?.cancel(); reconnectWorkItem = nil
         reconnectScheduled = false
         reconnectDelay = 2.0
+        intentionallyStopped = true
         stopSignalWatchdog()
     }
 
@@ -128,7 +136,9 @@ extension PlayerController: VLCMediaPlayerDelegate {
             isPlaying = false
             isConnected = false
             hasStreamSignal = false
-            scheduleReconnect()
+            if !intentionallyStopped {
+                scheduleReconnect()
+            }
         default:
             break
         }
@@ -140,20 +150,26 @@ extension PlayerController: VLCMediaPlayerDelegate {
     }
 
     private func scheduleReconnect() {
+        // Don't reconnect if the user intentionally stopped playback
+        guard !intentionallyStopped else { return }
         guard !reconnectScheduled else { return }
         reconnectScheduled = true
         let delay = max(1.5, reconnectDelay)
         debugLog("reconnect in \(Int(delay*1000)) ms", "Player")
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+        let item = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
+            self.reconnectWorkItem = nil
             self.reconnectScheduled = false
-            // Falls wir inzwischen manuell gestoppt wurden, nicht erneut starten
-            // Versuche mit der zuletzt gesetzten URL weiterzuspielen
+            // If it was stopped intentionally in the meantime, abort
+            guard !self.intentionallyStopped else { return }
+            // Try to resume with last URL
             if let u = self.vlcPlayer.media?.url.absoluteString, !u.isEmpty {
                 self.play(urlString: u)
                 // Backoff leicht erhöhen, aber deckeln
                 self.reconnectDelay = min(self.reconnectDelay + 1.0, 5.0)
             }
         }
+        reconnectWorkItem = item
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: item)
     }
 }

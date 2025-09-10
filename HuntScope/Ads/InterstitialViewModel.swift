@@ -28,6 +28,9 @@ import Combine
 @MainActor
 class InterstitialViewModel: NSObject, ObservableObject, FullScreenContentDelegate {
   private var interstitialAd: InterstitialAd?
+  // Lifecycle hooks to inform UI / scheduler
+  var onWillPresent: (() -> Void)?
+  var onDidDismiss: (() -> Void)?
 
   func loadAd() async {
     do {
@@ -72,6 +75,7 @@ class InterstitialViewModel: NSObject, ObservableObject, FullScreenContentDelega
 
   func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
     print("\(#function) called")
+    onWillPresent?()
   }
 
   func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
@@ -82,6 +86,7 @@ class InterstitialViewModel: NSObject, ObservableObject, FullScreenContentDelega
     print("\(#function) called")
     // Clear the interstitial ad.
     interstitialAd = nil
+    onDidDismiss?()
   }
   // [END ad_events]
 }

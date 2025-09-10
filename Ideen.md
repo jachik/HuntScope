@@ -26,6 +26,8 @@ TODO - vor Launch:
 - [x] RTSP-Scanner (Vermutlich 1 Tag)
 11.09.
 - [] RTSP-Viewer (vermutlich 1 Tag)
+- [] Videos aufnehmen
+- [] Fotos erstellen
 - [] custom-URL prüfen
 12.09.
 - [] RTSP-Streams sammeln (Apps laden und zerflücken)
@@ -79,8 +81,4 @@ Dieser neue Konfigurationsdialog hat einen Button "Auto-Connect" und alternativ 
 }
 	
 
-
-- Play kurz nachdem die UI sauber instanziiert wurde
-- Stoppen, wenn die Konfiguraion aufgerufen wird und wieder starten beim Beenden
-- Gestartet wird immer mit der gespeicherte URL
-- Kein TCP erzwingen 
+Bei VLC gibt es ja zahlreiche Sachen, die man noch deaktiveren sollter - sowas wie Boradcast und mDNS usw. hast du vorschläge, was man alles ausschalten könnte?

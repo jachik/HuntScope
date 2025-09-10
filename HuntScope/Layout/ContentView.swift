@@ -20,6 +20,8 @@ struct ContentView: View {
             // Dialog-Inhalt (zentral ueber Stream)
             dialogContent: {
                 switch ui.activeDialog {
+                case .firstLaunch:
+                    FirstLaunchPromptView()
                 case .rtspConfig:
                     RTSPConfigurationDialog()
                 case .testConfig:

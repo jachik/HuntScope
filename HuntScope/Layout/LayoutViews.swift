@@ -12,6 +12,7 @@ enum DialogKind {
     case mainConfig
     case rtspConfig
     case testConfig
+    case firstLaunch
 }
 
 // Zentraler Zustand: steuert, ob ein Dialog aktiv ist
@@ -22,6 +23,10 @@ final class UIStateModel: ObservableObject {
     @Published var lastSplashFrame: UIImage? = nil
     // Aktiver Dialog-Typ (nil = keiner)
     @Published var activeDialog: DialogKind? = nil
+    // Vollbild-Werbung aktiv (unterdrueckt Overlays kurzfristig)
+    @Published var isAdActive: Bool = false
+    // Zeit bis zu der Overlays (Wasserzeichen/Keine-Verbindung) unterdrueckt werden
+    @Published var suppressOverlaysUntil: Date? = nil
 }
 
 // Placeholder fuer den RTSP/VLC-Stream
@@ -33,14 +38,20 @@ struct StreamView: View {
     var body: some View {
         ZStack {
             Color.black
-            // VLC Video Surface underneath overlays
+            // VLC Video Surface underneath overlays (tinted in red mode)
             ViewerView()
+                .colorMultiply(config.theme == .red ? .red : .white)
 
             // Active streaming when player is playing and frames are coming in
             let isStreaming = player.isPlaying && player.hasStreamSignal
+            let overlaysSuppressed: Bool = {
+                if ui.isAdActive { return true }
+                if let until = ui.suppressOverlaysUntil, Date() < until { return true }
+                return false
+            }()
 
-            // Overlay the last splash frame only when not streaming
-            if !isStreaming, let image = ui.lastSplashFrame {
+            // Overlay the last splash frame only when not yet playing/connecting
+            if !(player.isPlaying || player.isConnected), !overlaysSuppressed, let image = ui.lastSplashFrame {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
@@ -49,9 +60,8 @@ struct StreamView: View {
                     .allowsHitTesting(false)
             }
 
-            // No-connection indicator: large flashing icon when no signal/connection
-            // Show no-signal icon only when not streaming
-            if !isStreaming {
+            // No-connection indicator: show only when not even connecting/playing
+            if !(player.isPlaying || player.isConnected), !overlaysSuppressed {
                 GeometryReader { geo in
                     let side = min(geo.size.width, geo.size.height) * 0.6
                     let primary: Color = (config.theme == .red) ? .red : .white
@@ -75,6 +85,17 @@ struct StreamView: View {
             }
         }
         .ignoresSafeArea()
+        // Sobald echter Stream laeuft, Splash-Wasserzeichen dauerhaft entfernen
+        .onChange(of: player.hasStreamSignal) { _ in
+            if player.isPlaying && player.hasStreamSignal {
+                ui.lastSplashFrame = nil
+            }
+        }
+        .onChange(of: player.isPlaying) { _ in
+            if player.isPlaying && player.hasStreamSignal {
+                ui.lastSplashFrame = nil
+            }
+        }
     }
 }
 

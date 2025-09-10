@@ -34,6 +34,17 @@ final class InterstitialAdScheduler {
     func start() {
         // Preload immediately
         Task { await interstitial.loadAd() }
+        // Bridge ad lifecycle -> UI state
+        interstitial.onWillPresent = { [weak self] in
+            guard let self = self else { return }
+            self.ui.isAdActive = true
+        }
+        interstitial.onDidDismiss = { [weak self] in
+            guard let self = self else { return }
+            self.ui.isAdActive = false
+            // Suppress overlays briefly after ad to avoid flicker
+            self.ui.suppressOverlaysUntil = Date().addingTimeInterval(5)
+        }
         // Schedule first window a bit after start
         scheduleNext(from: Date().addingTimeInterval(minGapAfterStart))
     }

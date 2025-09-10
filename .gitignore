@@ -1,5 +1,7 @@
 # Xcode
 #
+.VSCodeCounter
+
 build/
 DerivedData/
 Frameworks/*
