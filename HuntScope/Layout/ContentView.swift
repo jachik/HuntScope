@@ -39,18 +39,8 @@ struct ContentView: View {
                 player.play(urlString: config.streamURL)
             }
         }
-        .onChange(of: ui.isDialogActive) { active in
-            // Stoppen beim Öffnen der Konfiguration, Starten nach Schließen
-            if active {
-                player.stop()
-            } else if !config.streamURL.isEmpty {
-                // Unterdrücke Overlays kurz nach dem Schließen des Dialogs,
-                // damit kein kurzes "Kein Signal"/Wasserzeichen-Flicker sichtbar ist
-                ui.suppressOverlaysUntil = Date().addingTimeInterval(2.0)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    player.play(urlString: config.streamURL)
-                }
-            }
+        .onChange(of: ui.isDialogActive) { _ in
+            // Dialoge beeinflussen den Stream nicht mehr: Wiedergabe läuft weiter.
         }
     }
 

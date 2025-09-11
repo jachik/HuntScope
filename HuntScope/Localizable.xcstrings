@@ -1,22 +1,67 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Auto-Connect" : {
+
+    },
+    "Datenschutzerklärung" : {
+
+    },
+    "Dies ist ein Test-Dialog auf Basis des DialogContainer." : {
+
+    },
+    "Hier könnten deine spezifischen Einstellungen stehen." : {
+
+    },
+    "HuntScope Premium freischalten" : {
+
+    },
+    "Impressum" : {
+
+    },
     "impressum_body" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jacek Schikora\nHaydnstr. 18\n56154 Boppard, Germany\n\nEmail: info@j-s-edv.de\nVAT ID: DE231106128\nResponsible for content pursuant to Section 18 (2) MStV: Jacek Schikora, address as above.\n\nSubscriptions are handled exclusively via Apple (App Store).\n\nNotice pursuant to Section 36 VSBG (Consumer Dispute Resolution Act):\nWe are neither obliged nor willing to participate in dispute resolution proceedings before a consumer arbitration board."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jacek Schikora\nHaydnstr. 18\n56154 Boppard\n\nE-Mail: info@j-s-edv.de\nUmsatzsteuer-ID: DE231106128\nVerantwortlich für den Inhalt gem. § 18 Abs. 2 MStV: Jacek Schikora, Anschrift wie oben.\n\nAbonnements werden ausschließlich über Apple (App Store) abgewickelt.\n\nHinweis nach § 36 VSBG:\nWir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jacek Schikora\nHaydnstr. 18\n56154 Boppard, Germany\n\nEmail: info@j-s-edv.de\nVAT ID: DE231106128\nResponsible for content pursuant to Section 18 (2) MStV: Jacek Schikora, address as above.\n\nSubscriptions are handled exclusively via Apple (App Store).\n\nNotice pursuant to Section 36 VSBG (Consumer Dispute Resolution Act):\nWe are neither obliged nor willing to participate in dispute resolution proceedings before a consumer arbitration board."
+          }
         }
       }
+    },
+    "Ja, automatisch suchen" : {
+
+    },
+    "Kamera-URL (in der Form rtsp://IP/Ressource)" : {
+
+    },
+    "Kamerakonfiguration" : {
+
+    },
+    "Manuelle Konfiguration" : {
+
+    },
+    "Nein, später" : {
+
+    },
+    "rtsp://…" : {
+
+    },
+    "Schließen" : {
+
+    },
+    "Verbindungstest" : {
+
+    },
+    "Zum Öffnen der Datenschutzerklärung im Browser bitte hier klicken" : {
+
     }
   },
   "version" : "1.0"
