@@ -31,9 +31,12 @@ TODO - vor Launch:
 - [x] Fotos erstellen
 - [x] custom-URL prüfen
 - [x] Impressum & Datenschutz
-- [] Eigene Werbung (erstmal ein Dialog)
-- [] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
-- [] RTSP-Streams sammeln (Apps laden und zerflücken)
+- [x] Eigene Werbung (erstmal ein Dialog)
+- [x] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
+- [] Eigenen Werbespot erstellen
+- [] RTSP-Streams sammeln (Apps laden und zerpflücken)
+- [] Datenschutzerklärung Text größer
+
 12.09.
 - App-Beschreibung einfügen
 13.09.
@@ -47,7 +50,8 @@ TODO - vor Launch:
 Optional, wenn noch Zeit ist:
 - [] Uhrzeit, Temeperatur und Windgeschwindigkeit
 - [] Mondphase und Zeiten
-
+- [] Videostream nicht beenden, wenn Werbung angezeigt wird
+- [] Der CountDown, wann WErbung angezegit wird, beginnt mit dem Anzeigen - nicht mit dem Schließen - d.h. es kann sein, dass WErbung mehrfach hintereinander gezeigt wird
 Erledigt:
 - [x] WErbung (vermutlich 2-3 Std.)
 - [x] Hintergrundbild auch weiß

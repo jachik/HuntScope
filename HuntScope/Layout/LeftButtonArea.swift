@@ -44,7 +44,14 @@ struct LeftButtonArea<DialogButtons: View>: View {
             // Temporärer Test-Button (nur Debug): zeigt internen AdDialog
             #if DEBUG
             SidebarButton(systemName: "megaphone.fill") {
-                ui.isAdDialogPresented = true
+                if let id = InternalAdProvider.chooseRandomAdID(range: 1...10) {
+                    ui.internalAdID = id
+                    ui.isAdDialogPresented = true
+                } else {
+                    // Fallback: dennoch Dialog mit ad01, falls vorhanden
+                    ui.internalAdID = "ad01"
+                    ui.isAdDialogPresented = true
+                }
             }
             .disabled(ui.isDialogActive || ui.isAdDialogPresented)
             #endif

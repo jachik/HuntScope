@@ -45,6 +45,10 @@ final class InterstitialAdScheduler {
             // Suppress overlays briefly after ad to avoid flicker
             self.ui.suppressOverlaysUntil = Date().addingTimeInterval(3)
         }
+        interstitial.onFailedToPresent = { [weak self] in
+            guard let self = self else { return }
+            self.presentInternalAd()
+        }
         // Schedule first window a bit after start
         scheduleNext(from: Date().addingTimeInterval(minGapAfterStart))
     }
@@ -104,7 +108,24 @@ final class InterstitialAdScheduler {
             reschedule(in: retryWhenBlocked)
             return
         }
-        // Try to present; if not ready, load and retry soon
+        // Decide whether to show internal ad instead of AdMob
+        let divertToInternal: Bool = {
+            // 1) If AdMob not ready
+            if !interstitial.isReady { return true }
+            // 2) Random 1/6 chance
+            return Int.random(in: 1...6) == 1
+        }()
+
+        if divertToInternal {
+            presentInternalAd()
+            // Preload next interstitial for future use
+            Task { await interstitial.loadAd() }
+            // Plan the next regular window
+            scheduleNext(from: Date())
+            return
+        }
+
+        // Try to present external ad; if it fails, delegate will fall back
         interstitial.showAd()
         lastShownAt = Date()
         // Preload next ad
@@ -118,5 +139,18 @@ final class InterstitialAdScheduler {
         if player.isRecording { return false }
         if let last = lastShownAt, Date().timeIntervalSince(last) < minGapBetweenShows { return false }
         return true
+    }
+}
+
+// MARK: - Internal helpers
+extension InterstitialAdScheduler {
+    fileprivate func presentInternalAd() {
+        if ui.isAdDialogPresented { return }
+        if let id = InternalAdProvider.chooseRandomAdID(range: 1...10) {
+            ui.internalAdID = id
+        } else {
+            ui.internalAdID = "ad01" // fallback id
+        }
+        ui.isAdDialogPresented = true
     }
 }

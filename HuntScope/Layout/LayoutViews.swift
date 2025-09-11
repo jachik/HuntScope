@@ -31,6 +31,8 @@ final class UIStateModel: ObservableObject {
     @Published var suppressOverlaysUntil: Date? = nil
     // Lokaler (interner) Vollbild-AdDialog sichtbar
     @Published var isAdDialogPresented: Bool = false
+    // Gewählte interne Ad-ID (z.B. "ad01")
+    @Published var internalAdID: String? = nil
 }
 
 // Placeholder fuer den RTSP/VLC-Stream

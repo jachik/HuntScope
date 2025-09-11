@@ -31,16 +31,32 @@ class InterstitialViewModel: NSObject, ObservableObject, FullScreenContentDelega
   // Lifecycle hooks to inform UI / scheduler
   var onWillPresent: (() -> Void)?
   var onDidDismiss: (() -> Void)?
+  var onFailedToPresent: (() -> Void)?
+
+  // Readiness state so the scheduler can decide a fallback before presenting
+  @Published private(set) var isReady: Bool = false
+
+  // Compile-time selection of the ad unit ID
+  private var adUnitID: String {
+    #if DEBUG
+    return "ca-app-pub-3940256099942544/4411468910" // Google test interstitial
+    #else
+    return "ca-app-pub-6563188845008038/9484101483" // Production interstitial
+    #endif
+  }
 
   func loadAd() async {
     do {
       interstitialAd = try await InterstitialAd.load(
-        with: "ca-app-pub-3940256099942544/4411468910", request: Request())
+        with: adUnitID, request: Request())
+
       // [START set_the_delegate]
       interstitialAd?.fullScreenContentDelegate = self
       // [END set_the_delegate]
+      isReady = true
     } catch {
       print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+      isReady = false
     }
   }
   // [END load_ad]
@@ -50,7 +66,15 @@ class InterstitialViewModel: NSObject, ObservableObject, FullScreenContentDelega
     guard let interstitialAd = interstitialAd else {
       return print("Ad wasn't ready.")
     }
-
+    // Double-check presentability just before presenting
+    do {
+      try interstitialAd.canPresent(from: nil)
+    } catch {
+      print("Interstitial cannot present: \(error.localizedDescription)")
+      isReady = false
+      onFailedToPresent?()
+      return
+    }
     interstitialAd.present(from: nil)
   }
   // [END show_ad]
@@ -71,10 +95,14 @@ class InterstitialViewModel: NSObject, ObservableObject, FullScreenContentDelega
     didFailToPresentFullScreenContentWithError error: Error
   ) {
     print("\(#function) called")
+    isReady = false
+    interstitialAd = nil
+    onFailedToPresent?()
   }
 
   func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
     print("\(#function) called")
+    isReady = false
     onWillPresent?()
   }
 
@@ -86,6 +114,7 @@ class InterstitialViewModel: NSObject, ObservableObject, FullScreenContentDelega
     print("\(#function) called")
     // Clear the interstitial ad.
     interstitialAd = nil
+    isReady = false
     onDidDismiss?()
   }
   // [END ad_events]

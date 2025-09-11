@@ -103,9 +103,10 @@ import SwiftUI
                 }
 
                 // 4) Vollbild Interner AdDialog (oberster Layer)
-                if ui.isAdDialogPresented {
-                    AdDialog(adID: "ad01", onClose: {
+                if ui.isAdDialogPresented, let adID = ui.internalAdID {
+                    AdDialog(adID: adID, onClose: {
                         ui.isAdDialogPresented = false
+                        ui.internalAdID = nil
                     })
                     .onAppear {
                         ui.isAdActive = true
