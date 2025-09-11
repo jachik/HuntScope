@@ -24,6 +24,7 @@
 		318A682B2E70879700157774 /* UserMessagingPlatform.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68282E70879700157774 /* UserMessagingPlatform.xcframework */; };
 		318A682C2E70879700157774 /* UserMessagingPlatform.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68282E70879700157774 /* UserMessagingPlatform.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		318A682F2E7089D000157774 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A682E2E7089D000157774 /* JavaScriptCore.framework */; };
+		318A68FE2E731FBD00157774 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68FD2E731FBD00157774 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		318A68272E70879700157774 /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:EQHXZ8M8AV:Google LLC"; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = "Frameworks/GoogleMobileAdsSdkiOS-12.11.0/GoogleMobileAds.xcframework"; sourceTree = "<group>"; };
 		318A68282E70879700157774 /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:EQHXZ8M8AV:Google LLC"; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = "Frameworks/GoogleMobileAdsSdkiOS-12.11.0/UserMessagingPlatform.xcframework"; sourceTree = "<group>"; };
 		318A682E2E7089D000157774 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		318A68FD2E731FBD00157774 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -119,6 +121,7 @@
 				318A67D82E6F400E00157774 /* QuartzCore.framework in Frameworks */,
 				318A67DB2E6F405F00157774 /* libz.tbd in Frameworks */,
 				318A682F2E7089D000157774 /* JavaScriptCore.framework in Frameworks */,
+				318A68FE2E731FBD00157774 /* StoreKit.framework in Frameworks */,
 				318A67CC2E6F3FBA00157774 /* AVFoundation.framework in Frameworks */,
 				318A67DC2E6F406500157774 /* libbz2.tbd in Frameworks */,
 				318A68292E70879700157774 /* GoogleMobileAds.xcframework in Frameworks */,
@@ -176,6 +179,7 @@
 		318A67B42E6F388C00157774 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				318A68FD2E731FBD00157774 /* StoreKit.framework */,
 				318A682E2E7089D000157774 /* JavaScriptCore.framework */,
 				318A68272E70879700157774 /* GoogleMobileAds.xcframework */,
 				318A68282E70879700157774 /* UserMessagingPlatform.xcframework */,

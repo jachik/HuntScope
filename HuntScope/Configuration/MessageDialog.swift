@@ -17,7 +17,7 @@ struct MessageDialog: View {
 
     init(title: String,
          message: String,
-         buttonTitle: String = "OK",
+         buttonTitle: String = String(localized: "_configuration_ok"),
          onClose: @escaping () -> Void) {
         self.title = title
         self.message = message

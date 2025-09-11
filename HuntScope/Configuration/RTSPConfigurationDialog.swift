@@ -27,7 +27,7 @@ struct RTSPConfigurationDialog: View {
     @State private var acTitleNotFound: String? = nil
 
     var body: some View {
-        DialogContainer(title: "Stream-Konfiguration", backgroundOpacity: 0.7, onClose: {
+        DialogContainer(title: "_configuration_stream_title", backgroundOpacity: 0.7, onClose: {
             ui.isDialogActive = false
             ui.activeDialog = nil
         }) {
@@ -46,8 +46,8 @@ struct RTSPConfigurationDialog: View {
                             Image(systemName: "bolt.badge.automatic")
                                 .font(.title2)
                                 .foregroundStyle(primary)
-                            Text("Auto-Connect").bold()
- 
+                            Text("_configuration_auto_connect").bold()
+
                         }
                         .font(.title.weight(.semibold))
                         .foregroundStyle(primary)
@@ -75,7 +75,7 @@ struct RTSPConfigurationDialog: View {
                                 withAnimation(.easeInOut(duration: 0.25)) { showManual.toggle() }
                             } label: {
                                 HStack(spacing: 6) {
-                                    Text("Manuelle Konfiguration")
+                                    Text("_configuration_manual_configuration")
                                     Image(systemName: showManual ? "chevron.up" : "chevron.down")
                                 }
                                 .font(.body.weight(.semibold))
@@ -97,12 +97,12 @@ struct RTSPConfigurationDialog: View {
                     if showManual {
                         VStack(alignment: .leading, spacing: 8) {
                             Spacer(minLength: 7)
-                            Text("Kamera-URL (in der Form rtsp://IP/Ressource)")
+                            Text("_configuration_camera_url_label")
                                 .font(.body.weight(.semibold))
                                 .foregroundStyle(primary.opacity(0.9))
 
                             HStack(spacing: 12) {
-                                TextField("rtsp://…", text: Binding(
+                                TextField(String(localized: "_configuration_camera_url_placeholder"), text: Binding(
                                     get: { config.customStreamURL },
                                     set: { config.customStreamURL = $0 }
                                 ))
@@ -119,7 +119,7 @@ struct RTSPConfigurationDialog: View {
                                 Button {
                                     testCustomURL()
                                 } label: {
-                                    Text("Verbindungstest").bold()
+                                    Text("_configuration_connection_test").bold()
                                         .foregroundStyle(primary)
                                         .padding(.horizontal, 14)
                                         .padding(.vertical, 8)
@@ -170,9 +170,9 @@ struct RTSPConfigurationDialog: View {
                         .ignoresSafeArea()
                         .transition(.opacity)
 
-                    MessageDialog(title: "WLAN benötigt",
-                                   message: "Bitte WLAN aktivieren und mit Kamera verbinden.",
-                                   buttonTitle: "OK",
+                    MessageDialog(title: String(localized: "_configuration_wifi_required_title"),
+                                   message: String(localized: "_configuration_wifi_required_message"),
+                                   buttonTitle: String(localized: "_configuration_ok"),
                                    onClose: { showWiFiAlert = false })
                     .environmentObject(config)
                     .transition(.opacity)
@@ -218,14 +218,14 @@ extension RTSPConfigurationDialog {
         guard !url.isEmpty else { return }
         // Format-Validierung: rtsp://<IP>[:PORT]/<RESSOURCE>
         guard validateRTSPIv4URL(url) else {
-            testResult = "Ungültige URL. Erwartet: rtsp://<IP>[:PORT]/<RESSOURCE> (z. B. rtsp://192.168.1.10:554/stream)"
+            testResult = String(localized: "_configuration_invalid_url_message")
             return
         }
 
         // Zeige Verbindungsdialog
-        acTitleScanning = "Verbindung wird aufgebaut"
-        acTitleSuccess = "Verbindung erfolgreich"
-        acTitleNotFound = "Keine Verbindung"
+        acTitleScanning = String(localized: "_configuration_connection_establishing")
+        acTitleSuccess = String(localized: "_configuration_connection_success")
+        acTitleNotFound = String(localized: "_configuration_connection_failed")
         acState = .scanning
         showAutoConnect = true
 

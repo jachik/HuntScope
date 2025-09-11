@@ -21,12 +21,12 @@ struct FirstLaunchPromptView: View {
     @State private var acTitleNotFound: String? = nil
 
     private var message: String {
-        "Du startest die App das erste Mal. Sollen wir deine Wärmebildkamera automatisch ermitteln? (Dafür musst du bereits mit dem WLAN der Kamera verbunden sein.)"
+        String(localized: "_configuration_first_launch_body")
     }
 
     var body: some View {
         ZStack {
-            DialogContainer(title: "Erststart", backgroundOpacity: 0.7, onClose: {
+            DialogContainer(title: "_configuration_first_launch_title", backgroundOpacity: 0.7, onClose: {
                 // Nicht erneut anzeigen
                 ConfigManager.shared.hasLaunchedBefore = true
                 ui.activeDialog = nil
@@ -43,7 +43,7 @@ struct FirstLaunchPromptView: View {
                             ui.activeDialog = nil
                             ui.isDialogActive = false
                         } label: {
-                            Text("Nein, später")
+                            Text("_configuration_first_launch_no_later")
                                 .bold()
                                 .padding(.horizontal, 14)
                                 .padding(.vertical, 8)
@@ -60,7 +60,7 @@ struct FirstLaunchPromptView: View {
                         } label: {
                             HStack(spacing: 6) {
                                 Image(systemName: "bolt.badge.automatic")
-                                Text("Ja, automatisch suchen")
+                                Text("_configuration_first_launch_yes_auto")
                             }
                             //.font(system.weight.semibold)
                             .padding(.horizontal, 14)
@@ -112,9 +112,9 @@ struct FirstLaunchPromptView: View {
                     .ignoresSafeArea()
                     .transition(.opacity)
 
-                MessageDialog(title: "WLAN benötigt",
-                               message: "Bitte WLAN aktivieren und mit Kamera verbinden.",
-                               buttonTitle: "OK",
+                MessageDialog(title: String(localized: "_configuration_wifi_required_title"),
+                               message: String(localized: "_configuration_wifi_required_message"),
+                               buttonTitle: String(localized: "_configuration_ok"),
                                onClose: { showWiFiAlert = false })
                 .environmentObject(config)
                 .transition(.opacity)

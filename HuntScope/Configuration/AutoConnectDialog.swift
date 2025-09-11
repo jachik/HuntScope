@@ -49,7 +49,7 @@ struct AutoConnectDialog: View {
                 .buttonStyle(.plain)
             } else {
                 Button(action: onClose) {
-                    Text("Schließen").bold()
+                    Text("_configuration_close").bold()
                         .foregroundStyle(primary)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
@@ -73,9 +73,9 @@ struct AutoConnectDialog: View {
 
     private var titleText: String {
         switch state {
-        case .scanning: return scanningTitle ?? "Kameras werden gesucht"
-        case .success: return successTitle ?? "Erfolgreich"
-        case .notFound: return notFoundTitle ?? "Kamera nicht gefunden"
+        case .scanning: return scanningTitle ?? String(localized: "_configuration_autoconnect_scanning")
+        case .success: return successTitle ?? String(localized: "_configuration_autoconnect_success")
+        case .notFound: return notFoundTitle ?? String(localized: "_configuration_autoconnect_not_found")
         }
     }
 }

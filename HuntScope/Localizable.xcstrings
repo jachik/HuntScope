@@ -14,6 +14,35 @@
             "state" : "translated",
             "value" : "Activate HuntScope Premium"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktywuj HuntScope Premium"
+          }
+        }
+      }
+    },
+    "_ad_asset_not_found" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Werbemittel nicht gefunden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ad asset not found"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie znaleziono materiału reklamowego"
+          }
         }
       }
     },
@@ -29,6 +58,496 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Camera configuration"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konfiguracja kamery"
+          }
+        }
+      }
+    },
+    "_configuration_auto_connect" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto-Connect"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto‑Connect"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto‑połączenie"
+          }
+        }
+      }
+    },
+    "_configuration_autoconnect_not_found" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera nicht gefunden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera not found"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie znaleziono kamery"
+          }
+        }
+      }
+    },
+    "_configuration_autoconnect_scanning" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kameras werden gesucht"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Searching for cameras"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyszukiwanie kamer"
+          }
+        }
+      }
+    },
+    "_configuration_autoconnect_success" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erfolgreich"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Successful"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomyślnie"
+          }
+        }
+      }
+    },
+    "_configuration_camera_url_label" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera-URL (in der Form rtsp://IP/Ressource)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera URL (format rtsp://IP/resource)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres URL kamery (format rtsp://IP/zasób)"
+          }
+        }
+      }
+    },
+    "_configuration_camera_url_placeholder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rtsp://…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rtsp://…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rtsp://…"
+          }
+        }
+      }
+    },
+    "_configuration_close" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamknij"
+          }
+        }
+      }
+    },
+    "_configuration_connection_establishing" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindung wird aufgebaut"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establishing connection"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nawiązywanie połączenia"
+          }
+        }
+      }
+    },
+    "_configuration_connection_failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Verbindung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No connection"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak połączenia"
+          }
+        }
+      }
+    },
+    "_configuration_connection_success" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindung erfolgreich"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection successful"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Połączenie udane"
+          }
+        }
+      }
+    },
+    "_configuration_connection_test" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbindungstest"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection Test"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test połączenia"
+          }
+        }
+      }
+    },
+    "_configuration_first_launch_body" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du startest die App das erste Mal. Sollen wir deine Wärmebildkamera automatisch ermitteln? (Dafür musst du bereits mit dem WLAN der Kamera verbunden sein.)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is your first time using the app. Should we automatically detect your thermal camera? (You must already be connected to the camera's Wi‑Fi.)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To Twoje pierwsze uruchomienie aplikacji. Czy wykryć automatycznie Twoją kamerę termowizyjną? (Musisz być już połączony z siecią Wi‑Fi kamery.)"
+          }
+        }
+      }
+    },
+    "_configuration_first_launch_no_later" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nein, später"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No, later"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie, później"
+          }
+        }
+      }
+    },
+    "_configuration_first_launch_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erststart"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Launch"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pierwsze uruchomienie"
+          }
+        }
+      }
+    },
+    "_configuration_first_launch_yes_auto" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja, automatisch suchen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes, search automatically"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tak, wyszukaj automatycznie"
+          }
+        }
+      }
+    },
+    "_configuration_invalid_url_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungültige URL. Erwartet: rtsp://<IP>[:PORT]/<RESSOURCE> (z. B. rtsp://192.168.1.10:554/stream)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid URL. Expected: rtsp://<IP>[:PORT]/<RESOURCE> (e.g., rtsp://192.168.1.10:554/stream)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieprawidłowy URL. Oczekiwano: rtsp://<IP>[:PORT]/<ZASÓB> (np. rtsp://192.168.1.10:554/stream)"
+          }
+        }
+      }
+    },
+    "_configuration_manual_configuration" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manuelle Konfiguration"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manual Configuration"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konfiguracja ręczna"
+          }
+        }
+      }
+    },
+    "_configuration_ok" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "_configuration_stream_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stream-Konfiguration"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stream Configuration"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konfiguracja strumienia"
+          }
+        }
+      }
+    },
+    "_configuration_test_body" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dies ist ein Test-Dialog auf Basis des DialogContainer."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is a test dialog based on DialogContainer."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To jest dialog testowy oparty na DialogContainer."
+          }
+        }
+      }
+    },
+    "_configuration_test_note" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hier könnten deine spezifischen Einstellungen stehen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your specific settings could go here."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutaj mogą znaleźć się Twoje ustawienia."
+          }
+        }
+      }
+    },
+    "_configuration_test_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test-Konfiguration"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test Configuration"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konfiguracja testowa"
           }
         }
       }
@@ -47,6 +566,56 @@
             "state" : "translated",
             "value" : "Configuration"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konfiguracja"
+          }
+        }
+      }
+    },
+    "_configuration_wifi_required_message" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte WLAN aktivieren und mit Kamera verbinden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enable Wi‑Fi and connect to the camera."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz Wi‑Fi i połącz się z kamerą."
+          }
+        }
+      }
+    },
+    "_configuration_wifi_required_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WLAN benötigt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi‑Fi Required"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wymagane Wi‑Fi"
+          }
         }
       }
     },
@@ -64,6 +633,12 @@
             "state" : "translated",
             "value" : "Click here to open the privacy policy in your browser."
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kliknij tutaj, aby otworzyć politykę prywatności w przeglądarce."
+          }
         }
       }
     },
@@ -79,6 +654,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Privacy Policy"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polityka prywatności"
           }
         }
       }
@@ -96,6 +677,12 @@
             "state" : "translated",
             "value" : "Jacek Schikora\nHaydnstr. 18\n56154 Boppard, Germany\n\nEmail: info@j-s-edv.de\nVAT ID: DE231106128\nResponsible for content pursuant to Section 18 (2) MStV: Jacek Schikora, address as above.\n\nSubscriptions are handled exclusively via Apple (App Store).\n\nNotice pursuant to Section 36 VSBG (Consumer Dispute Resolution Act):\nWe are neither obliged nor willing to participate in dispute resolution proceedings before a consumer arbitration board."
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jacek Schikora\nHaydnstr. 18\n56154 Boppard, Niemcy\n\nE-mail: info@j-s-edv.de\nNIP (VAT UE): DE231106128\nOsoba odpowiedzialna za treść zgodnie z § 18 ust. 2 MStV: Jacek Schikora, adres jak wyżej.\n\nSubskrypcje są realizowane wyłącznie za pośrednictwem Apple (App Store).\n\nInformacja zgodnie z § 36 VSBG (ustawa o pozasądowym rozwiązywaniu sporów konsumenckich):\nNie jesteśmy zobowiązani ani nie wyrażamy gotowości do udziału w postępowaniach w sprawie rozstrzygania sporów przed konsumencką jednostką arbitrażową."
+          }
         }
       }
     },
@@ -112,6 +699,12 @@
             "state" : "translated",
             "value" : "Imprint"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nota prawna"
+          }
         }
       }
     },
@@ -119,49 +712,17 @@
 
     },
     "Ad asset not found" : {
-
-    },
-    "Auto-Connect" : {
-
-    },
-    "Dies ist ein Test-Dialog auf Basis des DialogContainer." : {
-
-    },
-    "Erststart" : {
-
-    },
-    "Hier könnten deine spezifischen Einstellungen stehen." : {
-
-    },
-    "Ja, automatisch suchen" : {
-
-    },
-    "Kamera-URL (in der Form rtsp://IP/Ressource)" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Werbung nicht gefunden"
+          }
+        }
+      }
     },
     "Key" : {
       "extractionState" : "manual"
-    },
-    "Manuelle Konfiguration" : {
-
-    },
-    "Nein, später" : {
-
-    },
-    "rtsp://…" : {
-
-    },
-    "Schließen" : {
-
-    },
-    "Stream-Konfiguration" : {
-
-    },
-    "Test-Konfiguration" : {
-
-    },
-    "Verbindungstest" : {
-
     },
     "Werbung kann in %lld Sekunden geschlossen werden" : {
 

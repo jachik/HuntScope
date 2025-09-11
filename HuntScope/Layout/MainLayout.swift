@@ -11,7 +11,7 @@ import SwiftUI
     struct MainLayout<DialogButtons: View, DialogContent: View>: View {
         @EnvironmentObject private var ui: UIStateModel
         @EnvironmentObject private var config: ConfigStore
-        @StateObject private var player = PlayerController()
+        //@StateObject private var player = PlayerController()
         
 
 

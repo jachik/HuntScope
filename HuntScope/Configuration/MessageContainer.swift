@@ -17,7 +17,7 @@ struct MessageContainer: View {
 
     private var primary: Color { (config.theme == .red) ? .red : .white }
 
-    init(message: String, buttonTitle: String = "OK", onClose: @escaping () -> Void) {
+    init(message: String, buttonTitle: String = String(localized: "_configuration_ok"), onClose: @escaping () -> Void) {
         self.message = message
         self.buttonTitle = buttonTitle
         self.onClose = onClose
@@ -51,4 +51,3 @@ struct MessageContainer: View {
         .shadow(radius: 8)
     }
 }
-

@@ -35,15 +35,16 @@ TODO - vor Launch:
 - [x] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
 - [] Eigenen Werbespot erstellen
 - [] RTSP-Streams sammeln (Apps laden und zerpflücken)
-- [] Datenschutzerklärung Text größer
+- [x] Datenschutzerklärung Text größer
 
 12.09.
 - App-Beschreibung einfügen
+- Screenshots App
 13.09.
 - [] Abo (vermutlich 2-3 Std.)
 - [] Lokalisierung (letzter Schritt ca. 2 Std.)
 14.09.
-- [] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
+- [x] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
 - [] Datenschutzvereinbarung prüfen
 15.09. 
 ->>>>> Launch
@@ -52,6 +53,8 @@ Optional, wenn noch Zeit ist:
 - [] Mondphase und Zeiten
 - [] Videostream nicht beenden, wenn Werbung angezeigt wird
 - [] Der CountDown, wann WErbung angezegit wird, beginnt mit dem Anzeigen - nicht mit dem Schließen - d.h. es kann sein, dass WErbung mehrfach hintereinander gezeigt wird
+- [] Versionsnumer der App und des bilds in die Konfiguration übernehmen, um prüfen zu können, dass eine neue Version installiert wurde
+
 Erledigt:
 - [x] WErbung (vermutlich 2-3 Std.)
 - [x] Hintergrundbild auch weiß

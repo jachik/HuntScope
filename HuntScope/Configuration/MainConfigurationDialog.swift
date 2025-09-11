@@ -102,7 +102,7 @@ struct MainConfigurationDialog: View {
                 //Link("Zum Öffnen der Datenschutzerklärung im Browser bitte hier klicken",
                 Link("_dsgvo_body",
                      destination: URL(string: "https://s5j.de/huntscope_datenschutz.html")!)
-                    .font(.footnote)
+                    .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(primary.opacity(0.9))
             }
