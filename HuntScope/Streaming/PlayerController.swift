@@ -6,6 +6,8 @@
 import Foundation
 import SwiftUI
 import MobileVLCKit
+import Photos
+import CoreLocation
 
 /// Platzhalter: Kein VLC, keine I/O.
 /// Nur Zustände und leere Methoden, damit die UI bereits funktioniert.
@@ -33,6 +35,9 @@ final class PlayerController: NSObject, ObservableObject {
     private var intentionallyStopped = false
     private var currentURLString: String? = nil
     private var currentRecordingURL: URL? = nil
+    private var recordingSessionBase: String? = nil
+    private var recordingSegmentIndex: Int = 0
+    private var startNewSegmentOnNextPlay: Bool = false
 
     // MARK: - Init
     override init() {
@@ -57,7 +62,20 @@ final class PlayerController: NSObject, ObservableObject {
         lastFrameAt = nil
         currentURLString = urlString
 
-        let media = buildMedia(url: url, recordingTo: currentRecordingURL)
+        // If recording is active, ensure we have a target URL and roll segment when requested
+        var recURL = currentRecordingURL
+        if isRecording {
+            if let dir = ensureRecordingsDirectory() {
+                if recordingSessionBase == nil { recordingSessionBase = makeRecordingBaseName() }
+                if startNewSegmentOnNextPlay || recURL == nil {
+                    recURL = nextRecordingURL(in: dir)
+                    currentRecordingURL = recURL
+                    startNewSegmentOnNextPlay = false
+                    debugLog("record segment started -> \(recURL!.lastPathComponent)", "Player")
+                }
+            }
+        }
+        let media = buildMedia(url: url, recordingTo: recURL)
         vlcPlayer.media = media
         vlcPlayer.delegate = self
         if let surface = surfaceView { vlcPlayer.drawable = surface }
@@ -78,10 +96,56 @@ final class PlayerController: NSObject, ObservableObject {
         stopSignalWatchdog()
     }
 
-    /// "Foto" – Platzhalter, setzt nur den Snapshot-Zustand zurück.
+    /// Foto-Snapshot: Wasserzeichen und optional Standort in Fotos-Mediathek speichern.
     func takePhoto() {
-        // TODO: später Snapshot-Datei erzeugen und URL setzen
-        lastSnapshotURL = nil
+        Task { @MainActor in
+            let ts = Self.snapshotTimestamp()
+            let fileName = "HuntScope_\(ts).jpg"
+            // Request Photos permission (add-only) 
+            guard await Self.ensurePhotoPermission() else {
+                debugLog("Photo permission denied", "Snapshot")
+                return
+            }
+            // Create temp path and ask VLC to write a snapshot
+            let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+            vlcPlayer.saveVideoSnapshot(at: tmpURL.path, withWidth: 0, andHeight: 0)
+
+            // Load an image (from file or VLC lastSnapshot)
+            var baseImage: UIImage? = UIImage(contentsOfFile: tmpURL.path)
+            if baseImage == nil { baseImage = vlcPlayer.lastSnapshot }
+            guard let image = baseImage else {
+                debugLog("Failed to capture snapshot image", "Snapshot")
+                return
+            }
+
+            // Apply watermark
+            let watermarked = Self.renderWatermarked(image: image, text: "HuntScope")
+            guard let data = watermarked.jpegData(compressionQuality: 0.9) else {
+                debugLog("Failed to encode watermarked JPEG", "Snapshot")
+                return
+            }
+
+            // Try to attach location (optional)
+            let location = await OneShotLocation.shared.currentLocation()
+
+            PHPhotoLibrary.shared().performChanges({
+                let req = PHAssetCreationRequest.forAsset()
+                let opts = PHAssetResourceCreationOptions()
+                opts.originalFilename = fileName
+                req.addResource(with: .photo, data: data, options: opts)
+                req.creationDate = Date()
+                if let loc = location { req.location = loc }
+            }, completionHandler: { success, error in
+                Task { @MainActor in
+                    if success {
+                        debugLog("Snapshot saved: \(fileName)", "Snapshot")
+                    } else {
+                        debugLog("Snapshot save failed: \(error?.localizedDescription ?? "unknown")", "Snapshot")
+                    }
+                }
+            })
+            try? FileManager.default.removeItem(at: tmpURL)
+        }
     }
 
     /// Aufnahme starten/stoppen – nur Status.
@@ -92,19 +156,25 @@ final class PlayerController: NSObject, ObservableObject {
             debugLog("recordings directory unavailable", "Player")
             return
         }
-        let fileURL = recordingsDir.appendingPathComponent(makeRecordingFileName())
+        // Start neue Session und erstes Segment
+        recordingSessionBase = makeRecordingBaseName()
+        recordingSegmentIndex = 0
+        let fileURL = nextRecordingURL(in: recordingsDir)
         currentRecordingURL = fileURL
+        startNewSegmentOnNextPlay = false
         isRecording = true
         debugLog("record start -> \(fileURL.lastPathComponent)", "Player")
-        // Läuft bereits? -> mit sout neu starten (kurzer Reconnect)
-        if let urlStr = currentURLString, !urlStr.isEmpty, isPlaying {
+        // Wenn eine URL bekannt ist, Player mit Aufnahme neu binden (State egal)
+        if let urlStr = currentURLString, !urlStr.isEmpty {
             // Neustart mit Aufnahme
+            intentionallyStopped = true
             vlcPlayer.stop()
             let url = URL(string: urlStr)!
             let media = buildMedia(url: url, recordingTo: fileURL)
             vlcPlayer.media = media
             if let surface = surfaceView { vlcPlayer.drawable = surface }
             vlcPlayer.play()
+            intentionallyStopped = false
         }
     }
 
@@ -113,15 +183,20 @@ final class PlayerController: NSObject, ObservableObject {
         isRecording = false
         let lastFile = currentRecordingURL
         currentRecordingURL = nil
+        recordingSessionBase = nil
+        recordingSegmentIndex = 0
+        startNewSegmentOnNextPlay = false
         debugLog("record stop (file=\(lastFile?.lastPathComponent ?? "nil"))", "Player")
-        // Läuft bereits? -> ohne sout neu starten (kurzer Reconnect)
-        if let urlStr = currentURLString, !urlStr.isEmpty, isPlaying {
+        // Wenn eine URL bekannt ist, Player ohne Aufnahme neu binden (State egal)
+        if let urlStr = currentURLString, !urlStr.isEmpty {
+            intentionallyStopped = true
             vlcPlayer.stop()
             let url = URL(string: urlStr)!
             let media = buildMedia(url: url, recordingTo: nil)
             vlcPlayer.media = media
             if let surface = surfaceView { vlcPlayer.drawable = surface }
             vlcPlayer.play()
+            intentionallyStopped = false
         }
     }
 
@@ -133,19 +208,99 @@ final class PlayerController: NSObject, ObservableObject {
     // MARK: - Media/Recording Helpers
     private func buildMedia(url: URL, recordingTo: URL?) -> VLCMedia {
         let media = VLCMedia(url: url)
-        var opts: [String: Any] = [
-            //"rtsp-tcp": true,
-            "network-caching": 300
-        ]
+        
+        // die folgenden Optionen sind für eine
+        // geringe Latenz sehr wichtig
+        media.addOption(":network-caching=120")
+        media.addOption(":live-caching=120")
+        media.addOption(":drop-late-frames")
+        media.addOption(":skip-frames")
+        media.addOption(":clock-synchro=0")
+        media.addOption(":clock-jitter=0")
+        media.addOption(":avcodec-fast")
+        media.addOption(":rtsp-caching=120")
+        media.addOption(":tcp-caching=0")
+        media.addOption(":file-caching=0")
+        media.addOption(":rtsp-mtu=1200")
+        media.addOption(":no-audio")
+        media.addOption(":no-zeroconf")
+        media.addOption(":services-discovery=")
+        media.addOption(":sap-timeout=0")
+        media.addOption(":ipv4")
+        media.addOption(":no-ipv6")
+        
         if let file = recordingTo {
-            let path = file.path
-            // Duplicate to display and file (MPEG-TS)
-            let sout = "#duplicate{dst=display,dst=std{access=file,mux=ts,dst=\(path)}}"
-            opts["sout"] = sout
-            opts["sout-keep"] = true
+            let path = file.path.replacingOccurrences(of: "'", with: "''")
+            // MP4-Datei (Container) – finalisiert beim Stop
+            let sout = ":sout=#duplicate{dst=display,dst=std{access=file,mux=mp4,dst='\(path)'}}"
+            media.addOption(sout)
+            media.addOption(":sout-all")
+            media.addOption(":sout-keep")
+            debugLog("sout=\(sout)", "Player")
         }
-        media.addOptions(opts)
+        //media.addOptions(opts)
         return media
+    }
+
+    // MARK: - Snapshot helpers
+    private static func snapshotTimestamp() -> String {
+        let df = DateFormatter()
+        df.dateFormat = "yyMMdd_HHmmss"
+        df.locale = Locale(identifier: "en_US_POSIX")
+        df.timeZone = .current
+        return df.string(from: Date())
+    }
+
+    private static func ensurePhotoPermission() async -> Bool {
+        if #available(iOS 14, *) {
+            let s = PHPhotoLibrary.authorizationStatus(for: .addOnly)
+            if s == .authorized { return true }
+            if s == .denied || s == .restricted { return false }
+            return await withCheckedContinuation { cont in
+                PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+                    cont.resume(returning: status == .authorized)
+                }
+            }
+        } else {
+            let s = PHPhotoLibrary.authorizationStatus()
+            if s == .authorized { return true }
+            if s == .denied || s == .restricted { return false }
+            return await withCheckedContinuation { cont in
+                PHPhotoLibrary.requestAuthorization { status in
+                    cont.resume(returning: status == .authorized)
+                }
+            }
+        }
+    }
+    
+    private static func renderWatermarked(image: UIImage, text: String) -> UIImage {
+        let size = image.size
+        let scale = image.scale
+        UIGraphicsBeginImageContextWithOptions(size, true, scale)
+        defer { UIGraphicsEndImageContext() }
+        image.draw(in: CGRect(origin: .zero, size: size))
+
+        // Watermark style
+        let fontSize = max(14, min(48, size.width * 0.03))
+        let font = UIFont.systemFont(ofSize: fontSize, weight: .semibold)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .right
+        let shadow = NSShadow()
+        shadow.shadowColor = UIColor.black.withAlphaComponent(0.6)
+        shadow.shadowBlurRadius = 3
+        shadow.shadowOffset = CGSize(width: 0, height: 1)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: UIColor.white,
+            .paragraphStyle: paragraph,
+            .shadow: shadow
+        ]
+        let inset: CGFloat = max(8, size.width * 0.015)
+        let textRect = CGRect(x: inset, y: size.height - inset - font.lineHeight,
+                              width: size.width - inset * 2, height: font.lineHeight)
+        (text as NSString).draw(in: textRect, withAttributes: attributes)
+
+        return UIGraphicsGetImageFromCurrentImageContext() ?? image
     }
 
     private func ensureRecordingsDirectory() -> URL? {
@@ -162,13 +317,26 @@ final class PlayerController: NSObject, ObservableObject {
         return dir
     }
 
-    private func makeRecordingFileName() -> String {
+    private func makeRecordingBaseName() -> String {
         let df = DateFormatter()
         df.dateFormat = "yyyyMMdd_HHmmss"
         df.locale = Locale(identifier: "en_US_POSIX")
         df.timeZone = .current
         let ts = df.string(from: Date())
-        return "HuntScope_\(ts).ts"
+        return "HuntScope_\(ts)"
+    }
+
+    private func nextRecordingURL(in dir: URL) -> URL {
+        recordingSegmentIndex += 1
+        let base = recordingSessionBase ?? makeRecordingBaseName()
+        if recordingSegmentIndex == 1 {
+            // Erstes Segment: kein Suffix, nur .mp4
+            return dir.appendingPathComponent("\(base).mp4")
+        } else {
+            // Ab zweitem Segment: _partXX.mp4
+            let name = String(format: "%@_part%02d.mp4", base, recordingSegmentIndex)
+            return dir.appendingPathComponent(name)
+        }
     }
 
     // MARK: - Signal-Überwachung
@@ -216,6 +384,7 @@ extension PlayerController: VLCMediaPlayerDelegate {
             isConnected = false
             hasStreamSignal = false
             if !intentionallyStopped {
+                if isRecording { startNewSegmentOnNextPlay = true }
                 scheduleReconnect()
             }
         default:

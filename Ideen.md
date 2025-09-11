@@ -25,20 +25,28 @@ TODO - vor Launch:
 - [X] Konfigurationsdialog RTSP (2 Std))
 - [x] RTSP-Scanner (Vermutlich 1 Tag)
 11.09.
-- [] RTSP-Viewer (vermutlich 1 Tag)
-- [] Videos aufnehmen
-- [] Fotos erstellen
+- [x] RTSP-Viewer (vermutlich 1 Tag)
+- [x] Videos aufnehmen
+- [x] Aunahmebutton soll blinken
+- [x] Fotos erstellen
 - [] custom-URL prüfen
-12.09.
 - [] RTSP-Streams sammeln (Apps laden und zerflücken)
+12.09.
+- App-Beschreibung einfügen
+- Dokumentation?
 13.09.
 - [] Abo (vermutlich 2-3 Std.)
 - [] Lokalisierung (letzter Schritt ca. 2 Std.)
 - [] Homepage: Datenschutz + Impressum 
 14.09.
 - [] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
+- [] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
 15.09. 
-- Launch
+->>>>> Launch
+Optional, wenn noch Zeit ist:
+- [] Uhrzeit, Temeperatur und Windgeschwindigkeit
+- [] Mondphase und Zeiten
+
 Erledigt:
 - [x] WErbung (vermutlich 2-3 Std.)
 - [x] Hintergrundbild auch weiß
@@ -80,4 +88,10 @@ Dieser neue Konfigurationsdialog hat einen Button "Auto-Connect" und alternativ 
   ]
 }
 	
-Der Ordner Recordings ist da, aber es wurde nichts aufgezeichnet
+Die nächste Aufgabe auf der Todo-Liste ist: Snapshots
+Bitte implementiere die Möglichkeit, snapshosts zu machen. Diese sollen in der Fotobibliothek abgelegt werden (sind dafür irgendwelche Rechte notwendig?). D.h. wenn der User auf de Snapshot-Button drück, landet ein Bild in der Fotobibliothek. 
+
+WEnn ich die Konfiguration verlasse, wird kurz das Fehlersymbol eingeblendet und auch die Wassermarke. Diese sollte doch gar nicht mehr erscheinen. wie kann das sein?
+
+
+Ich habe die Verbindung zur Kamera testweise beendet und es wurde wieder das Wasserzeichen im Hintergrund angezeigt. Bitte prüfe den Code, warum das Wasserzeichen immer noch angezeigt wird. 

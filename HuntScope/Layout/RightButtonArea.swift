@@ -7,6 +7,7 @@
 
 // Datei: RightButtonArea.swift
 import SwiftUI
+import Combine
 
 struct RightButtonArea: View {
     @EnvironmentObject private var ui: UIStateModel
@@ -15,6 +16,7 @@ struct RightButtonArea: View {
     @StateObject private var battery = BatteryMonitor()
 
     private let spacing: CGFloat = 16
+    @State private var recordFlashOn: Bool = false
 
     var body: some View {
         VStack(spacing: spacing) {
@@ -30,7 +32,7 @@ struct RightButtonArea: View {
             }
             .disabled(!player.hasStreamSignal || ui.isDialogActive)
 
-            SidebarButton(systemName: player.isRecording ? "stop.circle" : "record.circle",
+            SidebarButton(systemName: (player.isRecording ? (recordFlashOn ? "record.circle.fill" : "record.circle") : "record.circle"),
                           pulsing: player.isRecording) {
                 if player.isRecording {
                     player.stopRecording()
@@ -39,6 +41,14 @@ struct RightButtonArea: View {
                 }
             }
             .disabled(!player.hasStreamSignal || ui.isDialogActive)
+            // Blink-Animation waehrend Aufnahme
+            .onReceive(Timer.publish(every: 0.6, on: .main, in: .common).autoconnect()) { _ in
+                if player.isRecording {
+                    withAnimation(.easeInOut(duration: 0.25)) { recordFlashOn.toggle() }
+                } else if recordFlashOn {
+                    recordFlashOn = false
+                }
+            }
 
             Spacer()
 

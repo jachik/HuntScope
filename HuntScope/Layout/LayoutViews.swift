@@ -21,6 +21,8 @@ final class UIStateModel: ObservableObject {
     @Published var isDialogActive: Bool = false
     // Persisted snapshot of the splash's last frame
     @Published var lastSplashFrame: UIImage? = nil
+    // After first successful video, keep watermark hidden forever (until app relaunch)
+    @Published var splashWatermarkLockedOff: Bool = false
     // Aktiver Dialog-Typ (nil = keiner)
     @Published var activeDialog: DialogKind? = nil
     // Vollbild-Werbung aktiv (unterdrueckt Overlays kurzfristig)
@@ -44,9 +46,15 @@ struct StreamView: View {
 
             // Signal-Definition: ausschliesslich basierend auf dem letzten Frame-Timestamp
             let hasSignal = player.hasStreamSignal
+            // Unterdruecke Overlays waehrend aktiver Werbung oder fuer kurze Zeit nach Schliessen
+            let overlaysSuppressed: Bool = {
+                if ui.isAdActive { return true }
+                if let until = ui.suppressOverlaysUntil { return until > Date() }
+                return false
+            }()
 
             // Overlay the last splash frame only when no frames/signal are present
-            if !hasSignal, let image = ui.lastSplashFrame {
+            if !hasSignal, !overlaysSuppressed, !ui.splashWatermarkLockedOff, let image = ui.lastSplashFrame {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
@@ -55,8 +63,8 @@ struct StreamView: View {
                     .allowsHitTesting(false)
             }
 
-            // No-connection indicator: show only when there is truly no signal
-            if !hasSignal {
+            // No-connection indicator: hide while configuration dialogs are active
+            if !hasSignal, !overlaysSuppressed, !ui.isDialogActive {
                 GeometryReader { geo in
                     let side = min(geo.size.width, geo.size.height) * 0.6
                     let primary: Color = (config.theme == .red) ? .red : .white
@@ -81,14 +89,16 @@ struct StreamView: View {
         }
         .ignoresSafeArea()
         // Sobald echter Stream laeuft, Splash-Wasserzeichen dauerhaft entfernen
-        .onChange(of: player.hasStreamSignal) { _ in
-            if player.isPlaying && player.hasStreamSignal {
+        .onChange(of: player.hasStreamSignal) { hasSignal in
+            if hasSignal {
                 ui.lastSplashFrame = nil
+                ui.splashWatermarkLockedOff = true
             }
         }
         .onChange(of: player.isPlaying) { _ in
-            if player.isPlaying && player.hasStreamSignal {
+            if player.hasStreamSignal {
                 ui.lastSplashFrame = nil
+                ui.splashWatermarkLockedOff = true
             }
         }
     }

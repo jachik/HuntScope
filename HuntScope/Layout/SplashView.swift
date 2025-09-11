@@ -50,8 +50,9 @@ struct SplashView: View {
                 p.isMuted = true
                 p.actionAtItemEnd = .pause // letztes Frame stehen lassen
                 p.currentItem?.preferredForwardBufferDuration = 0
-                // Capture last frame once for use as background overlay later
-                if let snapshot = Self.captureLastFrame(from: url) {
+                // Capture last frame only if watermark not permanently disabled yet
+                if !ui.splashWatermarkLockedOff, ui.lastSplashFrame == nil,
+                   let snapshot = Self.captureLastFrame(from: url) {
                     // Store centrally so StreamView can overlay it
                     ui.lastSplashFrame = snapshot
                 }

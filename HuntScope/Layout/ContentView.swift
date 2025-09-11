@@ -44,6 +44,9 @@ struct ContentView: View {
             if active {
                 player.stop()
             } else if !config.streamURL.isEmpty {
+                // Unterdrücke Overlays kurz nach dem Schließen des Dialogs,
+                // damit kein kurzes "Kein Signal"/Wasserzeichen-Flicker sichtbar ist
+                ui.suppressOverlaysUntil = Date().addingTimeInterval(2.0)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     player.play(urlString: config.streamURL)
                 }

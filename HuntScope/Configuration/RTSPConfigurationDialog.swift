@@ -216,6 +216,11 @@ extension RTSPConfigurationDialog {
         if !wifi.snapshot.isWiFiConnected { showWiFiAlert = true; return }
         let url = config.customStreamURL.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !url.isEmpty else { return }
+        // Format-Validierung: rtsp://<IP>[:PORT]/<RESSOURCE>
+        guard validateRTSPIv4URL(url) else {
+            testResult = "Ungültige URL. Erwartet: rtsp://<IP>[:PORT]/<RESSOURCE> (z. B. rtsp://192.168.1.10:554/stream)"
+            return
+        }
 
         // Zeige Verbindungsdialog
         acTitleScanning = "Verbindung wird aufgebaut"
@@ -235,5 +240,27 @@ extension RTSPConfigurationDialog {
                 acState = .notFound
             }
         }
+    }
+}
+
+// MARK: - URL Validation
+private extension RTSPConfigurationDialog {
+    func validateRTSPIv4URL(_ s: String) -> Bool {
+        guard let comps = URLComponents(string: s) else { return false }
+        guard let scheme = comps.scheme?.lowercased(), scheme == "rtsp" else { return false }
+        guard let host = comps.host, isIPv4(host) else { return false }
+        if let port = comps.port { if port <= 0 || port > 65535 { return false } }
+        let path = comps.path
+        if path.isEmpty || path == "/" { return false }
+        return true
+    }
+
+    func isIPv4(_ s: String) -> Bool {
+        let parts = s.split(separator: ".")
+        if parts.count != 4 { return false }
+        for p in parts {
+            guard let v = Int(p), v >= 0 && v <= 255 else { return false }
+        }
+        return true
     }
 }

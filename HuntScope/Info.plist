@@ -207,14 +207,20 @@
 	<false/>
     <key>NSLocalNetworkUsageDescription</key>
     <string>HuntScope sucht Kameras im lokalen Netzwerk und verbindet sich mit ihnen (RTSP). Bitte Zugriff erlauben.</string>
-    <key>NSBonjourServices</key>
-    <array>
-        <string>_rtsp._tcp.</string>
-        <string>_http._tcp.</string>
-    </array>
-    <key>UIFileSharingEnabled</key>
-    <true/>
-    <key>LSSupportsOpeningDocumentsInPlace</key>
-    <true/>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>HuntScope speichert Snapshots in deiner Fotomediathek.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>HuntScope benötigt Zugriff, um Snapshots in der Fotomediathek zu speichern.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>HuntScope kann Standortdaten in Fotometa­daten (EXIF) speichern.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_rtsp._tcp.</string>
+		<string>_http._tcp.</string>
+	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>
