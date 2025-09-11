@@ -47,6 +47,7 @@ struct MainConfigurationDialog: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+                Spacer(minLength: 10)
 
                 // Abo-Konfiguration -> öffnet TestConfig-Dialog
                 Button(action: { ui.activeDialog = .testConfig }) {
@@ -66,6 +67,26 @@ struct MainConfigurationDialog: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+            }
+            .frame(maxWidth: 520)
+            .frame(maxWidth: .infinity, alignment: .center)
+            
+            // Impressum unterhalb der Liste
+            VStack(spacing: 8) {
+                Divider()
+                    .overlay(primary.opacity(0.5))
+                    .padding(.vertical, 8)
+
+                Text("Impressum")
+                    .font(.title2.weight(.semibold))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(primary)
+
+                let legal = NSLocalizedString("impressum_body", tableName: "Legal", bundle: .main, value: "", comment: "")
+                Text(legal)
+                    .font(.footnote)
+                    .foregroundStyle(primary.opacity(0.9))
+                    .multilineTextAlignment(.center)
             }
             .frame(maxWidth: 520)
             .frame(maxWidth: .infinity, alignment: .center)

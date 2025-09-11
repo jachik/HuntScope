@@ -29,7 +29,8 @@ TODO - vor Launch:
 - [x] Videos aufnehmen
 - [x] Aunahmebutton soll blinken
 - [x] Fotos erstellen
-- [] custom-URL prüfen
+- [x] custom-URL prüfen
+- [] Impressum & Datenschutz
 - [] RTSP-Streams sammeln (Apps laden und zerflücken)
 12.09.
 - App-Beschreibung einfügen
