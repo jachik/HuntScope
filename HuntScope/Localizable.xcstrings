@@ -1,36 +1,93 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%lld" : {
-
+    "_activate_huntscope_premium" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HuntScope Premium freischalten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activate HuntScope Premium"
+          }
+        }
+      }
     },
-    "Ad asset not found" : {
-
+    "_camera_configuration" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamerakonfiguration"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera configuration"
+          }
+        }
+      }
     },
-    "Auto-Connect" : {
-
-    },
-    "Datenschutzerklärung" : {
-
-    },
-    "Dies ist ein Test-Dialog auf Basis des DialogContainer." : {
-
-    },
-    "Hier könnten deine spezifischen Einstellungen stehen." : {
-
-    },
-    "HuntScope Premium freischalten" : {
-
-    },
-    "Impressum" : {
-
-    },
-    "impressum_body" : {
+    "_configuration_title" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Konfiguration"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuration"
+          }
+        }
+      }
+    },
+    "_dsgvo_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Zum Öffnen der Datenschutzerklärung im Browser bitte hier klicken"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Click here to open the privacy policy in your browser."
+          }
+        }
+      }
+    },
+    "_dsgvo_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Datenschutzerklärung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "_imprint_body" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "Jacek Schikora\nHaydnstr. 18\n56154 Boppard\n\nE-Mail: info@j-s-edv.de\nUmsatzsteuer-ID: DE231106128\nVerantwortlich für den Inhalt gem. § 18 Abs. 2 MStV: Jacek Schikora, Anschrift wie oben.\n\nAbonnements werden ausschließlich über Apple (App Store) abgewickelt.\n\nHinweis nach § 36 VSBG:\nWir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
           }
         },
@@ -42,14 +99,48 @@
         }
       }
     },
+    "_imprint_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impressum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imprint"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "Ad asset not found" : {
+
+    },
+    "Auto-Connect" : {
+
+    },
+    "Dies ist ein Test-Dialog auf Basis des DialogContainer." : {
+
+    },
+    "Erststart" : {
+
+    },
+    "Hier könnten deine spezifischen Einstellungen stehen." : {
+
+    },
     "Ja, automatisch suchen" : {
 
     },
     "Kamera-URL (in der Form rtsp://IP/Ressource)" : {
 
     },
-    "Kamerakonfiguration" : {
-
+    "Key" : {
+      "extractionState" : "manual"
     },
     "Manuelle Konfiguration" : {
 
@@ -63,13 +154,16 @@
     "Schließen" : {
 
     },
+    "Stream-Konfiguration" : {
+
+    },
+    "Test-Konfiguration" : {
+
+    },
     "Verbindungstest" : {
 
     },
     "Werbung kann in %lld Sekunden geschlossen werden" : {
-
-    },
-    "Zum Öffnen der Datenschutzerklärung im Browser bitte hier klicken" : {
 
     }
   },

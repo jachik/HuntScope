@@ -23,7 +23,7 @@ struct MainConfigurationDialog: View {
     private var primary: Color { (config.theme == .red) ? .red : .white }
 
     var body: some View {
-        DialogContainer(title: "Konfiguration", backgroundOpacity: 0.2, onClose: {
+        DialogContainer(title: "_configuration_title", backgroundOpacity: 0.2, onClose: {
             ui.isDialogActive = false
             ui.activeDialog = nil
         }) {
@@ -39,7 +39,7 @@ struct MainConfigurationDialog: View {
                                 .foregroundStyle(primary)
                         }
                         .frame(width: 66, height: 66)
-                        Text("Kamerakonfiguration")
+                        Text("_camera_configuration")
                             .font(.title2)
                             .foregroundStyle(primary)
                     }
@@ -59,7 +59,7 @@ struct MainConfigurationDialog: View {
                                 .foregroundStyle(primary)
                         }
                         .frame(width: 66, height: 66)
-                        Text("HuntScope Premium freischalten")
+                        Text("_activate_huntscope_premium")
                             .font(.title2)
                             .foregroundStyle(primary)
                     }
@@ -76,13 +76,13 @@ struct MainConfigurationDialog: View {
                 Divider()
                     .overlay(primary.opacity(0.5))
                     .padding(.vertical, 8)
-                Text("Impressum")
+                Text("_imprint_title")
                     .font(.title.weight(.semibold))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(primary)
                 Spacer(minLength: 5)
                 
-                let legal = String(localized: "impressum_body")
+                let legal = String(localized: "_imprint_body")
                 Text(legal)
                     .font(.body)
                     .foregroundStyle(primary.opacity(0.9))
@@ -95,11 +95,12 @@ struct MainConfigurationDialog: View {
                 Divider()
                     .overlay(primary.opacity(0.5))
                     .padding(.vertical, 8)
-                Text("Datenschutzerklärung")
+                Text("_dsgvo_title")
                     .font(.title.weight(.semibold))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(primary)
-                Link("Zum Öffnen der Datenschutzerklärung im Browser bitte hier klicken",
+                //Link("Zum Öffnen der Datenschutzerklärung im Browser bitte hier klicken",
+                Link("_dsgvo_body",
                      destination: URL(string: "https://s5j.de/huntscope_datenschutz.html")!)
                     .font(.footnote)
                     .multilineTextAlignment(.center)

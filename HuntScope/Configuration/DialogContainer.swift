@@ -12,12 +12,12 @@ struct DialogContainer<Content: View>: View {
     @EnvironmentObject private var config: ConfigStore
     @StateObject private var keyboard = KeyboardObserver()
 
-    let title: String
+    let title: LocalizedStringKey
     let backgroundOpacity: Double
     let onClose: () -> Void
     let content: Content
 
-    init(title: String,
+    init(title: LocalizedStringKey,
          backgroundOpacity: Double = 0.7,
          onClose: @escaping () -> Void,
          @ViewBuilder content: () -> Content) {
