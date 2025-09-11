@@ -49,17 +49,17 @@ struct MainConfigurationDialog: View {
                 .buttonStyle(.plain)
                 //Spacer(minLength: 10)
                 
-                // Abo-Konfiguration -> öffnet TestConfig-Dialog
+                // Abo-Konfiguration -> öffnet Premium-Dialog
                 Button(action: { ui.activeDialog = .testConfig }) {
                     HStack(spacing: 16) {
                         ZStack {
                             Circle().stroke(primary, lineWidth: 2)
-                            Image(systemName: "lock.open.fill")
+                            Image(systemName: "crown.fill")
                                 .font(.system(size: 35))
                                 .foregroundStyle(primary)
                         }
                         .frame(width: 66, height: 66)
-                        Text("_activate_huntscope_premium")
+                        Text("_huntscope_premium")
                             .font(.title2)
                             .foregroundStyle(primary)
                     }

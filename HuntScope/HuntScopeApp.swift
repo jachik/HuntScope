@@ -22,6 +22,7 @@ struct HuntScopeApp: App {
     @StateObject private var uiState = UIStateModel()
     @StateObject private var player      = PlayerController()
     @StateObject private var interstitialVM = InterstitialViewModel()
+    @StateObject private var subscription = SubscriptionManager()
     @StateObject private var wifi = WiFiInfoProvider()
     @State private var showSplash: Bool = true
     @Environment(\.scenePhase) private var scenePhase
@@ -38,6 +39,7 @@ struct HuntScopeApp: App {
                     .environmentObject(uiState)
                     .environmentObject(player)
                     .environmentObject(wifi)
+                    .environmentObject(subscription)
                     .preferredColorScheme(.dark)
                     .background(Color.black)
                     .statusBarHidden(true)

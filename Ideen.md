@@ -47,6 +47,8 @@ TODO - vor Launch:
 - [x] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
 - [] Datenschutzvereinbarung prüfen 1 Std. 
 - [] Endlokalisierung 0,5 Std. 
+- [] kostenlosen Monat anbieten
+- [] Haptik beim Klicken
 15.09. 
 ->>>>> Launch
 Optional, wenn noch Zeit ist:
