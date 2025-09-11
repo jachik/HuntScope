@@ -780,6 +780,20 @@
         }
       }
     },
+    "_subscription_active" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Premium aktiv" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Premium active" } },
+        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Premium aktywne" } }
+      }
+    },
+    "_subscription_active_until" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Premium aktiv bis %1$@" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Premium active until %1$@" } },
+        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Premium aktywne do %1$@" } }
+      }
+    },
     "_subscription_prices_loading" : {
       "localizations" : {
         "de" : {
@@ -822,6 +836,13 @@
             "value" : "Odblokuj Premium"
           }
         }
+      }
+    },
+    "_subscription_manage_button" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abo verwalten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Manage Subscription" } },
+        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Zarządzaj subskrypcją" } }
       }
     },
     "_subscription_restore_button" : {

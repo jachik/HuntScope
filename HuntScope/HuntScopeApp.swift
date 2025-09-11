@@ -23,6 +23,13 @@ struct HuntScopeApp: App {
     @StateObject private var player      = PlayerController()
     @StateObject private var interstitialVM = InterstitialViewModel()
     @StateObject private var subscription = SubscriptionManager()
+    @StateObject private var entitlements: EntitlementStore = {
+        let ids = (Bundle.main.object(forInfoDictionaryKey: "IAPProductIDs") as? [String]) ?? [
+            "jsedv.local.HuntScope",
+            "jsedv.local.HuntScope1Y"
+        ]
+        return EntitlementStore(productIDs: ids)
+    }()
     @StateObject private var wifi = WiFiInfoProvider()
     @State private var showSplash: Bool = true
     @Environment(\.scenePhase) private var scenePhase
@@ -40,6 +47,7 @@ struct HuntScopeApp: App {
                     .environmentObject(player)
                     .environmentObject(wifi)
                     .environmentObject(subscription)
+                    .environmentObject(entitlements)
                     .preferredColorScheme(.dark)
                     .background(Color.black)
                     .statusBarHidden(true)
@@ -72,6 +80,10 @@ struct HuntScopeApp: App {
                 }
                 // Start WiFi monitoring
                 wifi.start()
+                // Load cached entitlement and refresh from App Store
+                entitlements.loadCached()
+                Task { await entitlements.refreshOnce() }
+                entitlements.start()
             }
             // Lifecycle: Splash bei Reaktivierung nach >= 30 min
             .onChange(of: scenePhase) { phase in

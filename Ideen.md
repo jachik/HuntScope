@@ -41,7 +41,7 @@ TODO - vor Launch:
 - App-Beschreibung einfügen
 - Screenshots App
 13.09.
-- [] Abo (vermutlich 2-3 Std.)
+- [x] Abo (vermutlich 2-3 Std.)
 - [x] Lokalisierung (letzter Schritt ca. 2 Std.)
 14.09.
 - [x] Keine Verbindung zum Ad-Store -> eigene Werbung für die App

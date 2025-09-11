@@ -25,7 +25,7 @@ struct ContentView: View {
                 case .rtspConfig:
                     RTSPConfigurationDialog()
                 case .testConfig:
-                    TestConfigView()
+                    HuntScopePremiumPayWall()
                 default:
                     MainConfigurationDialog()
                 }

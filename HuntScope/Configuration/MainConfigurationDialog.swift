@@ -10,6 +10,7 @@ import SwiftUI
 struct MainConfigurationDialog: View {
     @EnvironmentObject private var config: ConfigStore
     @EnvironmentObject private var ui: UIStateModel
+    @EnvironmentObject private var entitlements: EntitlementStore
 
     var onOpenCamera: () -> Void
     var onOpenSubscription: () -> Void
@@ -49,7 +50,7 @@ struct MainConfigurationDialog: View {
                 .buttonStyle(.plain)
                 //Spacer(minLength: 10)
                 
-                // Abo-Konfiguration -> öffnet Premium-Dialog
+                // Abo-Konfiguration / Paywall (immer anklickbar)
                 Button(action: { ui.activeDialog = .testConfig }) {
                     HStack(spacing: 16) {
                         ZStack {
