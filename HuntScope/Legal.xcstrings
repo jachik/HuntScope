@@ -1,0 +1,23 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "impressum_body" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jacek Schikora\nHaydnstr. 18\n56154 Boppard\n\nE-Mail: info@j-s-edv.de\nUmsatzsteuer-ID: DE231106128\nVerantwortlich für den Inhalt gem. § 18 Abs. 2 MStV: Jacek Schikora, Anschrift wie oben.\n\nAbonnements werden ausschließlich über Apple (App Store) abgewickelt.\n\nHinweis nach § 36 VSBG:\nWir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jacek Schikora\nHaydnstr. 18\n56154 Boppard\n\nE-Mail: info@j-s-edv.de\nUmsatzsteuer-ID: DE231106128\nVerantwortlich für den Inhalt gem. § 18 Abs. 2 MStV: Jacek Schikora, Anschrift wie oben.\n\nAbonnements werden ausschließlich über Apple (App Store) abgewickelt.\n\nHinweis nach § 36 VSBG:\nWir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

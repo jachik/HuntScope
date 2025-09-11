@@ -82,7 +82,7 @@ struct MainConfigurationDialog: View {
                     .multilineTextAlignment(.center)
                     .foregroundStyle(primary)
 
-                let legal = NSLocalizedString("impressum_body", tableName: "Legal", bundle: .main, value: "", comment: "")
+                let legal = String(localized: "impressum_body", table: "Legal")
                 Text(legal)
                     .font(.footnote)
                     .foregroundStyle(primary.opacity(0.9))
