@@ -30,11 +30,10 @@ TODO - vor Launch:
 - [x] Aunahmebutton soll blinken
 - [x] Fotos erstellen
 - [x] custom-URL prüfen
-- [] Impressum & Datenschutz
+- [x] Impressum & Datenschutz
 - [] RTSP-Streams sammeln (Apps laden und zerflücken)
 12.09.
 - App-Beschreibung einfügen
-- Dokumentation?
 13.09.
 - [] Abo (vermutlich 2-3 Std.)
 - [] Lokalisierung (letzter Schritt ca. 2 Std.)
@@ -42,6 +41,7 @@ TODO - vor Launch:
 14.09.
 - [] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
 - [] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
+- [] Datenschutzvereinbarung prüfen
 15.09. 
 ->>>>> Launch
 Optional, wenn noch Zeit ist:
