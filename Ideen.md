@@ -42,10 +42,11 @@ TODO - vor Launch:
 - Screenshots App
 13.09.
 - [] Abo (vermutlich 2-3 Std.)
-- [] Lokalisierung (letzter Schritt ca. 2 Std.)
+- [x] Lokalisierung (letzter Schritt ca. 2 Std.)
 14.09.
 - [x] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
-- [] Datenschutzvereinbarung prüfen
+- [] Datenschutzvereinbarung prüfen 1 Std. 
+- [] Endlokalisierung 0,5 Std. 
 15.09. 
 ->>>>> Launch
 Optional, wenn noch Zeit ist:

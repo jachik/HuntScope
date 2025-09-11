@@ -1,0 +1,5 @@
+"NSLocalNetworkUsageDescription" = "HuntScope searches your local network for your thermal camera and connects via RTSP to display the video stream.";
+"NSPhotoLibraryAddUsageDescription" = "HuntScope saves snapshots to your photo library.";
+"NSPhotoLibraryUsageDescription" = "HuntScope needs access to save snapshots to your photo library.";
+"NSLocationWhenInUseUsageDescription" = "Used to optionally tag snapshots with your location (EXIF).";
+

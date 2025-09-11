@@ -52,7 +52,7 @@ struct AdDialog: View {
                             Image(systemName: "play.rectangle")
                                 .font(.system(size: 48))
                                 .foregroundColor(.gray.opacity(0.6))
-                            Text("Ad asset not found")
+                            Text("_ad_asset_not_found")
                                 .foregroundColor(.gray)
                                 .font(.footnote)
                         }

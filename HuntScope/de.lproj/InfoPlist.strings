@@ -1,0 +1,5 @@
+"NSLocalNetworkUsageDescription" = "HuntScope sucht deine Wärmebildkamera im lokalen Netzwerk und verbindet sich per RTSP, um den Videostream anzuzeigen.";
+"NSPhotoLibraryAddUsageDescription" = "HuntScope speichert Aufnahmen (Snapshots) in deiner Fotomediathek.";
+"NSPhotoLibraryUsageDescription" = "HuntScope benötigt Zugriff, um Aufnahmen (Snapshots) in deiner Fotomediathek zu speichern.";
+"NSLocationWhenInUseUsageDescription" = "HuntScope verwendet deinen Standort, um Aufnahmen optional mit Positionsdaten (EXIF) zu versehen.";
+

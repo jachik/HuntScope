@@ -1,0 +1,5 @@
+"NSLocalNetworkUsageDescription" = "HuntScope wyszukuje w sieci lokalnej Twoją kamerę termowizyjną i łączy się przez RTSP, aby wyświetlić strumień wideo.";
+"NSPhotoLibraryAddUsageDescription" = "HuntScope zapisuje migawki w Twojej bibliotece zdjęć.";
+"NSPhotoLibraryUsageDescription" = "HuntScope potrzebuje dostępu, aby zapisywać migawki w Twojej bibliotece zdjęć.";
+"NSLocationWhenInUseUsageDescription" = "Służy do opcjonalnego dołączania lokalizacji do migawek (EXIF).";
+
