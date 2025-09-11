@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld" : {
+
+    },
+    "Ad asset not found" : {
+
+    },
     "Auto-Connect" : {
 
     },
@@ -58,6 +64,9 @@
 
     },
     "Verbindungstest" : {
+
+    },
+    "Werbung kann in %lld Sekunden geschlossen werden" : {
 
     },
     "Zum Öffnen der Datenschutzerklärung im Browser bitte hier klicken" : {

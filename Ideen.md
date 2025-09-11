@@ -31,16 +31,16 @@ TODO - vor Launch:
 - [x] Fotos erstellen
 - [x] custom-URL prüfen
 - [x] Impressum & Datenschutz
+- [] Eigene Werbung (erstmal ein Dialog)
+- [] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
 - [] RTSP-Streams sammeln (Apps laden und zerflücken)
 12.09.
 - App-Beschreibung einfügen
 13.09.
 - [] Abo (vermutlich 2-3 Std.)
 - [] Lokalisierung (letzter Schritt ca. 2 Std.)
-- [] Homepage: Datenschutz + Impressum 
 14.09.
 - [] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
-- [] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
 - [] Datenschutzvereinbarung prüfen
 15.09. 
 ->>>>> Launch
@@ -54,6 +54,19 @@ Erledigt:
 - [x] Konfigurationsdialog Kreise
 - [x] Konfigurationsdialog durchsichtig
 
+
+# Wärmebildhersteller:
+- [] PUlsar
+- [] Liemke
+- [] Hikvision
+- [] Burris
+- [] Leica
+- [] INfriray
+- [] Guide Sensmart
+- [] ATN
+- [] Steiner
+- [] Nighthog
+- [] Themtec
 
 # Beschreibung Scanner
 
@@ -96,3 +109,7 @@ WEnn ich die Konfiguration verlasse, wird kurz das Fehlersymbol eingeblendet und
 
 
 Ich habe die Verbindung zur Kamera testweise beendet und es wurde wieder das Wasserzeichen im Hintergrund angezeigt. Bitte prüfe den Code, warum das Wasserzeichen immer noch angezeigt wird. 
+
+
+KI-Prompts
+ich nehme einen weißen Hintergrund, weil das grelle Licht natürlich stört und ich will ja zum Kaufen animieren. Kannst du mir ein Bild in Full-HD erstellen, auf dem ein zeichentrick Hirsch mit einer Krone und einer Brille dargestellt ist und einer Sprechblase mit "Erlebe alle Funktionen ohne Unterbrechen und hole dir jetzt HuntScop Premium"

@@ -102,6 +102,21 @@ import SwiftUI
                     }
                 }
 
+                // 4) Vollbild Interner AdDialog (oberster Layer)
+                if ui.isAdDialogPresented {
+                    AdDialog(adID: "ad01", onClose: {
+                        ui.isAdDialogPresented = false
+                    })
+                    .onAppear {
+                        ui.isAdActive = true
+                    }
+                    .onDisappear {
+                        ui.isAdActive = false
+                        ui.suppressOverlaysUntil = Date().addingTimeInterval(3)
+                    }
+                    .transition(.opacity)
+                }
+
                 // (Ringer-Indikator in LeftButtonArea verschoben)
             }
             .background(Color.black)

@@ -29,6 +29,8 @@ final class UIStateModel: ObservableObject {
     @Published var isAdActive: Bool = false
     // Zeit bis zu der Overlays (Wasserzeichen/Keine-Verbindung) unterdrueckt werden
     @Published var suppressOverlaysUntil: Date? = nil
+    // Lokaler (interner) Vollbild-AdDialog sichtbar
+    @Published var isAdDialogPresented: Bool = false
 }
 
 // Placeholder fuer den RTSP/VLC-Stream

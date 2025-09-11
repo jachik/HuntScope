@@ -40,6 +40,14 @@ struct LeftButtonArea<DialogButtons: View>: View {
             .allowsHitTesting(false)
 
             Spacer()
+
+            // Temporärer Test-Button (nur Debug): zeigt internen AdDialog
+            #if DEBUG
+            SidebarButton(systemName: "megaphone.fill") {
+                ui.isAdDialogPresented = true
+            }
+            .disabled(ui.isDialogActive || ui.isAdDialogPresented)
+            #endif
         }
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())
