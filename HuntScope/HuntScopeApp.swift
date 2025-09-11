@@ -71,17 +71,21 @@ struct HuntScopeApp: App {
                 }
             }
             .onAppear {
+                // Load cached entitlement early (so ads can be gated immediately)
+                entitlements.loadCached()
+                // Initialize ad scheduler
                 if adScheduler == nil {
-                    let scheduler = InterstitialAdScheduler(interstitial: interstitialVM, ui: uiState, player: player)
+                    let scheduler = InterstitialAdScheduler(interstitial: interstitialVM, ui: uiState, player: player, entitlements: entitlements)
                     scheduler.start()
                     adScheduler = scheduler
-                    // Initial preload (safety)
-                    Task { await interstitialVM.loadAd() }
+                    // Initial preload (safety) if not premium
+                    if !entitlements.isPremiumActive {
+                        Task { await interstitialVM.loadAd() }
+                    }
                 }
                 // Start WiFi monitoring
                 wifi.start()
-                // Load cached entitlement and refresh from App Store
-                entitlements.loadCached()
+                // Refresh entitlement from App Store and start listening for updates
                 Task { await entitlements.refreshOnce() }
                 entitlements.start()
             }

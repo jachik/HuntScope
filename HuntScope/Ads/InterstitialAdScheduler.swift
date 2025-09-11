@@ -14,6 +14,7 @@ final class InterstitialAdScheduler {
     private let interstitial: InterstitialViewModel
     private let ui: UIStateModel
     private let player: PlayerController
+    private let entitlements: EntitlementStore?
 
     private var timer: Timer?
     private(set) var nextFireAt: Date?
@@ -25,13 +26,22 @@ final class InterstitialAdScheduler {
     private let preloadRetry: TimeInterval = 30            // retry soon if not loaded yet
     private let minGapBetweenShows: TimeInterval = 120     // safety gap
 
-    init(interstitial: InterstitialViewModel, ui: UIStateModel, player: PlayerController) {
+    private var entitlementObserver: NSObjectProtocol?
+
+    init(interstitial: InterstitialViewModel, ui: UIStateModel, player: PlayerController, entitlements: EntitlementStore? = nil) {
         self.interstitial = interstitial
         self.ui = ui
         self.player = player
+        self.entitlements = entitlements
     }
 
     func start() {
+        // If premium is active, keep ads disabled
+        if entitlements?.isPremiumActive == true {
+            stop()
+            beginObservingEntitlementChanges()
+            return
+        }
         // Preload immediately
         Task { await interstitial.loadAd() }
         // Bridge ad lifecycle -> UI state
@@ -51,11 +61,16 @@ final class InterstitialAdScheduler {
         }
         // Schedule first window a bit after start
         scheduleNext(from: Date().addingTimeInterval(minGapAfterStart))
+        beginObservingEntitlementChanges()
     }
 
     func stop() {
         timer?.invalidate()
         timer = nil
+        if let token = entitlementObserver {
+            NotificationCenter.default.removeObserver(token)
+            entitlementObserver = nil
+        }
     }
 
     func handleScenePhase(_ phase: ScenePhase) {
@@ -135,6 +150,7 @@ final class InterstitialAdScheduler {
     }
 
     private func shouldShowNow() -> Bool {
+        if entitlements?.isPremiumActive == true { return false }
         if ui.isDialogActive { return false }
         if player.isRecording { return false }
         if let last = lastShownAt, Date().timeIntervalSince(last) < minGapBetweenShows { return false }
@@ -145,6 +161,7 @@ final class InterstitialAdScheduler {
 // MARK: - Internal helpers
 extension InterstitialAdScheduler {
     fileprivate func presentInternalAd() {
+        if entitlements?.isPremiumActive == true { return }
         if ui.isAdDialogPresented { return }
         if let id = InternalAdProvider.chooseRandomAdID(range: 1...10) {
             ui.internalAdID = id
@@ -152,5 +169,26 @@ extension InterstitialAdScheduler {
             ui.internalAdID = "ad01" // fallback id
         }
         ui.isAdDialogPresented = true
+    }
+}
+
+// MARK: - Entitlement observation
+private extension InterstitialAdScheduler {
+    func beginObservingEntitlementChanges() {
+        guard entitlementObserver == nil else { return }
+        entitlementObserver = NotificationCenter.default.addObserver(forName: .premiumStatusChanged, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            if self.entitlements?.isPremiumActive == true {
+                self.stop()
+                // Ensure any internal ad overlay is closed
+                self.ui.isAdDialogPresented = false
+                self.ui.isAdActive = false
+            } else {
+                // Resume scheduling if previously stopped
+                if self.timer == nil {
+                    self.start()
+                }
+            }
+        }
     }
 }
