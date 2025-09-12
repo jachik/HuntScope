@@ -67,10 +67,6 @@ final class InterstitialAdScheduler {
     func stop() {
         timer?.invalidate()
         timer = nil
-        if let token = entitlementObserver {
-            NotificationCenter.default.removeObserver(token)
-            entitlementObserver = nil
-        }
     }
 
     func handleScenePhase(_ phase: ScenePhase) {
@@ -155,6 +151,12 @@ final class InterstitialAdScheduler {
         if player.isRecording { return false }
         if let last = lastShownAt, Date().timeIntervalSince(last) < minGapBetweenShows { return false }
         return true
+    }
+
+    deinit {
+        if let token = entitlementObserver {
+            NotificationCenter.default.removeObserver(token)
+        }
     }
 }
 

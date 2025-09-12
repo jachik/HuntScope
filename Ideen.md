@@ -49,6 +49,7 @@ TODO - vor Launch:
 - [] Endlokalisierung 0,5 Std. 
 - [] kostenlosen Monat anbieten
 - [] Haptik beim Klicken
+- [] Text / Hinweise auf Premium ab in Dialog einfügen (d.h. welche vorteile hat der Nutzer)
 15.09. 
 ->>>>> Launch
 Optional, wenn noch Zeit ist:
@@ -57,23 +58,26 @@ Optional, wenn noch Zeit ist:
 - [] Videostream nicht beenden, wenn Werbung angezeigt wird
 - [] Der CountDown, wann WErbung angezegit wird, beginnt mit dem Anzeigen - nicht mit dem Schließen - d.h. es kann sein, dass WErbung mehrfach hintereinander gezeigt wird
 - [] Versionsnumer der App und des bilds in die Konfiguration übernehmen, um prüfen zu können, dass eine neue Version installiert wurde
+- [] KI-Upload
 
 Erledigt:
-- [x] WErbung (vermutlich 2-3 Std.)
+- [x] Werbung (vermutlich 2-3 Std.)
 - [x] Hintergrundbild auch weiß
 - [x] Konfigurationsdialog Kreise
 - [x] Konfigurationsdialog durchsichtig
 
 
 # Wärmebildhersteller:
-- [] PUlsar
+- [x] PUlsar
+- [x] Syton
+- [x] Zeiss
 - [] Liemke
 - [] Hikvision
-- [] Burris
+- [x] Burris
 - [] Leica
 - [] INfriray
 - [] Guide Sensmart
-- [] ATN
+- [x] ATN
 - [] Steiner
 - [] Nighthog
 - [] Themtec
@@ -109,9 +113,15 @@ Dieser neue Konfigurationsdialog hat einen Button "Auto-Connect" und alternativ 
     "rtsp://192.168.42.1/preview",
     /* testing */
     "rtsp://192.168.100.154:8554/thermal"
+    /* ATN */
+    rtsp://192.168.42.1/live
   ]
 }
-	
+
+APKPure
+
+for i in $(find . -type f); do strings $i; done | grep "rtsp://"	
+    
 Die nächste Aufgabe auf der Todo-Liste ist: Snapshots
 Bitte implementiere die Möglichkeit, snapshosts zu machen. Diese sollen in der Fotobibliothek abgelegt werden (sind dafür irgendwelche Rechte notwendig?). D.h. wenn der User auf de Snapshot-Button drück, landet ein Bild in der Fotobibliothek. 
 

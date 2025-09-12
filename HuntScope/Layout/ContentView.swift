@@ -42,6 +42,12 @@ struct ContentView: View {
         .onChange(of: ui.isDialogActive) { _ in
             // Dialoge beeinflussen den Stream nicht mehr: Wiedergabe läuft weiter.
         }
+        // Reagiere auf geänderte Stream-URL: sofort neu verbinden
+        .onChange(of: config.streamURL) { newURL in
+            let url = newURL.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !url.isEmpty else { return }
+            player.play(urlString: url)
+        }
     }
 
 }

@@ -90,6 +90,13 @@
 			);
 			target = 318A67892E6F2D2200157774 /* HuntScope */;
 		};
+		318A690E2E73E18D00157774 /* Exceptions for "Config" folder in "HuntScope" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				urls_plain.txt,
+			);
+			target = 318A67892E6F2D2200157774 /* HuntScope */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -109,6 +116,14 @@
 		318A67A42E6F2D2500157774 /* HuntScopeUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = HuntScopeUITests;
+			sourceTree = "<group>";
+		};
+		318A690B2E73E11800157774 /* Config */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				318A690E2E73E18D00157774 /* Exceptions for "Config" folder in "HuntScope" target */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -157,6 +172,7 @@
 		318A67812E6F2D2200157774 = {
 			isa = PBXGroup;
 			children = (
+				318A690B2E73E11800157774 /* Config */,
 				318A67E82E6FB04C00157774 /* Ideen.md */,
 				318A678C2E6F2D2200157774 /* HuntScope */,
 				318A679A2E6F2D2400157774 /* HuntScopeTests */,
@@ -217,6 +233,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				318A678C2E6F2D2200157774 /* HuntScope */,
+				318A690B2E73E11800157774 /* Config */,
 			);
 			name = HuntScope;
 			packageProductDependencies = (
