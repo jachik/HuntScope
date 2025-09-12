@@ -13,6 +13,7 @@ enum DialogKind {
     case rtspConfig
     case testConfig
     case firstLaunch
+    case trialIntro
 }
 
 // Zentraler Zustand: steuert, ob ein Dialog aktiv ist

@@ -30,6 +30,7 @@ struct HuntScopeApp: App {
         ]
         return EntitlementStore(productIDs: ids)
     }()
+    @StateObject private var trial = TrialStore()
     @StateObject private var wifi = WiFiInfoProvider()
     @State private var showSplash: Bool = true
     @Environment(\.scenePhase) private var scenePhase
@@ -48,6 +49,7 @@ struct HuntScopeApp: App {
                     .environmentObject(wifi)
                     .environmentObject(subscription)
                     .environmentObject(entitlements)
+                    .environmentObject(trial)
                     .preferredColorScheme(.dark)
                     .background(Color.black)
                     .statusBarHidden(true)
@@ -57,10 +59,15 @@ struct HuntScopeApp: App {
                         withAnimation(.easeOut(duration: 2)) {
                             showSplash = false
                         }
-                        // Erststart-Dialog direkt nach Splash
-                        if ConfigManager.shared.hasLaunchedBefore == false {
-                            uiState.activeDialog = .firstLaunch
-                            uiState.isDialogActive = true
+                        // Reihenfolge: ggf. Trial-Intro vor Ersteinrichtung anzeigen (nur wenn kein Abo)
+                        if entitlements.isPremiumActive == false {
+                            if trial.didSetInstallDateThisLaunch {
+                                uiState.activeDialog = .trialIntro
+                                uiState.isDialogActive = true
+                            } else if ConfigManager.shared.hasLaunchedBefore == false {
+                                uiState.activeDialog = .firstLaunch
+                                uiState.isDialogActive = true
+                            }
                         }
                     }
                     .environmentObject(uiState)
@@ -73,13 +80,15 @@ struct HuntScopeApp: App {
             .onAppear {
                 // Load cached entitlement early (so ads can be gated immediately)
                 entitlements.loadCached()
+                // Initialize trial status
+                trial.initialize()
                 // Initialize ad scheduler
                 if adScheduler == nil {
-                    let scheduler = InterstitialAdScheduler(interstitial: interstitialVM, ui: uiState, player: player, entitlements: entitlements)
+                    let scheduler = InterstitialAdScheduler(interstitial: interstitialVM, ui: uiState, player: player, entitlements: entitlements, trial: trial)
                     scheduler.start()
                     adScheduler = scheduler
-                    // Initial preload (safety) if not premium
-                    if !entitlements.isPremiumActive {
+                    // Initial preload nur, wenn weder Premium noch Trial aktiv
+                    if !entitlements.isPremiumActive && !trial.isActive {
                         Task { await interstitialVM.loadAd() }
                     }
                 }
@@ -88,6 +97,8 @@ struct HuntScopeApp: App {
                 // Refresh entitlement from App Store and start listening for updates
                 Task { await entitlements.refreshOnce() }
                 entitlements.start()
+                // Bei Aktivierung erneut Trial-Status prüfen (entspricht 1x täglich ausreichend)
+                trial.refreshStatus()
             }
             // Lifecycle: Splash bei Reaktivierung nach >= 30 min
             .onChange(of: scenePhase) { phase in
@@ -109,6 +120,8 @@ struct HuntScopeApp: App {
                         }
                         wasBackgrounded = false
                     }
+                    // Aktualisiere Trial-Status und Ad-Scheduler bei Rückkehr in den Vordergrund
+                    trial.refreshStatus()
                     adScheduler?.handleScenePhase(.active)
                     wifi.start()
                 default:

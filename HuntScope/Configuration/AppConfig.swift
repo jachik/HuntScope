@@ -108,4 +108,13 @@ final class ConfigManager {
             return nil
         }
     }
+
+    // Reset all app configuration to defaults and remove persisted file
+    func resetToDefaults(deleteFile: Bool = true) {
+        if deleteFile, let url = Self.fileURL, FileManager.default.fileExists(atPath: url.path) {
+            try? FileManager.default.removeItem(at: url)
+        }
+        self.config = AppConfig.default
+        save()
+    }
 }

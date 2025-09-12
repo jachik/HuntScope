@@ -14,6 +14,7 @@ struct HuntScopePremiumPayWall: View {
     @EnvironmentObject private var config: ConfigStore
     @EnvironmentObject private var subscription: SubscriptionManager
     @EnvironmentObject private var entitlements: EntitlementStore
+    @EnvironmentObject private var trial: TrialStore
 
     private var primary: Color { (config.theme == .red) ? .red : .white }
     private let accent = Color.red
@@ -63,6 +64,12 @@ struct HuntScopePremiumPayWall: View {
                     }
                 } else {
                     // Kein Premium -> Vorteile-Box sofort anzeigen
+                    if trial.isActive && trial.daysLeft > 0 {
+                        Text(String(format: String(localized: "_trial_days_left"), trial.daysLeft))
+                            .font(.footnote.weight(.semibold))
+                            .foregroundStyle(primary.opacity(0.9))
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
                     HStack {
                         Spacer(minLength: 0)
                         VStack(alignment: .leading, spacing: 8) {

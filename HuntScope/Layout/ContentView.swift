@@ -22,6 +22,8 @@ struct ContentView: View {
                 switch ui.activeDialog {
                 case .firstLaunch:
                     FirstLaunchPromptView()
+                case .trialIntro:
+                    TrialIntroDialog()
                 case .rtspConfig:
                     RTSPConfigurationDialog()
                 case .testConfig:

@@ -15,6 +15,7 @@ final class InterstitialAdScheduler {
     private let ui: UIStateModel
     private let player: PlayerController
     private let entitlements: EntitlementStore?
+    private let trial: TrialStore?
 
     private var timer: Timer?
     private(set) var nextFireAt: Date?
@@ -27,19 +28,22 @@ final class InterstitialAdScheduler {
     private let minGapBetweenShows: TimeInterval = 120     // safety gap
 
     private var entitlementObserver: NSObjectProtocol?
+    private var trialObserver: NSObjectProtocol?
 
-    init(interstitial: InterstitialViewModel, ui: UIStateModel, player: PlayerController, entitlements: EntitlementStore? = nil) {
+    init(interstitial: InterstitialViewModel, ui: UIStateModel, player: PlayerController, entitlements: EntitlementStore? = nil, trial: TrialStore? = nil) {
         self.interstitial = interstitial
         self.ui = ui
         self.player = player
         self.entitlements = entitlements
+        self.trial = trial
     }
 
     func start() {
-        // If premium is active, keep ads disabled
-        if entitlements?.isPremiumActive == true {
+        // If premium or trial is active, keep ads disabled
+        if entitlements?.isPremiumActive == true || (trial?.isActive == true) {
             stop()
             beginObservingEntitlementChanges()
+            beginObservingTrialChanges()
             return
         }
         // Preload immediately
@@ -62,6 +66,7 @@ final class InterstitialAdScheduler {
         // Schedule first window a bit after start
         scheduleNext(from: Date().addingTimeInterval(minGapAfterStart))
         beginObservingEntitlementChanges()
+        beginObservingTrialChanges()
     }
 
     func stop() {
@@ -147,6 +152,7 @@ final class InterstitialAdScheduler {
 
     private func shouldShowNow() -> Bool {
         if entitlements?.isPremiumActive == true { return false }
+        if trial?.isActive == true { return false }
         if ui.isDialogActive { return false }
         if player.isRecording { return false }
         if let last = lastShownAt, Date().timeIntervalSince(last) < minGapBetweenShows { return false }
@@ -154,9 +160,8 @@ final class InterstitialAdScheduler {
     }
 
     deinit {
-        if let token = entitlementObserver {
-            NotificationCenter.default.removeObserver(token)
-        }
+        if let token = entitlementObserver { NotificationCenter.default.removeObserver(token) }
+        if let token = trialObserver { NotificationCenter.default.removeObserver(token) }
     }
 }
 
@@ -187,7 +192,23 @@ private extension InterstitialAdScheduler {
                 self.ui.isAdActive = false
             } else {
                 // Resume scheduling if previously stopped
-                if self.timer == nil {
+                if self.timer == nil && (self.trial?.isActive != true) {
+                    self.start()
+                }
+            }
+        }
+    }
+
+    func beginObservingTrialChanges() {
+        guard trialObserver == nil else { return }
+        trialObserver = NotificationCenter.default.addObserver(forName: .trialStatusChanged, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            if self.trial?.isActive == true {
+                self.stop()
+                self.ui.isAdDialogPresented = false
+                self.ui.isAdActive = false
+            } else {
+                if self.timer == nil && (self.entitlements?.isPremiumActive != true) {
                     self.start()
                 }
             }

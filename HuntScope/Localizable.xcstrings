@@ -1019,6 +1019,34 @@
         }
       }
     },
+    "_trial_intro_title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Testzeitraum" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Trial Period" } },
+        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Okres próbny" } }
+      }
+    },
+    "_trial_intro_body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die App befindet sich 30 Tage in einem Testzeitraum. In dieser Zeit werden keine Anzeigen eingeblendet. Danach kann ein Abo erworben werden." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The app is in a 30‑day trial period. During this time, no ads are shown. Afterward, you can purchase a subscription." } },
+        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Aplikacja znajduje się w 30‑dniowym okresie próbnym. W tym czasie reklamy nie są wyświetlane. Później możesz wykupić subskrypcję." } }
+      }
+    },
+    "_trial_intro_ok" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "OK" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "OK" } },
+        "pl" : { "stringUnit" : { "state" : "translated", "value" : "OK" } }
+      }
+    },
+    "_trial_days_left" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch %d Tage werbefrei" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%d days ad‑free left" } },
+        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Pozostało %d dni bez reklam" } }
+      }
+    },
     "%lld" : {
 
     },

@@ -48,6 +48,14 @@ final class StreamPresetManager {
     }
 
     // MARK: - Persistenz
+    func resetToSeed() {
+        // Remove persisted file and re-seed from bundle
+        if let url = Self.fileURL, FileManager.default.fileExists(atPath: url.path) {
+            try? FileManager.default.removeItem(at: url)
+        }
+        loadOrSeed()
+    }
+
     private func loadOrSeed() {
         // 1) Versuche, App-Support-Datei zu laden (neues Schema)
         if let url = Self.fileURL, FileManager.default.fileExists(atPath: url.path) {

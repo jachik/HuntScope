@@ -12,6 +12,8 @@ import UIKit
 struct LeftButtonArea<DialogButtons: View>: View {
     @EnvironmentObject private var config: ConfigStore
     @EnvironmentObject private var ui: UIStateModel
+    @EnvironmentObject private var entitlements: EntitlementStore
+    @EnvironmentObject private var trial: TrialStore
     @StateObject private var battery = BatteryMonitor()
     let dialogButtons: DialogButtons // ignoriert (keine Dialog-Buttons mehr links)
     let showDialogButtons: Bool      // ignoriert
@@ -53,6 +55,15 @@ struct LeftButtonArea<DialogButtons: View>: View {
                     ui.isAdDialogPresented = true
                 }
             }
+            .simultaneousGesture(
+                LongPressGesture(minimumDuration: 1.2)
+                    .onEnded { _ in
+                        Task { @MainActor in
+                            AppPersistence.resetAll(trial: trial, entitlements: entitlements)
+                            debugLog("All persistence wiped (Keychain, Settings, Presets).", "Debug")
+                        }
+                    }
+            )
             .disabled(ui.isDialogActive || ui.isAdDialogPresented)
             #endif
         }
