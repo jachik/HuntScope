@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct RTSPConfigurationDialog: View {
     @EnvironmentObject private var config: ConfigStore
@@ -38,6 +39,7 @@ struct RTSPConfigurationDialog: View {
                 HStack {
                     Spacer()
                     Button {
+                        hapticTap()
                         if !wifi.snapshot.isWiFiConnected { showWiFiAlert = true; return }
                         debugLog("Auto-Connect pressed", "RTSPConfig")
                         startAutoConnect()
@@ -72,6 +74,7 @@ struct RTSPConfigurationDialog: View {
                         HStack {
                             Spacer()
                             Button {
+                                hapticTap()
                                 withAnimation(.easeInOut(duration: 0.25)) { showManual.toggle() }
                             } label: {
                                 HStack(spacing: 6) {
@@ -117,6 +120,7 @@ struct RTSPConfigurationDialog: View {
                                 )
                                 Spacer(minLength: 10)
                                 Button {
+                                    hapticTap()
                                     testCustomURL()
                                 } label: {
                                     Text("_configuration_connection_test").bold()
@@ -179,6 +183,14 @@ struct RTSPConfigurationDialog: View {
                 }
             }
         }
+    }
+}
+
+private extension RTSPConfigurationDialog {
+    func hapticTap() {
+        let g = UIImpactFeedbackGenerator(style: .medium)
+        g.prepare()
+        g.impactOccurred()
     }
 }
 

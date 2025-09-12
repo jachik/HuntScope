@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 enum AutoConnectState {
     case scanning
@@ -41,14 +42,14 @@ struct AutoConnectDialog: View {
 
             // Zeile 3 – Aktion
             if state == .scanning {
-                Button(action: onCancel) {
+                Button(action: { hapticTap(); onCancel() }) {
                     Image(systemName: "stop.circle")
                         .font(.system(size: 36, weight: .regular))
                         .foregroundStyle(primary)
                 }
                 .buttonStyle(.plain)
             } else {
-                Button(action: onClose) {
+                Button(action: { hapticTap(); onClose() }) {
                     Text("_configuration_close").bold()
                         .foregroundStyle(primary)
                         .padding(.horizontal, 16)
@@ -77,5 +78,13 @@ struct AutoConnectDialog: View {
         case .success: return successTitle ?? String(localized: "_configuration_autoconnect_success")
         case .notFound: return notFoundTitle ?? String(localized: "_configuration_autoconnect_not_found")
         }
+    }
+}
+
+private extension AutoConnectDialog {
+    func hapticTap() {
+        let g = UIImpactFeedbackGenerator(style: .medium)
+        g.prepare()
+        g.impactOccurred()
     }
 }

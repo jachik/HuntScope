@@ -1,5 +1,6 @@
 // Datei: SidebarButton.swift
 import SwiftUI
+import UIKit
 
 struct SidebarButton<Content: View>: View {
     // Zentrales Theme
@@ -8,7 +9,10 @@ struct SidebarButton<Content: View>: View {
     @Environment(\.isEnabled) private var isEnabled
 
     // API – wie ein normaler Button, plus Extras
+    enum HapticKind { case none, tap, selection }
+
     var pulsing: Bool = false
+    var haptics: HapticKind = .tap
     let action: () -> Void
     let label: () -> Content
 
@@ -28,9 +32,11 @@ struct SidebarButton<Content: View>: View {
 
     // 1) Button-typischer Initializer (wie SwiftUI Button(action:label:))
     init(pulsing: Bool = false,
+         haptics: HapticKind = .tap,
          action: @escaping () -> Void,
          @ViewBuilder label: @escaping () -> Content) {
         self.pulsing = pulsing
+        self.haptics = haptics
         self.action = action
         self.label = label
     }
@@ -38,14 +44,19 @@ struct SidebarButton<Content: View>: View {
     // 2) Convenience-Init für SF Symbols (Content == Image)
     init(systemName: String,
          pulsing: Bool = false,
+         haptics: HapticKind = .tap,
          action: @escaping () -> Void) where Content == Image {
         self.pulsing = pulsing
+        self.haptics = haptics
         self.action = action
         self.label = { Image(systemName: systemName) }
     }
 
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            playHaptic()
+            action()
+        }) {
             ZStack {
                 // Optionaler Pulsring (nur, wenn enabled)
                 if pulsing && isEnabled {
@@ -81,6 +92,21 @@ struct SidebarButton<Content: View>: View {
         }
         .onChange(of: isEnabled) { enabled in
             pulsePhase = enabled ? pulsing : false
+        }
+    }
+
+    private func playHaptic() {
+        switch haptics {
+        case .none:
+            break
+        case .tap:
+            let g = UIImpactFeedbackGenerator(style: .medium)
+            g.prepare()
+            g.impactOccurred()
+        case .selection:
+            let g = UISelectionFeedbackGenerator()
+            g.prepare()
+            g.selectionChanged()
         }
     }
 }

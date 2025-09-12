@@ -234,9 +234,9 @@ private extension HuntScopePremiumPayWall {
         generator.impactOccurred()
     }
     func hapticSelection() {
-        let generator = UISelectionFeedbackGenerator()
-        generator.prepare()
-        generator.selectionChanged()
+        let g = UIImpactFeedbackGenerator(style: .medium)
+        g.prepare()
+        g.impactOccurred()
     }
     func planLabel(_ product: Product) -> String {
         let price = product.displayPrice

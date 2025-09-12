@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct MessageContainer: View {
     @EnvironmentObject private var config: ConfigStore
@@ -29,7 +30,7 @@ struct MessageContainer: View {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(primary)
 
-            Button(action: onClose) {
+            Button(action: { hapticTap(); onClose() }) {
                 Text(buttonTitle).bold()
                     .foregroundStyle(primary)
                     .padding(.horizontal, 16)
@@ -49,5 +50,13 @@ struct MessageContainer: View {
         )
         .cornerRadius(12)
         .shadow(radius: 8)
+    }
+}
+
+private extension MessageContainer {
+    func hapticTap() {
+        let g = UIImpactFeedbackGenerator(style: .medium)
+        g.prepare()
+        g.impactOccurred()
     }
 }

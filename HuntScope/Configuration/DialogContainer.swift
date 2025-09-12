@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct DialogContainer<Content: View>: View {
     @EnvironmentObject private var config: ConfigStore
@@ -57,7 +58,7 @@ struct DialogContainer<Content: View>: View {
                     .padding(24)
 
                     // Close-Button innerhalb des Scroll-Contents (scrollt mit)
-                    Button(action: onClose) {
+                    Button(action: { hapticTap(); onClose() }) {
                         ZStack {
                             Circle().stroke(primary, lineWidth: 2)
                             Image(systemName: "xmark")
@@ -77,5 +78,13 @@ struct DialogContainer<Content: View>: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(radius: 8)
+    }
+}
+
+private extension DialogContainer {
+    func hapticTap() {
+        let g = UIImpactFeedbackGenerator(style: .medium)
+        g.prepare()
+        g.impactOccurred()
     }
 }

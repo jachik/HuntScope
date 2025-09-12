@@ -13,7 +13,7 @@ Die App bringt folgende Funktionen mit:
 - [] Mondphase und Zeiten
 - [] Upload Picture to AI backend (d.h. hier backendentwicklung mit KI-Modell). Erstmal nur für DE (wegen Tieren, die gelernt sind)
 - [] Test aktuelle Version von VLC mit deaktivieren Boradcast-Einstellungen
-
+- [] Einstellungen haptic
 
 #TODOs:
 - [x] Links Balken entfernen im Konigurationsdialog
@@ -44,7 +44,7 @@ Die App bringt folgende Funktionen mit:
 12.09.
 - App-Beschreibung einfügen
 - Screenshots App
-- [] kostenlosen Monat anbieten
+- [] kostenlosen Monat anbieten -> über keychain?
 - [x] Dialog mit Kaufoptionen schöner gestalten
 
 13.09.
@@ -53,9 +53,9 @@ Die App bringt folgende Funktionen mit:
 14.09.
 - [x] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
 - [] Datenschutzvereinbarung prüfen 1 Std. 
-- [] Endlokalisierung 0,5 Std. 
-- [] Haptik beim Klicken
-- [] Text / Hinweise auf Premium ab in Dialog einfügen (d.h. welche vorteile hat der Nutzer)
+- [] Endlokalisierung (inkl. Mouseover) 0,5 Std. 
+- [x] Haptik beim Klicken
+- [x] Text / Hinweise auf Premium ab in Dialog einfügen (d.h. welche vorteile hat der Nutzer)
 15.09. 
 Vor dem Launch
 - [x] URL-Liste verschlüsselt ablegen
@@ -65,7 +65,7 @@ Vor dem Launch
 Optional, wenn noch Zeit ist:
 - [] Uhrzeit, Temeperatur und Windgeschwindigkeit
 - [] Mondphase und Zeiten
-- [] Videostream nicht beenden, wenn Werbung angezeigt wird
+- [-] Videostream nicht beenden, wenn Werbung angezeigt wird
 - [] Der CountDown, wann WErbung angezegit wird, beginnt mit dem Anzeigen - nicht mit dem Schließen - d.h. es kann sein, dass WErbung mehrfach hintereinander gezeigt wird
 - [] Versionsnumer der App und des bilds in die Konfiguration übernehmen, um prüfen zu können, dass eine neue Version installiert wurde
 - [] KI-Upload

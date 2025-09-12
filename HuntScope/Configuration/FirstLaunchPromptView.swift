@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct FirstLaunchPromptView: View {
     @EnvironmentObject private var config: ConfigStore
@@ -38,6 +39,7 @@ struct FirstLaunchPromptView: View {
 
                     HStack(spacing: 12) {
                         Button {
+                            hapticTap()
                             // Nein => Dialog schließen und Flag setzen
                             ConfigManager.shared.hasLaunchedBefore = true
                             ui.activeDialog = nil
@@ -54,6 +56,7 @@ struct FirstLaunchPromptView: View {
                         .buttonStyle(.plain)
 
                         Button {
+                            hapticTap()
                             // Ja => Auto-Scan starten
                             if !wifi.snapshot.isWiFiConnected { showWiFiAlert = true; return }
                             startAutoConnect()
@@ -120,6 +123,14 @@ struct FirstLaunchPromptView: View {
                 .transition(.opacity)
             }
         }
+    }
+}
+
+private extension FirstLaunchPromptView {
+    func hapticTap() {
+        let g = UIImpactFeedbackGenerator(style: .medium)
+        g.prepare()
+        g.impactOccurred()
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct MainConfigurationDialog: View {
     @EnvironmentObject private var config: ConfigStore
@@ -31,7 +32,7 @@ struct MainConfigurationDialog: View {
             // Liste mit Optionen (zentrierte Spalte, linksbündige Items)
             VStack(alignment: .leading, spacing: 26) {
                 // Kamerakonfiguration
-                Button(action: { ui.activeDialog = .rtspConfig }) {
+                Button(action: { hapticTap(); ui.activeDialog = .rtspConfig }) {
                     HStack(spacing: 16) {
                         ZStack {
                             Circle().stroke(primary, lineWidth: 2)
@@ -51,7 +52,7 @@ struct MainConfigurationDialog: View {
                 //Spacer(minLength: 10)
                 
                 // Abo-Konfiguration / Paywall (immer anklickbar)
-                Button(action: { ui.activeDialog = .testConfig }) {
+                Button(action: { hapticTap(); ui.activeDialog = .testConfig }) {
                     HStack(spacing: 16) {
                         ZStack {
                             Circle().stroke(primary, lineWidth: 2)
@@ -110,5 +111,13 @@ struct MainConfigurationDialog: View {
             .frame(maxWidth: 520)
             .frame(maxWidth: .infinity, alignment: .center)
         }
+    }
+}
+
+private extension MainConfigurationDialog {
+    func hapticTap() {
+        let g = UIImpactFeedbackGenerator(style: .medium)
+        g.prepare()
+        g.impactOccurred()
     }
 }
