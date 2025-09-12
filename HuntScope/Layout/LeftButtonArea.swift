@@ -61,6 +61,8 @@ struct LeftButtonArea<DialogButtons: View>: View {
                         Task { @MainActor in
                             AppPersistence.resetAll(trial: trial, entitlements: entitlements)
                             debugLog("All persistence wiped (Keychain, Settings, Presets).", "Debug")
+                            // Nach dem Reset die App beenden/suspendieren
+                            UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
                         }
                     }
             )
