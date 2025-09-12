@@ -369,6 +369,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Config/urls_plain.txt",
+				"$(SRCROOT)/scripts/generate_stream_presets.sh",
 			);
 			name = "Generate StreamPresets";
 			outputFileListPaths = (
@@ -378,7 +379,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\\\"${SRCROOT}/scripts/generate_stream_presets.sh\\\"\\n\n";
+			shellScript = "bash \"${SRCROOT}/scripts/generate_stream_presets.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
