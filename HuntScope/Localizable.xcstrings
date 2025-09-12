@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "_activate_huntscope_premium" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -736,6 +733,138 @@
         }
       }
     },
+    "_subscription_active" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium aktiv"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium active"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium aktywne"
+          }
+        }
+      }
+    },
+    "_subscription_active_until" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium aktiv bis %1$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium active until %1$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium aktywne do %1$@"
+          }
+        }
+      }
+    },
+    "_subscription_benefit_adfree" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Werbefrei – keine Unterbrechungen durch Anzeigen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ad‑free — no interruptions from ads."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bez reklam — bez przerw spowodowanych reklamami."
+          }
+        }
+      }
+    },
+    "_subscription_benefit_support" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unterstützt die Weiterentwicklung der App."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supports ongoing app development."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wspiera dalszy rozwój aplikacji."
+          }
+        }
+      }
+    },
+    "_subscription_benefits_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorteile von HuntScope Premium"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benefits of HuntScope Premium"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Korzyści z HuntScope Premium"
+          }
+        }
+      }
+    },
+    "_subscription_manage_button" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abo verwalten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Subscription"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zarządzaj subskrypcją"
+          }
+        }
+      }
+    },
     "_subscription_per_month" : {
       "localizations" : {
         "de" : {
@@ -780,20 +909,6 @@
         }
       }
     },
-    "_subscription_active" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Premium aktiv" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Premium active" } },
-        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Premium aktywne" } }
-      }
-    },
-    "_subscription_active_until" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Premium aktiv bis %1$@" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Premium active until %1$@" } },
-        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Premium aktywne do %1$@" } }
-      }
-    },
     "_subscription_prices_loading" : {
       "localizations" : {
         "de" : {
@@ -836,13 +951,6 @@
             "value" : "Odblokuj Premium"
           }
         }
-      }
-    },
-    "_subscription_manage_button" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abo verwalten" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Manage Subscription" } },
-        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Zarządzaj subskrypcją" } }
       }
     },
     "_subscription_restore_button" : {

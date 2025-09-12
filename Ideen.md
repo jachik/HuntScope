@@ -44,6 +44,9 @@ Die App bringt folgende Funktionen mit:
 12.09.
 - App-Beschreibung einfügen
 - Screenshots App
+- [] kostenlosen Monat anbieten
+- [x] Dialog mit Kaufoptionen schöner gestalten
+
 13.09.
 - [x] Abo (vermutlich 2-3 Std.)
 - [x] Lokalisierung (letzter Schritt ca. 2 Std.)
@@ -51,12 +54,11 @@ Die App bringt folgende Funktionen mit:
 - [x] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
 - [] Datenschutzvereinbarung prüfen 1 Std. 
 - [] Endlokalisierung 0,5 Std. 
-- [] kostenlosen Monat anbieten
 - [] Haptik beim Klicken
 - [] Text / Hinweise auf Premium ab in Dialog einfügen (d.h. welche vorteile hat der Nutzer)
 15.09. 
 Vor dem Launch
-- URL-Liste verschlüsselt ablegen
+- [x] URL-Liste verschlüsselt ablegen
 - 
 
 ->>>>> Launch
@@ -89,6 +91,16 @@ Erledigt:
 - [] Steiner
 - [] Nighthog
 - [] Themtec
+
+
+# Bemerkungen
+- es gibt die Meinung, dass die Hersteller-Apps schlecht sind (quelle chatgpt)
+    Viele Nutzer kritisieren z. B.:
+    •    lange Verbindungszeiten,
+    •    Abbrüche beim Stream,
+    •    dass die App primär für Marketing & Cloud gedacht ist, nicht für schnelle Jagdsituationen.
+    
+
 
 # Beschreibung Scanner
 
@@ -174,3 +186,8 @@ Folgende Aufgabe - erstmal nur diskutieren und Vorschläge aufzeigen - nichts im
 - nicht auf streampresets.json verzichten
 
 bitte umsetzen mit meinen anmerkungen
+
+
+
+die HuntscopePremiumWall zeigt die möglichen Abos und die Möglichkeit ein Abo zu kaufen bzw. wiederherzustellen. Die Optik für die Abo-Optionen (d.h monatlich oder jährlich) - kann man die Optik anpassen? oder ist das von apple vorgeben?
+Des Weiteren fehlt noch ein Text oberhalb der Abo-Optionen in dem steht, welche Vorteile eine Premium-Abo hat. 

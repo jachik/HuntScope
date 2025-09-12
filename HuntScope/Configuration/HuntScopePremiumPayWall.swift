@@ -7,6 +7,7 @@
 
 import SwiftUI
 import StoreKit
+import UIKit
 
 struct HuntScopePremiumPayWall: View {
     @EnvironmentObject private var ui: UIStateModel
@@ -15,6 +16,7 @@ struct HuntScopePremiumPayWall: View {
     @EnvironmentObject private var entitlements: EntitlementStore
 
     private var primary: Color { (config.theme == .red) ? .red : .white }
+    private let accent = Color.red
     @State private var selectedProductID: String? = nil
     @Environment(\.openURL) private var openURL
 
@@ -35,6 +37,7 @@ struct HuntScopePremiumPayWall: View {
                     HStack {
                         Spacer()
                         Button {
+                            hapticTap()
                             if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
                                 openURL(url)
                             }
@@ -59,87 +62,90 @@ struct HuntScopePremiumPayWall: View {
                         Spacer()
                     }
                 } else {
-                    // Kein Premium -> Plan-Auswahl, Kauf, Restore
+                    // Kein Premium -> Vorteile-Box sofort anzeigen
+                    HStack {
+                        Spacer(minLength: 0)
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("_subscription_benefits_title")
+                                .font(.title3.weight(.semibold))
+                                .foregroundStyle(primary)
+                            VStack(alignment: .leading, spacing: 6) {
+                                HStack(alignment: .top, spacing: 8) {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundStyle(accent)
+                                    Text("_subscription_benefit_adfree")
+                                        .foregroundStyle(primary.opacity(0.9))
+                                        .font(.subheadline)
+                                }
+                                HStack(alignment: .top, spacing: 8) {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundStyle(accent)
+                                    Text("_subscription_benefit_support")
+                                        .foregroundStyle(primary.opacity(0.9))
+                                        .font(.subheadline)
+                                }
+                            }
+                        }
+                        .padding(15)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color.black.opacity(0.6))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(primary.opacity(0.6), lineWidth: 1)
+                        )
+                        //.frame(maxWidth: 520, alignment: .leading)
+                        .frame(maxWidth: 520, alignment: .center)
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.bottom, 7)
+
+                    // Plan-Auswahl (lädt ggf. später)
                     if subscription.products.isEmpty {
                         Text("_subscription_prices_loading")
                             .font(.body)
                             .foregroundStyle(primary.opacity(0.8))
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.bottom, 6)
                     } else {
+                        // Abo-Optionen im passenden Rotton
                         VStack(alignment: .center, spacing: 10) {
                             Text("_subscription_select_plan")
-                                .font(.body.weight(.semibold))
+                                .font(.title3.weight(.semibold))
                                 .foregroundStyle(primary)
-                            Picker("", selection: Binding(get: {
-                                selectedProductID ?? subscription.products.first?.id
-                            }, set: { newID in
-                                selectedProductID = newID
-                            })) {
+                            HStack(spacing: 10) {
                                 ForEach(subscription.products, id: \.id) { p in
-                                    Text(planLabel(p)).tag(Optional(p.id))
+                                    let isSelected = (selectedProductID ?? subscription.products.first?.id) == p.id
+                                    Button(action: {
+                                        hapticSelection()
+                                        selectedProductID = p.id
+                                    }) {
+                                        Text(planLabel(p))
+                                            .font(.subheadline.weight(.semibold))
+                                            .padding(.horizontal, 14)
+                                            .padding(.vertical, 8)
+                                            .frame(minWidth: 120)
+                                            .background(isSelected ? accent : Color.clear)
+                                            .foregroundStyle(isSelected ? Color.white : accent)
+                                            .overlay(
+                                                Capsule().stroke(accent, lineWidth: 1.5)
+                                            )
+                                            .clipShape(Capsule())
+                                    }
+                                    .buttonStyle(.plain)
                                 }
                             }
-                            .pickerStyle(.segmented)
                         }
                     }
-                    // Premium freischalten
-                    HStack {
-                        Spacer()
-                        Button {
-                            Task {
-                                if let id = selectedProductID ?? subscription.products.first?.id {
-                                    await subscription.purchase(productID: id)
-                                } else {
-                                    await subscription.purchasePremium()
-                                }
-                            }
-                        } label: {
-                            HStack(spacing: 8) {
-                                Image(systemName: "crown.fill")
-                                    .font(.title2)
-                                    .foregroundStyle(primary)
-                                Text("_subscription_purchase_button").bold()
-                            }
-                            .font(.title.weight(.semibold))
-                            .foregroundStyle(primary)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 10)
-                            .background(Color.black)
-                            .clipShape(Capsule())
-                            .overlay(
-                                Capsule().stroke(primary, lineWidth: 1.5)
-                            )
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(subscription.isBusy)
-                        Spacer()
+                    // Premium freischalten + Käufe wiederherstellen adaptiv (nebeneinander oder zweizeilig)
+                    //LazyVGrid(columns: actionGridColumns, alignment: .center, spacing: 12) {
+                    HStack(alignment: .center) {
+                        purchaseButton
+                        restoreButton
                     }
-
-                    // Käufe wiederherstellen
-                    HStack {
-                        Spacer()
-                        Button {
-                            Task { await subscription.restorePurchases() }
-                        } label: {
-                            HStack(spacing: 8) {
-                                Image(systemName: "arrow.clockwise")
-                                    .font(.title2)
-                                    .foregroundStyle(primary)
-                                Text("_subscription_restore_button").bold()
-                            }
-                            .font(.title.weight(.semibold))
-                            .foregroundStyle(primary)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 10)
-                            .background(Color.black)
-                            .clipShape(Capsule())
-                            .overlay(
-                                Capsule().stroke(primary, lineWidth: 1.5)
-                            )
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(subscription.isBusy)
-                        Spacer()
-                    }
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity)
 
                     if let msg = subscription.lastMessage {
                         Text(msg)
@@ -166,6 +172,72 @@ struct HuntScopePremiumPayWall: View {
 }
 
 private extension HuntScopePremiumPayWall {
+    var actionGridColumns: [GridItem] { [GridItem(.adaptive(minimum: 160), spacing: 12)] }
+    var purchaseButton: some View {
+        Button {
+            hapticTap()
+            Task {
+                if let id = selectedProductID ?? subscription.products.first?.id {
+                    await subscription.purchase(productID: id)
+                } else {
+                    await subscription.purchasePremium()
+                }
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "crown.fill")
+                    .font(.title2)
+                    .foregroundStyle(primary)
+                Text("_subscription_purchase_button").bold()
+            }
+            .font(.title3.weight(.semibold))
+            .foregroundStyle(primary)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(Color.black)
+            .clipShape(Capsule())
+            .overlay(
+                Capsule().stroke(primary, lineWidth: 1.5)
+            )
+        }
+        .buttonStyle(.plain)
+        .disabled(subscription.isBusy)
+    }
+
+    var restoreButton: some View {
+        Button {
+            hapticTap()
+            Task { await subscription.restorePurchases() }
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "arrow.clockwise")
+                    .font(.title2)
+                    .foregroundStyle(primary)
+                Text("_subscription_restore_button").bold()
+            }
+            .font(.title3.weight(.semibold))
+            .foregroundStyle(primary)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(Color.black)
+            .clipShape(Capsule())
+            .overlay(
+                Capsule().stroke(primary, lineWidth: 1.5)
+            )
+        }
+        .buttonStyle(.plain)
+        .disabled(subscription.isBusy)
+    }
+    func hapticTap() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.prepare()
+        generator.impactOccurred()
+    }
+    func hapticSelection() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.prepare()
+        generator.selectionChanged()
+    }
     func planLabel(_ product: Product) -> String {
         let price = product.displayPrice
         if let unit = product.subscription?.subscriptionPeriod.unit {
