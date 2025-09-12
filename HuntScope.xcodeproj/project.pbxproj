@@ -222,6 +222,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 318A67AB2E6F2D2500157774 /* Build configuration list for PBXNativeTarget "HuntScope" */;
 			buildPhases = (
+				318A6A002E73F00000157774 /* Generate StreamPresets */,
 				318A67862E6F2D2200157774 /* Sources */,
 				318A67872E6F2D2200157774 /* Frameworks */,
 				318A67882E6F2D2200157774 /* Resources */,
@@ -357,6 +358,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		318A6A002E73F00000157774 /* Generate StreamPresets */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Config/urls_plain.txt",
+			);
+			name = "Generate StreamPresets";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/HuntScope/StreamPresets.json",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\\\"${SRCROOT}/scripts/generate_stream_presets.sh\\\"\\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		318A67862E6F2D2200157774 /* Sources */ = {

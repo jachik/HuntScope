@@ -12,10 +12,11 @@ import Foundation
 // Bündel von Presets (mit Version für künftige Migrationen)
 struct StreamPresetList: Codable, Equatable {
     var version: Int
+    var generatedAt: Date? = nil
     // Einfaches Schema: Liste von URL-Patterns (Strings)
     var presets: [String]
 
-    static let empty = StreamPresetList(version: 1, presets: [])
+    static let empty = StreamPresetList(version: 1, generatedAt: nil, presets: [])
 }
 
 // Manager kümmert sich um Laden/Speichern im Application-Support-Ordner.
@@ -52,14 +53,14 @@ final class StreamPresetManager {
         if let url = Self.fileURL, FileManager.default.fileExists(atPath: url.path) {
             if let data = try? Data(contentsOf: url) {
                 if let decoded = try? Self.decoder.decode(StreamPresetList.self, from: data) {
-                    var current = decoded
+                    var current = Self.decodedList(decoded)
                     // Prüfe, ob das Bundle eine neuere Version enthält
                     if let bundled = Bundle.main.url(forResource: "StreamPresets", withExtension: "json"),
                        let bdata = try? Data(contentsOf: bundled) {
                         if let seed = try? Self.decoder.decode(StreamPresetList.self, from: bdata) {
                             if seed.version > current.version {
-                                list = seed
-                                save()
+                                list = Self.decodedList(seed)
+                                // nicht speichern: Klartext soll nicht persistiert werden
                                 debugLog("Presets reseeded from newer Bundle (v\(seed.version) > v\(current.version)) — count=\(list.presets.count)", "StreamPresets")
                                 return
                             }
@@ -67,7 +68,7 @@ final class StreamPresetManager {
                             let seedList = StreamPresetList(version: legacySeed.version, presets: legacySeed.flattened())
                             if seedList.version > current.version {
                                 list = seedList
-                                save()
+                                // nicht speichern: Klartext soll nicht persistiert werden
                                 debugLog("Presets reseeded from newer Bundle (legacy) (v\(seedList.version) > v\(current.version)) — count=\(list.presets.count)", "StreamPresets")
                                 return
                             }
@@ -83,8 +84,8 @@ final class StreamPresetManager {
                        let bdata = try? Data(contentsOf: bundled) {
                         if let seed = try? Self.decoder.decode(StreamPresetList.self, from: bdata) {
                             if seed.version > current.version {
-                                list = seed
-                                save()
+                                list = Self.decodedList(seed)
+                                // nicht speichern: Klartext soll nicht persistiert werden
                                 debugLog("Presets reseeded from newer Bundle (v\(seed.version) > v\(current.version)) — count=\(list.presets.count)", "StreamPresets")
                                 return
                             }
@@ -92,14 +93,14 @@ final class StreamPresetManager {
                             let seedList = StreamPresetList(version: legacySeed.version, presets: legacySeed.flattened())
                             if seedList.version > current.version {
                                 list = seedList
-                                save()
+                                // nicht speichern: Klartext soll nicht persistiert werden
                                 debugLog("Presets reseeded from newer Bundle (legacy) (v\(seedList.version) > v\(current.version)) — count=\(list.presets.count)", "StreamPresets")
                                 return
                             }
                         }
                     }
                     list = current
-                    save()
+                    // Migration erfolgte im Speicher
                     debugLog("Presets migrated from legacy format (\(list.presets.count)), v\(current.version)", "StreamPresets")
                     return
                 }
@@ -110,13 +111,13 @@ final class StreamPresetManager {
         if let bundled = Bundle.main.url(forResource: "StreamPresets", withExtension: "json"),
            let data = try? Data(contentsOf: bundled) {
             if let decoded = try? Self.decoder.decode(StreamPresetList.self, from: data) {
-                list = decoded
-                save()
+                list = Self.decodedList(decoded)
+                // nicht speichern: Klartext soll nicht persistiert werden
                 debugLog("Presets seeded from Bundle (\(list.presets.count))", "StreamPresets")
                 return
             } else if let legacy = try? Self.decoder.decode(LegacyPresetList.self, from: data) {
                 list = StreamPresetList(version: legacy.version, presets: legacy.flattened())
-                save()
+                // nicht speichern: Klartext soll nicht persistiert werden
                 debugLog("Presets seeded from Bundle (legacy migrated, \(list.presets.count))", "StreamPresets")
                 return
             } else {
@@ -171,5 +172,23 @@ private struct LegacyPresetList: Codable {
 
     func flattened() -> [String] {
         presets.flatMap { $0.defaultURLs }.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
+    }
+}
+
+// MARK: - Obfuscation support
+private extension StreamPresetManager {
+    static func decodedList(_ src: StreamPresetList) -> StreamPresetList {
+        let decoded = src.presets.compactMap { maybeDecode($0) }
+        return StreamPresetList(version: src.version, generatedAt: src.generatedAt, presets: decoded)
+    }
+
+    static func maybeDecode(_ s: String) -> String? {
+        // Heuristik: Base64-Zeichen und Länge Vielfaches von 4
+        let charset = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")
+        if s.unicodeScalars.allSatisfy({ charset.contains($0) }) && (s.count % 4 == 0) {
+            if let decoded = Obfuscator.decodeBase64XOR(s) { return decoded }
+        }
+        // Fallback: unverändert zurückgeben, wenn wie früher Klartext-URL
+        return s
     }
 }

@@ -8,17 +8,21 @@ Die App bringt folgende Funktionen mit:
 - Darstellung auf iPad & iPhone
 - Werbung für kostenlose Nutzung (taucht alle x Minuten auf)
 
-TODOs:
+#Featurerequests
+- [] Uhrzeit, Temeperatur und Windgeschwindigkeit
+- [] Mondphase und Zeiten
+- [] Upload Picture to AI backend (d.h. hier backendentwicklung mit KI-Modell). Erstmal nur für DE (wegen Tieren, die gelernt sind)
+- [] Test aktuelle Version von VLC mit deaktivieren Boradcast-Einstellungen
+
+
+#TODOs:
 - [x] Links Balken entfernen im Konigurationsdialog
 - [X] Logo erstellen
 - [X] Splashscreen
 - [x] Hintergrund (=Logo?)
 - [X] Konfigurationsdialog etwas bequemer
-- [] Uhrzeit, Temeperatur und Windgeschwindigkeit
-- [] Mondphase und Zeiten
-- [] Test aktuelle Version von VLC mit deaktivieren Boradcast-Einstellungen
 
-TODO - vor Launch:
+#TODO - vor Launch:
 10.09.
 - [x] Probleme mit Splash bei kurzer Abwesenheit
 - [x] Hintergrundbild-Overlay mit Symbol für keine VErbindung als (als flush)
@@ -51,6 +55,10 @@ TODO - vor Launch:
 - [] Haptik beim Klicken
 - [] Text / Hinweise auf Premium ab in Dialog einfügen (d.h. welche vorteile hat der Nutzer)
 15.09. 
+Vor dem Launch
+- URL-Liste verschlüsselt ablegen
+- 
+
 ->>>>> Launch
 Optional, wenn noch Zeit ist:
 - [] Uhrzeit, Temeperatur und Windgeschwindigkeit
@@ -133,3 +141,36 @@ Ich habe die Verbindung zur Kamera testweise beendet und es wurde wieder das Was
 
 KI-Prompts
 ich nehme einen weißen Hintergrund, weil das grelle Licht natürlich stört und ich will ja zum Kaufen animieren. Kannst du mir ein Bild in Full-HD erstellen, auf dem ein zeichentrick Hirsch mit einer Krone und einer Brille dargestellt ist und einer Sprechblase mit "Erlebe alle Funktionen ohne Unterbrechen und hole dir jetzt HuntScop Premium"
+
+
+
+
+## build script
+
+Folgende Aufgabe - erstmal nur diskutieren und Vorschläge aufzeigen - nichts implementieren:
+- ich habe die Datei Config/urls_plain.txt erstellt, die die URLs inkl. Kommentaren enthält.
+- in Zukunft möchte ich nur diese Datei pflegen (d.h. URL trage ich nur noch hier ein)
+- diese Datei soll nicht mitkompiliert werden - sie verbleibt nur im code-repository
+- während des Builds soll diese Datei in die StreamPresets.json (ist halt die Frage, ob wir noch eine im Projekt brauchen oder man das anders löst) überführt werden und dabei werden die URLs mit einem XOR-String (den wir einmale festlegen) obfuskiert und als BAse64 kodiert
+- die Dekodierung findet nur im Arbeitsspeicher statt - d.h. in dem Moment, wo die Streams aus der json-Datei geladen werden wird dekodiert - damit verhindern wir, dass die strings irgendwo in der App auf der FEstplatte in lesbarer Form vorliegen
+- Hitergrund: ich möchte verhindern, dass ein beliebiger Entwickler (ohne Forensik-Kenntnisse) einfach so die URLs auslesen kann
+- die kommentare (eingeleitet mit #) und Leerzeichen in der TExtdatei werden ignoriert, sind aber zwecks strukturieren notwendig
+- Bei jedem Build wird geprüft, ob sich die Textdatei geändert hat (vermutlich ob sie neuer ist) und wenn ja, dann wird die json-Datei neu generiert und der Versionzähler automatisch um 1 hochgezählt. D.h. das Skript muss uach die aktuelle Version der json-Datei ermitteln und jeweils hochzählen
+- Es soll weiterhin die Möglichkeit bestehen, die json-DAtei in der App dynamisch z.B. beim Starten der App zu überschreiben (z.B. über eine URL, über die geprüft wird, ob dort eine neue obfuskierte Version liegt - das wird aber später erst implenentiert)
+
+
+
+- Build-Script erzeugen
+- GeneratedAt aufnehmen
+- DAtenschema ist einfache eine URL pro Zeile ohne Name
+- JSON-Schema (angelehnt an die existierende Datei mit möglichst wenig Änderungen: {"version": 12, "generatedAt": "2025-09-12T18:35:00Z", "presets":["<b64(xor)>","<b64(xor)>","<b64(xor)>"]  } (hoffe, ich habe das richtig geschrieben)
+- lege den Key selbst fest und speichere ihn so ab, dass er sowohl im Build-Script wie auch in der App nutzbar ist (notfalls an zwei Stellen - er soll im Code statisch verfügbar sein und wird normal selten geändert) und auch im Github-Archiv, damit man das auch von anderen COmputer entsprechend nutzen kann - d.h. nicht im Environment
+- bei mtime bleiben und mtime urls_plan.txt mit generatedAt abgleichen
+- Das online-Update noch nicht implementieren (die information habe ich dir nur gegeben, damit du besser planen kannst)
+- die json soll mit versioniert werden, damit sie nicht neu generiert wird, wenn ein neuer Entwicklungsrechner verwendert wird
+- Die Zeilen haben wie gesagt nur eine URL - also keine prüfung auf ":"
+- Ungültige URLs während des Buildvorgangs aufzeigen bzw. darüber warnen und nicht aufnehmen
+- erstmal mit run script
+- nicht auf streampresets.json verzichten
+
+bitte umsetzen mit meinen anmerkungen

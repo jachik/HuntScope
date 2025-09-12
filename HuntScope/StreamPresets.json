@@ -1,12 +1,13 @@
 {
-  "version": 2,
+  "generatedAt": "2025-09-12T12:38:51Z",
   "presets": [
-    "rtsp://192.168.1.1:554/h264/channel=0/video/",
-    "rtsp://192.168.1.254/xxx.mov",
-    "rtsp://192.168.3.15:554/h264/channel=0/video/",
-    "rtsp://192.168.11.220/1/h264major",
-    "rtsp://192.168.42.1/preview",
-    "rtsp://192.168.100.154:8554/thermal",
-    "rtsp://192.168.42.1/live",
-  ]
+    "DWXaU2frpN84BWcbWuiwClEgkxZo8KSGMwF9BQ+4/1URdMUebev9h2VSJgU=",
+    "DWXaU2frpN84BWcbWuiwClEjnBdyvPOWL1omXA==",
+    "DWXaU2frpN84BWcbWuiwCFEgnBlo8b/BaQV/HkOz9loRf8xPYPSkmGhTLEVD8g==",
+    "DWXaU2frpN84BWcbWuiwCk4/mxFt67rBaQV/HgGx9FQN",
+    "DWXaU2frpN84BWcbWuiwD00/mAwttu6YaFI+",
+    "DWXaU2frpN84BWcbWuiwD00/mAwxrf2L",
+    "DWXaU2frpN84BWcbWuiwCk8hhxJo8LHWNAJ9BRi4+0kScMU="
+  ],
+  "version": 1
 }
