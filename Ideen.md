@@ -9,11 +9,14 @@ Die App bringt folgende Funktionen mit:
 - Werbung für kostenlose Nutzung (taucht alle x Minuten auf)
 
 #Featurerequests
-- [] Uhrzeit, Temeperatur und Windgeschwindigkeit
+- [] Uhrzeit, Temeperatur und Windgeschwindigkeit, Luftdruck
+- [] Restlichtanzeige (bzw. 1,5 Std. vor und nach)
 - [] Mondphase und Zeiten
 - [] Upload Picture to AI backend (d.h. hier backendentwicklung mit KI-Modell). Erstmal nur für DE (wegen Tieren, die gelernt sind)
 - [] Test aktuelle Version von VLC mit deaktivieren Boradcast-Einstellungen
 - [] Einstellungen haptic
+- [] Lärmanzeige (über iPhone-Mikrofon-Pegel) → ob man selbst unbemerkt bleibt
+
 
 #TODOs:
 - [x] Links Balken entfernen im Konigurationsdialog
@@ -42,9 +45,9 @@ Die App bringt folgende Funktionen mit:
 - [x] Datenschutzerklärung Text größer
 
 12.09.
-- App-Beschreibung einfügen
-- Screenshots App
-- [] kostenlosen Monat anbieten -> über keychain?
+- [] App-Beschreibung einfügen
+- [] Screenshots App
+- [x] kostenlosen Monat anbieten -> über keychain?
 - [x] Dialog mit Kaufoptionen schöner gestalten
 
 13.09.

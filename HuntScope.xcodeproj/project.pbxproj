@@ -13,7 +13,6 @@
 		318A67CC2E6F3FBA00157774 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67CB2E6F3FBA00157774 /* AVFoundation.framework */; };
 		318A67CE2E6F3FD000157774 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67CD2E6F3FD000157774 /* CoreMedia.framework */; };
 		318A67D02E6F3FDD00157774 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67CF2E6F3FDC00157774 /* CoreVideo.framework */; };
-		318A67D22E6F3FE800157774 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67D12E6F3FE800157774 /* VideoToolbox.framework */; };
 		318A67D42E6F3FF500157774 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67D32E6F3FF500157774 /* CFNetwork.framework */; };
 		318A67D62E6F3FFF00157774 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67D52E6F3FFF00157774 /* Security.framework */; };
 		318A67D82E6F400E00157774 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67D72E6F400E00157774 /* QuartzCore.framework */; };
@@ -25,6 +24,7 @@
 		318A682C2E70879700157774 /* UserMessagingPlatform.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68282E70879700157774 /* UserMessagingPlatform.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		318A682F2E7089D000157774 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A682E2E7089D000157774 /* JavaScriptCore.framework */; };
 		318A68FE2E731FBD00157774 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A68FD2E731FBD00157774 /* StoreKit.framework */; };
+		318A6AD32E74AAF300157774 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318A67D12E6F3FE800157774 /* VideoToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				318A6AD32E74AAF300157774 /* VideoToolbox.framework in Frameworks */,
 				318A67D82E6F400E00157774 /* QuartzCore.framework in Frameworks */,
 				318A67DB2E6F405F00157774 /* libz.tbd in Frameworks */,
 				318A682F2E7089D000157774 /* JavaScriptCore.framework in Frameworks */,
@@ -140,7 +141,6 @@
 				318A67CC2E6F3FBA00157774 /* AVFoundation.framework in Frameworks */,
 				318A67DC2E6F406500157774 /* libbz2.tbd in Frameworks */,
 				318A68292E70879700157774 /* GoogleMobileAds.xcframework in Frameworks */,
-				318A67D22E6F3FE800157774 /* VideoToolbox.framework in Frameworks */,
 				318A67D42E6F3FF500157774 /* CFNetwork.framework in Frameworks */,
 				318A67C12E6F3D5300157774 /* libc++.tbd in Frameworks */,
 				318A682B2E70879700157774 /* UserMessagingPlatform.xcframework in Frameworks */,
@@ -549,7 +549,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HuntScope/HuntScope.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = C89L7XA9Y7;
 				ENABLE_PREVIEWS = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -562,7 +562,7 @@
 				INFOPLIST_FILE = HuntScope/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HuntScope;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Benötigt";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Standort wird fuer lokale Wetterdaten benoetigt.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
@@ -596,7 +596,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HuntScope/HuntScope.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = C89L7XA9Y7;
 				ENABLE_PREVIEWS = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -609,7 +609,7 @@
 				INFOPLIST_FILE = HuntScope/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HuntScope;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Benötigt";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Standort wird fuer lokale Wetterdaten benoetigt.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;

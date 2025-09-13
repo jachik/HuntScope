@@ -15,7 +15,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         let appID = Bundle.main.object(forInfoDictionaryKey: "GADApplicationIdentifier") as? String
         assert(appID?.hasPrefix("ca-app-pub-") == true, "GADApplicationIdentifier fehlt/ungueltig: \(String(describing: appID))")
 
-        //MobileAds.shared.start()
         MobileAds.shared.start()
 
         return true
