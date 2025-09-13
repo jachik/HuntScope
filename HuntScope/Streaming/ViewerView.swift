@@ -16,6 +16,8 @@ struct ViewerView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> VideoSurfaceView {
         let v = VideoSurfaceView()
+        v.contentMode = .scaleAspectFit
+        v.clipsToBounds = true
         player.attach(view: v)
         // Auto-Start kurz nach Instanziierung (falls erlaubt)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -30,4 +32,3 @@ struct ViewerView: UIViewRepresentable {
         // No-op. Surface bleibt angehängt.
     }
 }
-
