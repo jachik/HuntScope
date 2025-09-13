@@ -13,5 +13,10 @@ rtsp://192.168.11.123/1/h264major
 rtsp://192.168.48.1/ch0/stream0
 # Infriray
 rtsp://192.168.11.123/1/h264major
+# Guide
+rtsp://192.168.42.1:8554/video
+rtsp://192.168.42.1:8554/ir
+
+
 # testing
 rtsp://192.168.100.154:8554/thermal

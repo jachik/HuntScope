@@ -2039,6 +2039,7 @@
       }
     },
     "_trial_intro_ok" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

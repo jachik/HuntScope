@@ -14,24 +14,13 @@ struct TrialIntroDialog: View {
     var body: some View {
         DialogContainer(title: "_trial_intro_title", onClose: { closeFlow() }) {
             VStack(spacing: 16) {
+                
                 Text("_trial_intro_body")
+                    .font(.title3)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(primary)
+                    .padding(.top,10)
 
-                HStack {
-                    Spacer()
-                    Button(action: { closeFlow() }) {
-                        Text("_trial_intro_ok").bold()
-                            .foregroundStyle(primary)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .background(Color.black)
-                            .clipShape(Capsule())
-                            .overlay(Capsule().stroke(primary, lineWidth: 1.5))
-                    }
-                    .buttonStyle(.plain)
-                    Spacer()
-                }
             }
             .frame(maxWidth: 520)
             .frame(maxWidth: .infinity, alignment: .center)

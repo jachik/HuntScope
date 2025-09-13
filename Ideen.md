@@ -63,7 +63,7 @@ Die App bringt folgende Funktionen mit:
 15.09. 
 Vor dem Launch
 - [x] URL-Liste verschlüsselt ablegen
-- [] Dialog mit Testphase am Anfang etwas schöner gestalten
+- [x] Dialog mit Testphase am Anfang etwas schöner gestalten
 
 ->>>>> Launch
 Optional, wenn noch Zeit ist:
