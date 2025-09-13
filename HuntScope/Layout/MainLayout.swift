@@ -34,6 +34,9 @@ import SwiftUI
             let safeRight = geo.safeAreaInsets.trailing + 10
             let safeTop    = geo.safeAreaInsets.top + 10
             let safeBottom = geo.safeAreaInsets.bottom + 10
+            // Gleicher Rand wie die Buttons: Differenz zur reinen Safe-Area (derzeit 10pt)
+            let sideGapLeft = max(0, safeLeft - geo.safeAreaInsets.leading)
+            let sideGapRight = max(0, safeRight - geo.safeAreaInsets.trailing)
             
             ZStack {
                 HStack(spacing: 0) {
@@ -54,6 +57,9 @@ import SwiftUI
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.top, safeTop + 5)
                         .padding(.bottom, safeBottom + 5)
+                        // Horizontaler Abstand zwischen Stream und Button-Spalten
+                        .padding(.leading, sideGapLeft)
+                        .padding(.trailing, sideGapRight)
 
                     // Rechte Spalte
                     ZStack {
