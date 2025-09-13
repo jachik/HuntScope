@@ -16,7 +16,9 @@ rtsp://192.168.11.123/1/h264major
 # Guide
 rtsp://192.168.42.1:8554/video
 rtsp://192.168.42.1:8554/ir
-
-
+# Nitehog
+rtsp://192.168.10.1:554/ch0/stream0
+# Thermtek
+rtsp://192.168.1.11:554/mainstream
 # testing
 rtsp://192.168.100.154:8554/thermal

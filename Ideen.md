@@ -41,25 +41,31 @@ Die App bringt folgende Funktionen mit:
 - [x] Eigene Werbung (erstmal ein Dialog)
 - [x] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
 - [x] Eigenen Werbespot erstellen
-- [] RTSP-Streams sammeln (Apps laden und zerpflücken)
+- [x] RTSP-Streams sammeln (Apps laden und zerpflücken)
 - [x] Datenschutzerklärung Text größer
 
 12.09.
-- [] App-Beschreibung im Store ergänzen / fertigstellen
-- [] Screenshots App für App Store
+- [x] App-Beschreibung im Store ergänzen / fertigstellen
+- [x] Screenshots App für App Store
+  - 1. App mit Wildschwein oder Rehwild (deutlch, evtl. von meinen Bildern?)
+  - 2. Nigh-/Day-Shift halb halb (jetzt anderes Wild)
+  - 3. 
+  - Kandidaten für Screenshots: 394, 379, 412, 
 - [x] kostenlosen Monat anbieten -> über keychain?
 - [x] Dialog mit Kaufoptionen schöner gestalten
 
 13.09.
 - [x] Abo (vermutlich 2-3 Std.)
 - [x] Lokalisierung (letzter Schritt ca. 2 Std.)
-- [] Hinweis auf Testversion genauer beschreiben
+- [x] Hinweis auf Testversion genauer beschreiben
+
 14.09.
 - [x] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
-- [] Datenschutzvereinbarung prüfen 1 Std. 
+- [X] Datenschutzvereinbarung prüfen 1 Std. 
 - [x] Endlokalisierung (inkl. Mouseover) 0,5 Std. 
 - [x] Haptik beim Klicken
 - [x] Text / Hinweise auf Premium ab in Dialog einfügen (d.h. welche vorteile hat der Nutzer)
+
 15.09. 
 Vor dem Launch
 - [x] URL-Liste verschlüsselt ablegen
