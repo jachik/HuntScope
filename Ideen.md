@@ -63,7 +63,7 @@ Die App bringt folgende Funktionen mit:
 15.09. 
 Vor dem Launch
 - [x] URL-Liste verschlüsselt ablegen
-- 
+- [] Dialog mit Testphase am Anfang etwas schöner gestalten
 
 ->>>>> Launch
 Optional, wenn noch Zeit ist:
@@ -87,11 +87,11 @@ Erledigt:
 - [x] Pulsar
 - [x] Syton
 - [x] Zeiss
-- [] Liemke *
-- [] Hikvision *
+- [x] Liemke 
+- [] Hikvision -> keinen String gefunden (genauere Prüfung notwendig))
 - [x] Burris
-- [] Leica *
-- [] INfriray *
+- [] Leica -> keine App gefunden
+- [x] INfriray *
 - [] Guide Sensmart *
 - [x] ATN
 - [] Steiner
@@ -145,6 +145,7 @@ Dieser neue Konfigurationsdialog hat einen Button "Auto-Connect" und alternativ 
 }
 
 APKPure
+apktool d base.apk -o out_folder
 
 for i in $(find . -type f); do strings $i; done | grep "rtsp://"	
     

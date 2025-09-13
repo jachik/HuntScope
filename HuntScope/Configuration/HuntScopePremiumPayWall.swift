@@ -60,6 +60,8 @@ struct HuntScopePremiumPayWall: View {
                             )
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(Text("_a11y_configuration_btn_manage_label"))
+                        .accessibilityHint(Text("_a11y_configuration_btn_manage_hint"))
                         Spacer()
                     }
                 } else {
@@ -209,6 +211,7 @@ private extension HuntScopePremiumPayWall {
         }
         .buttonStyle(.plain)
         .disabled(subscription.isBusy)
+        .accessibilityHint(Text("_a11y_configuration_btn_purchase_hint"))
     }
 
     var restoreButton: some View {
@@ -234,6 +237,7 @@ private extension HuntScopePremiumPayWall {
         }
         .buttonStyle(.plain)
         .disabled(subscription.isBusy)
+        .accessibilityHint(Text("_a11y_configuration_btn_restore_hint"))
     }
     func hapticTap() {
         let generator = UIImpactFeedbackGenerator(style: .medium)

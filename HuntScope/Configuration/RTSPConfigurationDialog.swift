@@ -62,6 +62,7 @@ struct RTSPConfigurationDialog: View {
                         )
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(Text("_a11y_configuration_rtsp_autoconnect_label"))
                     Spacer()
                 }
                 Spacer(minLength: 20)
@@ -113,6 +114,7 @@ struct RTSPConfigurationDialog: View {
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled(true)
                                 .foregroundStyle(primary)
+                                .accessibilityLabel(Text("_a11y_configuration_rtsp_url_field_label"))
                                 .padding(10)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)

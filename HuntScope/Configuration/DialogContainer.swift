@@ -67,6 +67,7 @@ struct DialogContainer<Content: View>: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(Text("_a11y_configuration_dialog_close_label"))
                     .frame(width: 44, height: 44)
                     .padding(.top, 18)
                     .padding(.trailing, 18)

@@ -82,6 +82,8 @@ struct AdDialog: View {
                                 .foregroundStyle(Color.gray)
                         }
                     }
+                    .accessibilityLabel(Text("_a11y_ads_close_button_label"))
+                    .accessibilityHint(Text("_a11y_ads_close_button_hint"))
                     .buttonStyle(.plain)
                     .frame(width: controlSize + 8, height: controlSize + 8)
                     .padding(.top, 18)
@@ -98,7 +100,7 @@ struct AdDialog: View {
                     }
                     .padding(.top, 18)
                     .padding(.trailing, 18)
-                    .accessibilityLabel(Text("Werbung kann in \(remaining) Sekunden geschlossen werden"))
+                    .accessibilityLabel(Text(String(format: String(localized: "_a11y_ads_close_in_seconds"), remaining)))
                 }
             }
         }

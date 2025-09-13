@@ -48,6 +48,7 @@ struct StreamView: View {
             // VLC Video Surface underneath overlays (tinted in red mode)
             ViewerView()
                 .colorMultiply(config.theme == .red ? .red : .white)
+                .accessibilityHidden(true)
 
             // Signal-Definition: ausschliesslich basierend auf dem letzten Frame-Timestamp
             let hasSignal = player.hasStreamSignal
@@ -90,6 +91,8 @@ struct StreamView: View {
                         .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
                 }
                 .allowsHitTesting(false)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(Text("_a11y_layout_overlay_no_signal_label"))
             }
         }
         .ignoresSafeArea()
