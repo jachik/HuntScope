@@ -40,7 +40,7 @@ Die App bringt folgende Funktionen mit:
 - [x] Impressum & Datenschutz
 - [x] Eigene Werbung (erstmal ein Dialog)
 - [x] eigene Werbung auch hin und wieder per Zufall (damit der Benutzer das effektiv wahrnimmt)
-- [] Eigenen Werbespot erstellen
+- [x] Eigenen Werbespot erstellen
 - [] RTSP-Streams sammeln (Apps laden und zerpflücken)
 - [x] Datenschutzerklärung Text größer
 

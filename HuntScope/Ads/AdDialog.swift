@@ -41,11 +41,12 @@ struct AdDialog: View {
             GeometryReader { geo in
                 Group {
                     if let url = resolveAdURL() {
-                        LoopingVideoView(url: url, isMuted: isMuted, videoGravity: .resizeAspect)
+                        LoopingVideoView(url: url, isMuted: isMuted, videoGravity: .resizeAspectFill)
                             .frame(width: geo.size.width, height: geo.size.height)
                             .clipped()
                             .contentShape(Rectangle())
                             .allowsHitTesting(false) // block interactions to the video layer
+                            .ignoresSafeArea()
                     } else {
                         // Minimal placeholder if no asset found
                         VStack(spacing: 12) {
@@ -68,22 +69,36 @@ struct AdDialog: View {
                 if canClose {
                     Button(action: onClose) {
                         ZStack {
-                            Circle().stroke(Color.gray, lineWidth: 2)
+                            // White background circle slightly larger for contrast
+                            Circle()
+                                .fill(Color.white)
+                                .frame(width: controlSize + 8, height: controlSize + 8)
+                            // Original gray ring at control size
+                            Circle()
+                                .stroke(Color.gray, lineWidth: 2)
+                                .frame(width: controlSize, height: controlSize)
                             Image(systemName: "xmark")
                                 .font(.title2)
                                 .foregroundStyle(Color.gray)
                         }
                     }
                     .buttonStyle(.plain)
-                    .frame(width: controlSize, height: controlSize)
+                    .frame(width: controlSize + 8, height: controlSize + 8)
                     .padding(.top, 18)
                     .padding(.trailing, 18)
                 } else {
-                    CountdownBadge(remaining: remaining)
-                        .frame(width: controlSize, height: controlSize)
-                        .padding(.top, 18)
-                        .padding(.trailing, 18)
-                        .accessibilityLabel(Text("Werbung kann in \(remaining) Sekunden geschlossen werden"))
+                    ZStack {
+                        // White background circle slightly larger for contrast
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: controlSize + 8, height: controlSize + 8)
+                        // Foreground countdown badge at control size
+                        CountdownBadge(remaining: remaining)
+                            .frame(width: controlSize, height: controlSize)
+                    }
+                    .padding(.top, 18)
+                    .padding(.trailing, 18)
+                    .accessibilityLabel(Text("Werbung kann in \(remaining) Sekunden geschlossen werden"))
                 }
             }
         }
@@ -131,6 +146,10 @@ struct AdDialog: View {
         }
         // Optional: if you place localized files under an 'Ads' folder reference
         if let url = Bundle.main.url(forResource: adID, withExtension: "mp4", subdirectory: "Ads") {
+            return url
+        }
+        // Optional: if assets live under a 'Resources/Ads' folder reference
+        if let url = Bundle.main.url(forResource: adID, withExtension: "mp4", subdirectory: "Resources/Ads") {
             return url
         }
         return nil

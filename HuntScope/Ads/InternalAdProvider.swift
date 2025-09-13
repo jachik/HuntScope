@@ -18,6 +18,10 @@ struct InternalAdProvider {
         if let url = Bundle.main.url(forResource: id, withExtension: "mp4", subdirectory: "Ads") {
             return url
         }
+        // Optional: localized resource under a 'Resources/Ads' folder reference
+        if let url = Bundle.main.url(forResource: id, withExtension: "mp4", subdirectory: "Resources/Ads") {
+            return url
+        }
         return nil
     }
 
@@ -39,4 +43,3 @@ struct InternalAdProvider {
         return candidates.randomElement()
     }
 }
-
