@@ -75,6 +75,7 @@ Optional, wenn noch Zeit ist:
 - [] KI-Upload
 - [] Konfiguration: Helligkeit UI-Steuerung (nicht bild)
 - [] Konfiguration: Haptik (aus/light/medium/...) 
+- [] Internetseite HuntScope.com???
 
 Erledigt:
 - [x] Werbung (vermutlich 2-3 Std.)
