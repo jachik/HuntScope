@@ -31,7 +31,7 @@ final class SubscriptionManager: ObservableObject {
             let fetched = try await Product.products(for: productIDs)
             self.products = fetched.sorted(by: { $0.displayPrice < $1.displayPrice })
         } catch {
-            self.lastMessage = "Failed to load products"
+            self.lastMessage = String(localized: "_subscription_error_products_load")
         }
     }
 
@@ -40,7 +40,7 @@ final class SubscriptionManager: ObservableObject {
         guard let product = products.first else {
             await refreshProducts()
             guard let p = products.first else {
-                self.lastMessage = "No products available"
+                self.lastMessage = String(localized: "_subscription_error_no_products")
                 return
             }
             await purchase(product: p)
@@ -58,7 +58,7 @@ final class SubscriptionManager: ObservableObject {
             if let product = products.first(where: { $0.id == productID }) {
                 await purchase(product: product)
             } else {
-                self.lastMessage = "Product not found"
+                self.lastMessage = String(localized: "_subscription_error_product_not_found")
             }
         }
     }
@@ -74,19 +74,19 @@ final class SubscriptionManager: ObservableObject {
                 switch verification { // VerificationResult<Transaction>
                 case .verified(let transaction):
                     await transaction.finish()
-                    self.lastMessage = "Purchase successful"
+                    self.lastMessage = String(localized: "_subscription_success_purchase")
                 case .unverified:
-                    self.lastMessage = "Purchase could not be verified"
+                    self.lastMessage = String(localized: "_subscription_error_purchase_unverified")
                 }
             case .userCancelled:
-                self.lastMessage = "Purchase cancelled"
+                self.lastMessage = String(localized: "_subscription_cancelled_purchase")
             case .pending:
-                self.lastMessage = "Purchase pending"
+                self.lastMessage = String(localized: "_subscription_pending_purchase")
             @unknown default:
-                self.lastMessage = "Unknown purchase result"
+                self.lastMessage = String(localized: "_subscription_unknown_purchase_result")
             }
         } catch {
-            self.lastMessage = "Purchase failed"
+            self.lastMessage = String(localized: "_subscription_error_purchase_failed")
         }
     }
 
@@ -96,9 +96,9 @@ final class SubscriptionManager: ObservableObject {
         defer { isBusy = false }
         do {
             try await AppStore.sync()
-            self.lastMessage = "Restored purchases"
+            self.lastMessage = String(localized: "_subscription_success_restore")
         } catch {
-            self.lastMessage = "Restore failed"
+            self.lastMessage = String(localized: "_subscription_error_restore_failed")
         }
     }
 }

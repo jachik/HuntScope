@@ -843,6 +843,160 @@
         }
       }
     },
+    "_subscription_cancelled_purchase" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kauf abgebrochen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase canceled."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zakup anulowany."
+          }
+        }
+      }
+    },
+    "_subscription_error_no_products" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Produkte verfügbar."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No products available."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak dostępnych produktów."
+          }
+        }
+      }
+    },
+    "_subscription_error_product_not_found" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkt nicht gefunden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product not found."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie znaleziono produktu."
+          }
+        }
+      }
+    },
+    "_subscription_error_products_load" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkte konnten nicht geladen werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load products."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się wczytać produktów."
+          }
+        }
+      }
+    },
+    "_subscription_error_purchase_failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kauf fehlgeschlagen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase failed."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zakup nie powiódł się."
+          }
+        }
+      }
+    },
+    "_subscription_error_purchase_unverified" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kauf konnte nicht verifiziert werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase could not be verified."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się zweryfikować zakupu."
+          }
+        }
+      }
+    },
+    "_subscription_error_restore_failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederherstellung fehlgeschlagen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore failed."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przywracanie nie powiodło się."
+          }
+        }
+      }
+    },
     "_subscription_manage_button" : {
       "localizations" : {
         "de" : {
@@ -861,6 +1015,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zarządzaj subskrypcją"
+          }
+        }
+      }
+    },
+    "_subscription_pending_purchase" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kauf ausstehend."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase pending."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zakup oczekuje na realizację."
           }
         }
       }
@@ -997,6 +1173,50 @@
         }
       }
     },
+    "_subscription_success_purchase" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kauf erfolgreich."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase successful."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zakup zakończony powodzeniem."
+          }
+        }
+      }
+    },
+    "_subscription_success_restore" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käufe wiederhergestellt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchases restored."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zakupy przywrócone."
+          }
+        }
+      }
+    },
     "_subscription_title" : {
       "localizations" : {
         "de" : {
@@ -1019,32 +1239,114 @@
         }
       }
     },
-    "_trial_intro_title" : {
+    "_subscription_unknown_purchase_result" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Testzeitraum" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Trial Period" } },
-        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Okres próbny" } }
-      }
-    },
-    "_trial_intro_body" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die App befindet sich 30 Tage in einem Testzeitraum. In dieser Zeit werden keine Anzeigen eingeblendet. Danach kann ein Abo erworben werden." } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "The app is in a 30‑day trial period. During this time, no ads are shown. Afterward, you can purchase a subscription." } },
-        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Aplikacja znajduje się w 30‑dniowym okresie próbnym. W tym czasie reklamy nie są wyświetlane. Później możesz wykupić subskrypcję." } }
-      }
-    },
-    "_trial_intro_ok" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "OK" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "OK" } },
-        "pl" : { "stringUnit" : { "state" : "translated", "value" : "OK" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekanntes Kauf-Ergebnis."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown purchase result."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieznany wynik zakupu."
+          }
+        }
       }
     },
     "_trial_days_left" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch %d Tage werbefrei" } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "%d days ad‑free left" } },
-        "pl" : { "stringUnit" : { "state" : "translated", "value" : "Pozostało %d dni bez reklam" } }
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du befindest dich gerade in der Testphase. Noch %d Tage werbefrei."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You’re currently in the trial period. %d days ad‑free remaining."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obecnie korzystasz z okresu próbnego. Pozostało %d dni bez reklam."
+          }
+        }
+      }
+    },
+    "_trial_intro_body" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die App befindet sich 30 Tage in einem Testzeitraum. In dieser Zeit werden keine Anzeigen eingeblendet. Danach kann ein Abo erworben werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The app is in a 30‑day trial period. During this time, no ads are shown. Afterward, you can purchase a subscription."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikacja znajduje się w 30‑dniowym okresie próbnym. W tym czasie reklamy nie są wyświetlane. Później możesz wykupić subskrypcję."
+          }
+        }
+      }
+    },
+    "_trial_intro_ok" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "_trial_intro_title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testzeitraum"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trial Period"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okres próbny"
+          }
+        }
       }
     },
     "%lld" : {

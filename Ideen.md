@@ -45,18 +45,19 @@ Die App bringt folgende Funktionen mit:
 - [x] Datenschutzerklärung Text größer
 
 12.09.
-- [] App-Beschreibung einfügen
-- [] Screenshots App
+- [] App-Beschreibung im Store ergänzen / fertigstellen
+- [] Screenshots App für App Store
 - [x] kostenlosen Monat anbieten -> über keychain?
 - [x] Dialog mit Kaufoptionen schöner gestalten
 
 13.09.
 - [x] Abo (vermutlich 2-3 Std.)
 - [x] Lokalisierung (letzter Schritt ca. 2 Std.)
+- [] Hinweis auf Testversion genauer beschreiben
 14.09.
 - [x] Keine Verbindung zum Ad-Store -> eigene Werbung für die App
 - [] Datenschutzvereinbarung prüfen 1 Std. 
-- [] Endlokalisierung (inkl. Mouseover) 0,5 Std. 
+- [x] Endlokalisierung (inkl. Mouseover) 0,5 Std. 
 - [x] Haptik beim Klicken
 - [x] Text / Hinweise auf Premium ab in Dialog einfügen (d.h. welche vorteile hat der Nutzer)
 15.09. 
@@ -70,8 +71,10 @@ Optional, wenn noch Zeit ist:
 - [] Mondphase und Zeiten
 - [-] Videostream nicht beenden, wenn Werbung angezeigt wird
 - [] Der CountDown, wann WErbung angezegit wird, beginnt mit dem Anzeigen - nicht mit dem Schließen - d.h. es kann sein, dass WErbung mehrfach hintereinander gezeigt wird
-- [] Versionsnumer der App und des bilds in die Konfiguration übernehmen, um prüfen zu können, dass eine neue Version installiert wurde
+- [] Versionsnumer der App und des Builds in die persistenten Konfiguration übernehmen, um prüfen zu können, dass eine neue Version installiert wurde
 - [] KI-Upload
+- [] Konfiguration: Helligkeit UI-Steuerung (nicht bild)
+- [] Konfiguration: Haptik (aus/light/medium/...) 
 
 Erledigt:
 - [x] Werbung (vermutlich 2-3 Std.)
@@ -81,15 +84,15 @@ Erledigt:
 
 
 # Wärmebildhersteller:
-- [x] PUlsar
+- [x] Pulsar
 - [x] Syton
 - [x] Zeiss
-- [] Liemke
-- [] Hikvision
+- [] Liemke *
+- [] Hikvision *
 - [x] Burris
-- [] Leica
-- [] INfriray
-- [] Guide Sensmart
+- [] Leica *
+- [] INfriray *
+- [] Guide Sensmart *
 - [x] ATN
 - [] Steiner
 - [] Nighthog
