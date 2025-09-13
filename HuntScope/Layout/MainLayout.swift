@@ -36,9 +36,6 @@ import SwiftUI
             let safeBottom = geo.safeAreaInsets.bottom + 10
             
             ZStack {
-                // 1) Stream in der Mitte (hinter allem)
-                StreamView()
-                // 2) Drei-Spalten-Layout
                 HStack(spacing: 0) {
 
                     // Linke Spalte
@@ -53,10 +50,10 @@ import SwiftUI
                     .frame(maxHeight: .infinity)
                     .background(Color.black.opacity(0.001))
 
-                    // Mitte: fuellt alles zwischen den Seiten
-                    Rectangle()
-                        .fill(Color.clear)
+                    StreamView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(.top, safeTop + 5)
+                        .padding(.bottom, safeBottom + 5)
 
                     // Rechte Spalte
                     ZStack {

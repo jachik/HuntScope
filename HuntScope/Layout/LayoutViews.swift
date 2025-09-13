@@ -95,7 +95,6 @@ struct StreamView: View {
                 .accessibilityLabel(Text("_a11y_layout_overlay_no_signal_label"))
             }
         }
-        .ignoresSafeArea()
         // Sobald echter Stream laeuft, Splash-Wasserzeichen dauerhaft entfernen
         .onChange(of: player.hasStreamSignal) { hasSignal in
             if hasSignal {
